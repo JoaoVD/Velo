@@ -37,7 +37,7 @@
 ## Estrutura de Arquivos
 
 ```
-vistai/
+velo/
   backend/
     app/
       __init__.py
@@ -129,10 +129,10 @@ vistai/
 - [ ] **Step 1: Criar estrutura de diretórios**
 
 ```bash
-mkdir -p vistai/backend/app/models vistai/backend/app/routers \
-  vistai/backend/app/connectors vistai/backend/app/analysis \
-  vistai/backend/worker vistai/backend/tests \
-  vistai/frontend vistai/supabase/migrations
+mkdir -p velo/backend/app/models velo/backend/app/routers \
+  velo/backend/app/connectors velo/backend/app/analysis \
+  velo/backend/worker velo/backend/tests \
+  velo/frontend velo/supabase/migrations
 cd vistai
 ```
 
