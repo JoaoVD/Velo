@@ -19,8 +19,7 @@
 - Worker retry: máx 3 tentativas, backoff 60s/120s/300s
 - MVP: apenas plano Starter (1 marca, 10 keywords, semanal)
 - Engines no MVP: ChatGPT (gpt-4o-mini) + Gemini (gemini-1.5-flash)
-- Análise: claude-haiku-4-5 para análise por query
-- Relatório: claude-sonnet-4-6 para relatórios + planos de ação
+- Análise e Relatório: claude-sonnet-4-6 para todas as chamadas ao Claude (análise por query, relatórios e planos de ação)
 - **Design System (obrigatório em todo frontend):**
   - Fontes: Fraunces (display/scores) + IBM Plex Mono (UI/dados) — NUNCA Inter, Roboto, Arial
   - Cores: `--color-ink #0f1923`, `--color-signal #c8460a`, `--color-bone #f5f2eb`, `--color-ice #e8f0f7`, `--color-navy #1a3a5c`, `--color-confirm #2d6a4f`
@@ -944,7 +943,7 @@ async def analyze_response(
         response=response,
     )
     message = client.messages.create(
-        model="claude-haiku-4-5",
+        model="claude-sonnet-4-6",
         max_tokens=256,
         messages=[{"role": "user", "content": prompt}],
     )

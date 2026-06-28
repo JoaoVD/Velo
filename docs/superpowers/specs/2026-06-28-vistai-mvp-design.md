@@ -34,13 +34,13 @@ SaaS B2B que monitora automaticamente como as principais IAs generativas descrev
 | Worker | FastAPI (Railway — serviço separado) |
 | Banco de dados | Supabase (PostgreSQL + Auth + RLS) |
 | Scheduler | Railway Cron |
-| Análise de IA | Claude Haiku 4.5 (scoring) + Claude Sonnet (relatório/plano de ação) |
+| Análise de IA | Claude Sonnet 4.5 (scoring) + Claude Sonnet (relatório/plano de ação) |
 | LLMs monitoradas | ChatGPT (gpt-4o-mini) + Gemini (gemini-1.5-flash) |
 | E-mail | Resend |
 | Monitoramento | Sentry + PostHog |
 | Deploy | Vercel (frontend) + Railway (backend) |
 
-**Custo de IA por cliente:** ~US$5/mês usando Claude Haiku + prompt caching + Batch API. Margem saudável mesmo no tier Starter (R$149/mês).
+**Custo de IA por cliente:** ~US$5/mês usando Claude Sonnet + prompt caching + Batch API. Margem saudável mesmo no tier Starter (R$149/mês).
 
 ---
 
@@ -84,7 +84,7 @@ Next.js Dashboard  -->  FastAPI API Server <-> FastAPI Worker    <-> PostgreSQL 
 [Railway Cron] --> POST /internal/create-jobs (semanal)
 ```
 
-**Fluxo em uma linha:** Cron cria jobs no Supabase → Worker pega jobs → chama ChatGPT/Gemini → Claude Haiku analisa → score calculado → relatório gerado → cliente vê no dashboard.
+**Fluxo em uma linha:** Cron cria jobs no Supabase → Worker pega jobs → chama ChatGPT/Gemini → Claude Sonnet analisa → score calculado → relatório gerado → cliente vê no dashboard.
 
 ---
 
@@ -137,7 +137,7 @@ Score calculado por keyword por engine, escala 0–100.
 |---|---|---|
 | Menção | 30% | A marca foi citada na resposta? |
 | Posição | 25% | 1ª recomendação = 100, 2ª = 70, 3ª+ = 40, não citado = 0 |
-| Sentimento | 25% | Positivo / neutro / negativo (analisado pelo Claude Haiku) |
+| Sentimento | 25% | Positivo / neutro / negativo (analisado pelo Claude Sonnet) |
 | Frequência | 20% | % de disparos da keyword onde a marca aparece |
 
 **Score final:** média ponderada por keyword, depois agregado por engine.
@@ -164,7 +164,7 @@ Para cada job:
       1. Monta prompt simulando consumidor real
       2. Chama API da engine
       3. Salva raw_response em query_results
-      4. Envia response ao Claude Haiku:
+      4. Envia response ao Claude Sonnet:
            - A marca foi mencionada?
            - Em que posição?
            - Sentimento?
