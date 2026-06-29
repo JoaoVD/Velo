@@ -1,0 +1,79 @@
+import pytest
+from app.analysis.scorer import calculate_geo_score
+
+
+def test_all_mentioned_first_positive():
+    analyses = [
+        {"mentioned": True, "position": 1, "sentiment": "positive"},
+        {"mentioned": True, "position": 1, "sentiment": "positive"},
+    ]
+    result = calculate_geo_score(analyses)
+    assert result["mention_score"] == 100.0
+    assert result["position_score"] == 100.0
+    assert result["sentiment_score"] == 100.0
+    assert result["frequency_score"] == 100.0
+    assert result["geo_score"] == 100.0
+
+
+def test_never_mentioned():
+    analyses = [
+        {"mentioned": False, "position": None, "sentiment": None},
+        {"mentioned": False, "position": None, "sentiment": None},
+    ]
+    result = calculate_geo_score(analyses)
+    assert result["mention_score"] == 0.0
+    assert result["position_score"] == 0.0
+    assert result["sentiment_score"] == 0.0
+    assert result["frequency_score"] == 0.0
+    assert result["geo_score"] == 0.0
+
+
+def test_partial_mention_second_position_positive():
+    # 3 of 5 mentions, always 2nd, positive sentiment
+    analyses = [
+        {"mentioned": True, "position": 2, "sentiment": "positive"},
+        {"mentioned": True, "position": 2, "sentiment": "positive"},
+        {"mentioned": True, "position": 2, "sentiment": "positive"},
+        {"mentioned": False, "position": None, "sentiment": None},
+        {"mentioned": False, "position": None, "sentiment": None},
+    ]
+    result = calculate_geo_score(analyses)
+    assert result["frequency_score"] == 60.0
+    assert result["position_score"] == 70.0
+    assert result["sentiment_score"] == 100.0
+    assert result["mention_score"] == 100.0
+    # geo = 0.30*100 + 0.25*70 + 0.25*100 + 0.20*60 = 30+17.5+25+12 = 84.5
+    assert result["geo_score"] == 84.5
+
+
+def test_third_position_neutral():
+    analyses = [
+        {"mentioned": True, "position": 3, "sentiment": "neutral"},
+    ]
+    result = calculate_geo_score(analyses)
+    assert result["position_score"] == 40.0
+    assert result["sentiment_score"] == 50.0
+    # geo = 0.30*100 + 0.25*40 + 0.25*50 + 0.20*100 = 30+10+12.5+20 = 72.5
+    assert result["geo_score"] == 72.5
+
+
+def test_mixed_sentiment():
+    # 2 mentions: one positive, one negative
+    analyses = [
+        {"mentioned": True, "position": 1, "sentiment": "positive"},
+        {"mentioned": True, "position": 1, "sentiment": "negative"},
+    ]
+    result = calculate_geo_score(analyses)
+    assert result["sentiment_score"] == 50.0  # (100 + 0) / 2
+    assert result["position_score"] == 100.0
+    assert result["frequency_score"] == 100.0
+    # geo = 0.30*100 + 0.25*100 + 0.25*50 + 0.20*100 = 30+25+12.5+20 = 87.5
+    assert result["geo_score"] == 87.5
+
+
+def test_fourth_position_maps_to_40():
+    analyses = [
+        {"mentioned": True, "position": 4, "sentiment": "positive"},
+    ]
+    result = calculate_geo_score(analyses)
+    assert result["position_score"] == 40.0  # 3rd+ = 40
