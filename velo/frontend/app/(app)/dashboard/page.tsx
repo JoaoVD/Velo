@@ -3,6 +3,7 @@ import { apiFetch } from "@/lib/api";
 import { GeoScoreCard } from "@/components/GeoScoreCard";
 import { Score } from "@/lib/types";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 async function getBrandId(token: string): Promise<string | null> {
   try {
@@ -21,27 +22,7 @@ export default async function DashboardPage() {
   const brandId = await getBrandId(token);
 
   if (!brandId) {
-    return (
-      <div>
-        <div className="mb-8">
-          <h1 className="font-display font-black text-3xl text-slate-900">Dashboard</h1>
-          <p className="font-mono text-sm text-slate-500 mt-1.5">
-            Presença da sua marca nas IAs generativas
-          </p>
-        </div>
-        <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center shadow-sm">
-          <p className="font-mono text-sm text-slate-500 mb-3">
-            Nenhuma marca cadastrada ainda.
-          </p>
-          <Link
-            href="/settings"
-            className="inline-flex items-center gap-1.5 font-mono text-sm text-moss-600 hover:text-moss-700 font-semibold"
-          >
-            Adicione sua marca →
-          </Link>
-        </div>
-      </div>
-    );
+    redirect("/onboarding");
   }
 
   const scores = await apiFetch<Score[]>(`/brands/${brandId}/scores`, token).catch(
