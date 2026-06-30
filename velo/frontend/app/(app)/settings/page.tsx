@@ -4,13 +4,16 @@ import { useState, useEffect } from "react";
 import { createClient as createBrowserClient } from "@/lib/supabase-browser";
 import { apiFetch } from "@/lib/api";
 import { Brand, Keyword } from "@/lib/types";
-import { X, Plus } from "lucide-react";
+import { X, Plus, Building2 } from "lucide-react";
 
 export default function SettingsPage() {
   const [token, setToken] = useState("");
   const [brand, setBrand] = useState<Brand | null>(null);
   const [keywords, setKeywords] = useState<Keyword[]>([]);
   const [newKeyword, setNewKeyword] = useState("");
+  const [newBrandName, setNewBrandName] = useState("");
+  const [newBrandWebsite, setNewBrandWebsite] = useState("");
+  const [creatingBrand, setCreatingBrand] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,6 +46,23 @@ export default function SettingsPage() {
       body: JSON.stringify({ term: newKeyword.trim() }),
     });
     setNewKeyword("");
+    loadData(token);
+  }
+
+  async function handleCreateBrand(e: React.FormEvent) {
+    e.preventDefault();
+    if (!newBrandName.trim()) return;
+    setCreatingBrand(true);
+    await apiFetch("/brands", token, {
+      method: "POST",
+      body: JSON.stringify({
+        name: newBrandName.trim(),
+        website: newBrandWebsite.trim() || undefined,
+      }),
+    });
+    setNewBrandName("");
+    setNewBrandWebsite("");
+    setCreatingBrand(false);
     loadData(token);
   }
 
@@ -83,10 +103,43 @@ export default function SettingsPage() {
                 {brand.name.charAt(0).toUpperCase()}
               </span>
             </div>
-            <p className="font-mono text-sm font-semibold text-slate-900">{brand.name}</p>
+            <div>
+              <p className="font-mono text-sm font-semibold text-slate-900">{brand.name}</p>
+              {brand.website && (
+                <p className="font-mono text-xs text-slate-400 mt-0.5">{brand.website}</p>
+              )}
+            </div>
           </div>
         ) : (
-          <p className="font-mono text-sm text-slate-400">Nenhuma marca cadastrada.</p>
+          <form onSubmit={handleCreateBrand} className="space-y-3">
+            <div className="flex items-center gap-2 mb-3">
+              <Building2 size={14} className="text-slate-400" />
+              <p className="font-mono text-xs text-slate-500">
+                Cadastre sua marca para começar o monitoramento.
+              </p>
+            </div>
+            <input
+              value={newBrandName}
+              onChange={(e) => setNewBrandName(e.target.value)}
+              placeholder="Nome da marca (ex: Clínica São Lucas)"
+              className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
+              required
+            />
+            <input
+              value={newBrandWebsite}
+              onChange={(e) => setNewBrandWebsite(e.target.value)}
+              placeholder="Site (opcional, ex: clinicasaolucas.com.br)"
+              className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
+            />
+            <button
+              type="submit"
+              disabled={creatingBrand}
+              className="flex items-center gap-1.5 bg-moss-600 text-white px-4 py-2.5 rounded-xl font-mono text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60"
+            >
+              <Plus size={14} />
+              {creatingBrand ? "Salvando..." : "Cadastrar marca"}
+            </button>
+          </form>
         )}
       </div>
 
