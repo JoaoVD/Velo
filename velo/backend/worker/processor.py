@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from datetime import date
+from datetime import date, timedelta
 from app.config import settings
 from app.database import supabase_client
 from app.connectors.chatgpt import ChatGPTConnector
@@ -77,12 +77,12 @@ async def process_job(job_id: str) -> None:
                 sample_response=sample_responses[0] if sample_responses else "Marca não mencionada nas respostas.",
                 api_key=settings.anthropic_api_key,
             )
-            db.table("action_plans").insert({
+            db.table("action_plans").upsert({
                 "keyword_id": keyword["id"],
                 "engine": engine,
                 "recommendation": action["recommendation"],
                 "priority": action["priority"],
-            }).execute()
+            }, on_conflict="keyword_id,engine").execute()
 
     avg_scores = {
         engine: round(sum(scores) / len(scores), 2) if scores else 0
@@ -97,12 +97,47 @@ async def process_job(job_id: str) -> None:
         api_key=settings.anthropic_api_key,
     )
 
+    _today = date.today()
+    _period_start = _today - timedelta(days=_today.weekday())
+    _period_end = _period_start + timedelta(days=6)
+
     db.table("reports").insert({
         "brand_id": brand["id"],
-        "period_start": str(date.today()),
-        "period_end": str(date.today()),
+        "period_start": str(_period_start),
+        "period_end": str(_period_end),
         "content_md": report_md,
     }).execute()
+
+    # Send weekly report email (non-blocking: errors logged, job not failed)
+    if settings.resend_api_key:
+        try:
+            from app.email.sender import send_weekly_report_email
+            users_result = db.table("user_organizations").select("user_id").eq(
+                "organization_id", brand["organization_id"]
+            ).execute()
+            if users_result.data:
+                user_id = users_result.data[0]["user_id"]
+                user_resp = db.auth.admin.get_user_by_id(user_id)
+                to_email = user_resp.user.email
+                if to_email:
+                    overall_score = round(
+                        sum(avg_scores.values()) / max(len(avg_scores), 1)
+                    )
+                    top_action_text = (
+                        keyword_scores[0]["term"] if keyword_scores
+                        else "Acompanhe seu dashboard para as recomendações."
+                    )
+                    send_weekly_report_email(
+                        api_key=settings.resend_api_key,
+                        to_email=to_email,
+                        brand_name=brand["name"],
+                        geo_score=overall_score,
+                        score_change=0,
+                        report_url="https://app.velo.com.br/report",
+                        top_action=top_action_text,
+                    )
+        except Exception as email_err:
+            logger.warning("Erro ao enviar email de relatório: %s", email_err)
 
     db.table("jobs").update({
         "status": "done",
