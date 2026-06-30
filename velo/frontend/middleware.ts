@@ -21,13 +21,19 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
-  const isPublic = request.nextUrl.pathname === "/";
+  const { pathname } = request.nextUrl;
+  const isAuthPage = pathname.startsWith("/auth");
+  const isPublic =
+    pathname === "/" ||
+    pathname.startsWith("/_next") ||
+    pathname === "/favicon.ico";
 
+  // Unauthenticated user trying to access protected route → login
   if (!user && !isAuthPage && !isPublic) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
+  // Authenticated user on auth page → dashboard
   if (user && isAuthPage) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
@@ -36,5 +42,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/).*)"],
 };
