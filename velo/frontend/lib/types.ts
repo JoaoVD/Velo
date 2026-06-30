@@ -6,6 +6,13 @@ export interface Brand {
   created_at: string;
 }
 
+export interface Competitor {
+  id: string;
+  brand_id: string;
+  name: string;
+  created_at: string;
+}
+
 export interface Keyword {
   id: string;
   brand_id: string;
@@ -31,6 +38,7 @@ export interface Report {
   period_start: string;
   period_end: string;
   content_md: string;
+  pdf_url: string | null;
   created_at: string;
 }
 
