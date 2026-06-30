@@ -1,0 +1,7 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile.cron"
+
+[deploy]
+cronSchedule = "0 6 * * 1"
+restartPolicyType = "ON_FAILURE"
