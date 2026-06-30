@@ -12,25 +12,38 @@ export default async function ActionPlanPage() {
   const brandId = brands[0]?.id;
 
   if (!brandId) {
-    return <div className="font-mono text-sm text-ink/50">Nenhuma marca cadastrada.</div>;
+    return (
+      <div className="font-mono text-sm text-slate-500 bg-white border border-slate-200 rounded-2xl p-10 text-center">
+        Nenhuma marca cadastrada.
+      </div>
+    );
   }
 
   const [plans, keywords] = await Promise.all([
-    apiFetch<ActionPlan[]>(`/brands/${brandId}/action-plans`, token).catch(() => [] as ActionPlan[]),
+    apiFetch<ActionPlan[]>(`/brands/${brandId}/action-plans`, token).catch(
+      () => [] as ActionPlan[]
+    ),
     apiFetch<Keyword[]>(`/brands/${brandId}/keywords`, token).catch(() => [] as Keyword[]),
   ]);
 
   return (
     <div>
-      <h1 className="font-display font-bold text-3xl text-ink">Plano de Ação</h1>
-      <p className="font-mono text-sm text-ink/50 mt-1">Recomendações por keyword, ordenadas por prioridade</p>
-      <div className="mt-6">
-        {plans.length === 0 ? (
-          <p className="font-mono text-sm text-ink/40">Nenhum plano de ação disponível ainda.</p>
-        ) : (
-          <ActionPlanList plans={plans} keywords={keywords} />
-        )}
+      <div className="mb-8">
+        <h1 className="font-display font-black text-3xl text-slate-900">Plano de Ação</h1>
+        <p className="font-mono text-sm text-slate-500 mt-1.5">
+          Recomendações por keyword, ordenadas por prioridade
+        </p>
       </div>
+
+      {plans.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-10 text-center">
+          <p className="font-mono text-sm text-slate-400">
+            Nenhum plano de ação disponível ainda.
+          </p>
+        </div>
+      ) : (
+        <ActionPlanList plans={plans} keywords={keywords} />
+      )}
     </div>
   );
 }

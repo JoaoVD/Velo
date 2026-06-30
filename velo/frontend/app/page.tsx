@@ -232,7 +232,7 @@ export default function LandingPage() {
             <span className="font-display font-black text-[1.6rem] tracking-tight text-slate-900 leading-none">
               Velo
             </span>
-            <span className="w-1.5 h-1.5 rounded-full bg-teal-600 mb-0.5 ml-0.5" />
+            <span className="w-1.5 h-1.5 rounded-full bg-moss-600 mb-0.5 ml-0.5" />
           </div>
 
           {/* Center links */}
@@ -262,7 +262,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/auth/signup"
-              className="inline-flex items-center gap-1.5 bg-teal-600 text-white font-mono text-sm font-medium px-5 py-2.5 rounded-xl hover:bg-teal-700 transition-colors"
+              className="inline-flex items-center gap-1.5 bg-moss-600 text-white font-mono text-sm font-medium px-5 py-2.5 rounded-xl hover:bg-moss-700 transition-colors"
             >
               Começar grátis
             </Link>
@@ -300,7 +300,7 @@ export default function LandingPage() {
               </Link>
               <Link
                 href="/auth/signup"
-                className="bg-teal-600 text-white text-center font-mono text-sm font-semibold py-3 rounded-xl"
+                className="bg-moss-600 text-white text-center font-mono text-sm font-semibold py-3 rounded-xl"
               >
                 Começar grátis
               </Link>
@@ -317,9 +317,9 @@ export default function LandingPage() {
 
           {/* Left — copy */}
           <div>
-            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100 rounded-full px-4 py-1.5 mb-10">
-              <Activity size={12} className="text-teal-600" />
-              <span className="font-mono text-xs text-teal-700 font-medium">
+            <div className="inline-flex items-center gap-2 bg-moss-50 border border-moss-100 rounded-full px-4 py-1.5 mb-10">
+              <Activity size={12} className="text-moss-600" />
+              <span className="font-mono text-xs text-moss-700 font-medium">
                 GEO Monitoring · ChatGPT, Gemini, Perplexity, Claude
               </span>
             </div>
@@ -327,7 +327,7 @@ export default function LandingPage() {
             <h1 className="font-display font-black text-[3.2rem] lg:text-[3.8rem] leading-[1.04] tracking-tight text-slate-900 mb-8">
               O que as IAs falam<br />
               sobre você quando<br />
-              <em className="text-teal-600 not-italic">ninguém</em> está<br />
+              <em className="text-moss-600 not-italic">ninguém</em> está<br />
               olhando
             </h1>
 
@@ -341,7 +341,7 @@ export default function LandingPage() {
             <div className="flex flex-wrap gap-4 mb-8">
               <Link
                 href="/auth/signup"
-                className="inline-flex items-center gap-2 bg-teal-600 text-white font-mono text-sm font-semibold px-7 py-3.5 rounded-xl hover:bg-teal-700 transition-colors shadow-lg shadow-teal-600/20"
+                className="inline-flex items-center gap-2 bg-moss-600 text-white font-mono text-sm font-semibold px-7 py-3.5 rounded-xl hover:bg-moss-700 transition-colors shadow-lg shadow-moss-600/20"
               >
                 Ver minha presença agora
                 <ArrowRight size={15} />
@@ -362,7 +362,7 @@ export default function LandingPage() {
           {/* Right — dashboard mockup */}
           <div className="relative">
             {/* Subtle glow behind card */}
-            <div className="absolute -inset-6 bg-teal-50 rounded-3xl blur-2xl opacity-40 pointer-events-none" />
+            <div className="absolute -inset-6 bg-moss-50 rounded-3xl blur-2xl opacity-40 pointer-events-none" />
 
             <div className="relative bg-white border border-slate-200 rounded-2xl shadow-2xl shadow-slate-200/70 overflow-hidden">
               {/* Window chrome */}
@@ -445,7 +445,7 @@ export default function LandingPage() {
                 {/* Action plan mini */}
                 <div className="border border-slate-100 rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <Target size={12} className="text-teal-600" />
+                    <Target size={12} className="text-moss-600" />
                     <p className="font-mono text-xs font-semibold text-slate-700">
                       Plano de Ação · Semana 27
                     </p>
@@ -456,7 +456,7 @@ export default function LandingPage() {
                         <div
                           className={`mt-0.5 w-3.5 h-3.5 rounded shrink-0 flex items-center justify-center border ${
                             done
-                              ? "bg-teal-600 border-teal-600"
+                              ? "bg-moss-600 border-moss-600"
                               : "border-slate-300"
                           }`}
                         >
@@ -532,7 +532,7 @@ export default function LandingPage() {
       <section id="problema" className="py-28 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <FadeIn className="max-w-3xl mb-16">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-6">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-moss-600 mb-6">
               O problema
             </p>
             <h2 className="font-display font-black text-5xl lg:text-[3.5rem] text-slate-900 leading-[1.06] mb-8">
@@ -576,8 +576,8 @@ export default function LandingPage() {
               },
             ].map(({ stat, label, desc, delay }) => (
               <FadeIn key={stat} delay={delay}>
-                <div className="border border-slate-100 rounded-2xl p-8 hover:border-teal-100 hover:shadow-sm transition-all">
-                  <p className="font-display font-black text-5xl text-teal-600 mb-2 leading-none">
+                <div className="border border-slate-100 rounded-2xl p-8 hover:border-moss-100 hover:shadow-sm transition-all">
+                  <p className="font-display font-black text-5xl text-moss-600 mb-2 leading-none">
                     {stat}
                   </p>
                   <p className="font-mono text-xs font-semibold text-slate-800 mb-2">
@@ -599,7 +599,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           {/* Copy */}
           <FadeIn>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-moss-600 mb-5">
               Feature 01
             </p>
             <h2 className="font-display font-black text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
@@ -642,9 +642,9 @@ export default function LandingPage() {
                     <span className="font-mono text-xs font-semibold text-slate-700">
                       {label}
                     </span>
-                    <span className="font-mono text-xs text-teal-600 font-bold">{pct}%</span>
+                    <span className="font-mono text-xs text-moss-600 font-bold">{pct}%</span>
                   </div>
-                  <Bar value={pct * 3} color="bg-teal-500" />
+                  <Bar value={pct * 3} color="bg-moss-600" />
                   <p className="font-mono text-[10px] text-slate-400 mt-1">{desc}</p>
                 </div>
               ))}
@@ -667,7 +667,7 @@ export default function LandingPage() {
                       className="w-full rounded-t"
                       style={{
                         height: `${(v / 100) * 100}px`,
-                        background: i === 7 ? "#0d9488" : "#e2e8f0",
+                        background: i === 7 ? "#3f6b4e" : "#e2e8f0",
                       }}
                     />
                     <span className="font-mono text-[8px] text-slate-300">S{i + 20}</span>
@@ -717,24 +717,24 @@ export default function LandingPage() {
                   <div
                     key={name}
                     className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${
-                      you ? "bg-teal-50 border border-teal-100" : ""
+                      you ? "bg-moss-50 border border-moss-100" : ""
                     }`}
                   >
                     <span
                       className={`font-mono text-[10px] font-medium shrink-0 w-4 ${
-                        you ? "text-teal-600" : "text-slate-400"
+                        you ? "text-moss-600" : "text-slate-400"
                       }`}
                     >
                       #{i + 1}
                     </span>
                     <span
                       className={`font-mono text-xs flex-1 min-w-0 flex items-center gap-2 ${
-                        you ? "font-semibold text-teal-700" : "text-slate-500"
+                        you ? "font-semibold text-moss-700" : "text-slate-500"
                       }`}
                     >
                       <span className="truncate">{name}</span>
                       {you && (
-                        <span className="text-[9px] bg-teal-600 text-white px-1.5 py-0.5 rounded font-normal shrink-0">
+                        <span className="text-[9px] bg-moss-600 text-white px-1.5 py-0.5 rounded font-normal shrink-0">
                           você
                         </span>
                       )}
@@ -742,12 +742,12 @@ export default function LandingPage() {
                     <div className="w-24 shrink-0">
                       <Bar
                         value={score}
-                        color={you ? "bg-teal-500" : "bg-slate-200"}
+                        color={you ? "bg-moss-600" : "bg-slate-200"}
                       />
                     </div>
                     <span
                       className={`font-mono text-xs font-bold w-7 text-right shrink-0 ${
-                        you ? "text-teal-600" : "text-slate-400"
+                        you ? "text-moss-600" : "text-slate-400"
                       }`}
                     >
                       {score}
@@ -766,7 +766,7 @@ export default function LandingPage() {
 
           {/* Copy */}
           <FadeIn delay={120} className="order-1 lg:order-2">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-moss-600 mb-5">
               Feature 02
             </p>
             <h2 className="font-display font-black text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
@@ -791,7 +791,7 @@ export default function LandingPage() {
                 "Alertas quando um rival superar você",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <Check size={14} className="text-teal-600 mt-0.5 shrink-0" />
+                  <Check size={14} className="text-moss-600 mt-0.5 shrink-0" />
                   <span className="font-mono text-sm text-slate-600">{item}</span>
                 </li>
               ))}
@@ -808,7 +808,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           {/* Copy */}
           <FadeIn>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-moss-600 mb-5">
               Feature 03
             </p>
             <h2 className="font-display font-black text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
@@ -835,7 +835,7 @@ export default function LandingPage() {
                 "Em português claro, direto ao ponto",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <Check size={14} className="text-teal-600 mt-0.5 shrink-0" />
+                  <Check size={14} className="text-moss-600 mt-0.5 shrink-0" />
                   <span className="font-mono text-sm text-slate-600">{item}</span>
                 </li>
               ))}
@@ -847,7 +847,7 @@ export default function LandingPage() {
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl shadow-slate-100">
               <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 bg-slate-50">
                 <div className="flex items-center gap-2">
-                  <Target size={13} className="text-teal-600" />
+                  <Target size={13} className="text-moss-600" />
                   <p className="font-mono text-xs font-semibold text-slate-700">
                     Plano de Ação — Semana 27
                   </p>
@@ -902,7 +902,7 @@ export default function LandingPage() {
                   >
                     <div
                       className={`mt-0.5 w-4 h-4 rounded flex items-center justify-center border shrink-0 ${
-                        done ? "bg-teal-600 border-teal-600" : "border-slate-300"
+                        done ? "bg-moss-600 border-moss-600" : "border-slate-300"
                       }`}
                     >
                       {done && <Check size={10} className="text-white" />}
@@ -921,7 +921,7 @@ export default function LandingPage() {
                     </div>
                     <span
                       className={`font-mono text-xs font-bold shrink-0 ${
-                        done ? "text-emerald-500" : "text-teal-600"
+                        done ? "text-emerald-500" : "text-moss-600"
                       }`}
                     >
                       {impact}
@@ -1010,7 +1010,7 @@ export default function LandingPage() {
 
           {/* Copy */}
           <FadeIn delay={120} className="order-1 lg:order-2">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-moss-600 mb-5">
               Feature 04
             </p>
             <h2 className="font-display font-black text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
@@ -1035,7 +1035,7 @@ export default function LandingPage() {
                 "Canais: e-mail, Slack e webhook",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <Check size={14} className="text-teal-600 mt-0.5 shrink-0" />
+                  <Check size={14} className="text-moss-600 mt-0.5 shrink-0" />
                   <span className="font-mono text-sm text-slate-600">{item}</span>
                 </li>
               ))}
@@ -1050,7 +1050,7 @@ export default function LandingPage() {
       <section id="como-funciona" className="py-28 px-6 bg-zinc-50 border-y border-slate-100">
         <div className="max-w-7xl mx-auto">
           <FadeIn className="mb-20">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-6">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-moss-600 mb-6">
               Como funciona
             </p>
             <h2 className="font-display font-black text-5xl lg:text-[3.5rem] text-slate-900 leading-[1.06] max-w-lg">
@@ -1085,7 +1085,7 @@ export default function LandingPage() {
               <FadeIn key={n} delay={delay}>
                 <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 items-start py-12">
                   <div className="lg:col-span-2">
-                    <span className="font-display font-black text-7xl lg:text-8xl text-teal-600/15 leading-none select-none">
+                    <span className="font-display font-black text-7xl lg:text-8xl text-moss-600/15 leading-none select-none">
                       {n}
                     </span>
                   </div>
@@ -1110,7 +1110,7 @@ export default function LandingPage() {
       <section id="precos" className="py-28 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <FadeIn>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-6">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-moss-600 mb-6">
               Preços
             </p>
 
@@ -1133,8 +1133,8 @@ export default function LandingPage() {
                 <button
                   onClick={() => setAnnual(!annual)}
                   aria-label="Toggle anual/mensal"
-                  className={`relative w-12 h-6 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 ${
-                    annual ? "bg-teal-600" : "bg-slate-200"
+                  className={`relative w-12 h-6 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-moss-600 ${
+                    annual ? "bg-moss-600" : "bg-slate-200"
                   }`}
                 >
                   <span
@@ -1166,14 +1166,14 @@ export default function LandingPage() {
                   <div
                     className={`relative flex flex-col rounded-2xl p-8 h-full transition-shadow ${
                       highlight
-                        ? "border-2 border-teal-500 bg-white shadow-2xl shadow-teal-100"
+                        ? "border-2 border-moss-600 bg-white shadow-2xl shadow-moss-100"
                         : "border border-slate-200 bg-white hover:shadow-md"
                     }`}
                   >
                     {/* Badge */}
                     {badge && (
                       <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                        <span className="bg-teal-600 text-white font-mono text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg shadow-teal-600/30">
+                        <span className="bg-moss-600 text-white font-mono text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg shadow-moss-600/30">
                           {badge}
                         </span>
                       </div>
@@ -1181,7 +1181,7 @@ export default function LandingPage() {
 
                     <p
                       className={`font-mono text-[10px] uppercase tracking-widest font-semibold mb-5 ${
-                        highlight ? "text-teal-600" : "text-slate-400"
+                        highlight ? "text-moss-600" : "text-slate-400"
                       }`}
                     >
                       {name}
@@ -1211,7 +1211,7 @@ export default function LandingPage() {
                           <Check
                             size={13}
                             className={`mt-0.5 shrink-0 ${
-                              highlight ? "text-teal-600" : "text-emerald-500"
+                              highlight ? "text-moss-600" : "text-emerald-500"
                             }`}
                           />
                           <span className="font-mono text-xs text-slate-600">{f}</span>
@@ -1223,7 +1223,7 @@ export default function LandingPage() {
                       href="/auth/signup"
                       className={`block text-center font-mono text-sm font-semibold py-3.5 rounded-xl transition-colors ${
                         highlight
-                          ? "bg-teal-600 text-white hover:bg-teal-700"
+                          ? "bg-moss-600 text-white hover:bg-moss-700"
                           : "border border-slate-200 text-slate-700 hover:bg-slate-50"
                       }`}
                     >
@@ -1249,7 +1249,7 @@ export default function LandingPage() {
       ══════════════════════════════════════ */}
       <section className="py-28 px-6 bg-slate-900">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-teal-400 mb-8">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-moss-200 mb-8">
             Comece hoje
           </p>
           <h2 className="font-display font-black text-5xl lg:text-6xl text-white leading-[1.05] mb-8">
@@ -1262,7 +1262,7 @@ export default function LandingPage() {
           </p>
           <Link
             href="/auth/signup"
-            className="inline-flex items-center gap-2 bg-teal-600 text-white font-mono text-sm font-bold px-10 py-4 rounded-xl hover:bg-teal-500 transition-colors shadow-2xl shadow-teal-900/40"
+            className="inline-flex items-center gap-2 bg-moss-600 text-white font-mono text-sm font-bold px-10 py-4 rounded-xl hover:bg-moss-600 transition-colors shadow-2xl shadow-teal-900/40"
           >
             Ver minha presença agora
             <ArrowRight size={16} />
@@ -1286,7 +1286,7 @@ export default function LandingPage() {
                 <span className="font-display font-black text-2xl text-slate-900 leading-none">
                   Velo
                 </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-600 mb-0.5 ml-0.5" />
+                <span className="w-1.5 h-1.5 rounded-full bg-moss-600 mb-0.5 ml-0.5" />
               </div>
               <p className="font-mono text-xs text-slate-400 leading-relaxed mb-5">
                 Monitore sua presença nas IAs. GEO Score, benchmark competitivo e plano

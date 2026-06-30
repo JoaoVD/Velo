@@ -35,15 +35,51 @@ export function ScoreHistoryChart({ scores }: Props) {
     }));
 
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#0f192310" />
-        <XAxis dataKey="date" tick={{ fontSize: 11, fontFamily: "var(--font-mono)" }} />
-        <YAxis domain={[0, 100]} tick={{ fontSize: 11, fontFamily: "var(--font-mono)" }} />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="chatgpt" name="ChatGPT" stroke="#c8460a" strokeWidth={2} dot={false} />
-        <Line type="monotone" dataKey="gemini" name="Gemini" stroke="#2d6a4f" strokeWidth={2} dot={false} />
+    <ResponsiveContainer width="100%" height={320}>
+      <LineChart data={data} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
+        <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+        <XAxis
+          dataKey="date"
+          tick={{ fontSize: 10, fontFamily: "var(--font-mono)", fill: "#94a3b8" }}
+          axisLine={false}
+          tickLine={false}
+        />
+        <YAxis
+          domain={[0, 100]}
+          tick={{ fontSize: 10, fontFamily: "var(--font-mono)", fill: "#94a3b8" }}
+          axisLine={false}
+          tickLine={false}
+        />
+        <Tooltip
+          contentStyle={{
+            fontFamily: "var(--font-mono)",
+            fontSize: 11,
+            border: "1px solid #e2e8f0",
+            borderRadius: 8,
+            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.05)",
+          }}
+        />
+        <Legend
+          wrapperStyle={{ fontFamily: "var(--font-mono)", fontSize: 11 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="chatgpt"
+          name="ChatGPT"
+          stroke="#3f6b4e"
+          strokeWidth={2.5}
+          dot={false}
+          activeDot={{ r: 4 }}
+        />
+        <Line
+          type="monotone"
+          dataKey="gemini"
+          name="Gemini"
+          stroke="#10b981"
+          strokeWidth={2.5}
+          dot={false}
+          activeDot={{ r: 4 }}
+        />
       </LineChart>
     </ResponsiveContainer>
   );

@@ -15,6 +15,13 @@ const config: Config = {
         ice:     "#e8f0f7",
         bone:    "#f5f2eb",
         confirm: "#2d6a4f",
+        moss: {
+          50:  "#eef4f1",
+          100: "#d4e8dc",
+          200: "#a8c9b7",
+          600: "#3f6b4e",
+          700: "#2d5a3a",
+        },
       },
       fontFamily: {
         display: ["var(--font-fraunces)", "serif"],

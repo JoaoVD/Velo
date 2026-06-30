@@ -2,6 +2,7 @@ import { createClient as createServerClient } from "@/lib/supabase-server";
 import { apiFetch } from "@/lib/api";
 import { KeywordsTable } from "@/components/KeywordsTable";
 import { Keyword, Score } from "@/lib/types";
+import Link from "next/link";
 
 export default async function KeywordsPage() {
   const supabase = await createServerClient();
@@ -12,7 +13,14 @@ export default async function KeywordsPage() {
   const brandId = brands[0]?.id;
 
   if (!brandId) {
-    return <div className="font-mono text-sm text-ink/50">Nenhuma marca cadastrada.</div>;
+    return (
+      <div className="font-mono text-sm text-slate-500 bg-white border border-slate-200 rounded-2xl p-10 text-center">
+        Nenhuma marca cadastrada.{" "}
+        <Link href="/settings" className="text-moss-600 hover:underline font-medium">
+          Adicionar →
+        </Link>
+      </div>
+    );
   }
 
   const [keywords, scores] = await Promise.all([
@@ -22,14 +30,23 @@ export default async function KeywordsPage() {
 
   return (
     <div>
-      <h1 className="font-display font-bold text-3xl text-ink">Keywords</h1>
-      <p className="font-mono text-sm text-ink/50 mt-1">GEO Score por keyword (última medição)</p>
-      <div className="mt-6 bg-white rounded-xl border border-ink/10 p-6">
+      <div className="mb-8">
+        <h1 className="font-display font-black text-3xl text-slate-900">Keywords</h1>
+        <p className="font-mono text-sm text-slate-500 mt-1.5">
+          GEO Score por keyword — última medição
+        </p>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
         {keywords.length === 0 ? (
-          <p className="font-mono text-sm text-ink/40">
-            Nenhuma keyword cadastrada.{" "}
-            <a href="/settings" className="text-signal hover:underline">Adicionar keywords →</a>
-          </p>
+          <div className="text-center py-8">
+            <p className="font-mono text-sm text-slate-400 mb-3">
+              Nenhuma keyword cadastrada.
+            </p>
+            <Link href="/settings" className="font-mono text-sm text-moss-600 hover:underline font-semibold">
+              Adicionar keywords →
+            </Link>
+          </div>
         ) : (
           <KeywordsTable keywords={keywords} scores={scores} engineFilter="all" />
         )}

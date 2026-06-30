@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient as createBrowserClient } from "@/lib/supabase-browser";
 import { apiFetch } from "@/lib/api";
 import { Brand, Keyword } from "@/lib/types";
+import { X, Plus } from "lucide-react";
 
 export default function SettingsPage() {
   const [token, setToken] = useState("");
@@ -26,7 +27,9 @@ export default function SettingsPage() {
     const brands = await apiFetch<Brand[]>("/brands", t).catch(() => [] as Brand[]);
     if (brands[0]) {
       setBrand(brands[0]);
-      const kws = await apiFetch<Keyword[]>(`/brands/${brands[0].id}/keywords`, t).catch(() => [] as Keyword[]);
+      const kws = await apiFetch<Keyword[]>(`/brands/${brands[0].id}/keywords`, t).catch(
+        () => [] as Keyword[]
+      );
       setKeywords(kws);
     }
     setLoading(false);
@@ -45,58 +48,99 @@ export default function SettingsPage() {
 
   async function handleDeleteKeyword(keywordId: string) {
     if (!brand) return;
-    await apiFetch(`/brands/${brand.id}/keywords/${keywordId}`, token, { method: "DELETE" });
+    await apiFetch(`/brands/${brand.id}/keywords/${keywordId}`, token, {
+      method: "DELETE",
+    });
     loadData(token);
   }
 
-  if (loading) return <div className="font-mono text-sm text-ink/40">Carregando...</div>;
+  if (loading) {
+    return (
+      <div className="font-mono text-sm text-slate-400 animate-pulse">
+        Carregando...
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl">
-      <h1 className="font-display font-bold text-3xl text-ink">Configurações</h1>
+      <div className="mb-8">
+        <h1 className="font-display font-black text-3xl text-slate-900">Configurações</h1>
+        <p className="font-mono text-sm text-slate-500 mt-1.5">
+          Gerencie sua marca e as keywords monitoradas
+        </p>
+      </div>
 
-      <div className="mt-6 bg-white rounded-xl border border-ink/10 p-6">
-        <h2 className="font-mono text-sm font-semibold text-ink mb-4">Marca monitorada</h2>
+      {/* Marca */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 mb-4">
+        <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
+          Marca monitorada
+        </h2>
         {brand ? (
-          <p className="font-mono text-sm text-ink">{brand.name}</p>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-moss-50 border border-moss-100 flex items-center justify-center shrink-0">
+              <span className="font-display font-black text-sm text-moss-600">
+                {brand.name.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <p className="font-mono text-sm font-semibold text-slate-900">{brand.name}</p>
+          </div>
         ) : (
-          <p className="font-mono text-sm text-ink/40">Nenhuma marca cadastrada.</p>
+          <p className="font-mono text-sm text-slate-400">Nenhuma marca cadastrada.</p>
         )}
       </div>
 
-      <div className="mt-4 bg-white rounded-xl border border-ink/10 p-6">
-        <h2 className="font-mono text-sm font-semibold text-ink mb-4">
-          Keywords ({keywords.length}/10)
-        </h2>
-        <ul className="space-y-2 mb-4">
-          {keywords.map((kw) => (
-            <li key={kw.id} className="flex items-center justify-between">
-              <span className="font-mono text-sm text-ink">{kw.term}</span>
-              <button
-                onClick={() => handleDeleteKeyword(kw.id)}
-                className="font-mono text-xs text-red-600 hover:text-red-800"
+      {/* Keywords */}
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
+            Keywords monitoradas
+          </h2>
+          <span className="font-mono text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium">
+            {keywords.length} / 10
+          </span>
+        </div>
+
+        {keywords.length > 0 && (
+          <ul className="space-y-2 mb-5">
+            {keywords.map((kw) => (
+              <li
+                key={kw.id}
+                className="flex items-center justify-between py-2.5 px-3.5 rounded-xl bg-slate-50 border border-slate-100"
               >
-                Remover
-              </button>
-            </li>
-          ))}
-        </ul>
-        {keywords.length < 10 && brand && (
+                <span className="font-mono text-sm text-slate-700">{kw.term}</span>
+                <button
+                  onClick={() => handleDeleteKeyword(kw.id)}
+                  className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded"
+                >
+                  <X size={14} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {keywords.length < 10 && brand ? (
           <form onSubmit={handleAddKeyword} className="flex gap-2">
             <input
               value={newKeyword}
               onChange={(e) => setNewKeyword(e.target.value)}
               placeholder="ex: advogado trabalhista SP"
-              className="flex-1 border border-ink/20 rounded-lg px-3 py-2 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-signal bg-bone"
+              className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
             />
             <button
               type="submit"
-              className="bg-signal text-white px-4 py-2 rounded-lg font-mono text-sm font-medium hover:bg-signal/90 transition-colors"
+              className="flex items-center gap-1.5 bg-moss-600 text-white px-4 py-2.5 rounded-xl font-mono text-sm font-semibold hover:bg-moss-700 transition-colors shrink-0"
             >
+              <Plus size={14} />
               Adicionar
             </button>
           </form>
-        )}
+        ) : keywords.length >= 10 ? (
+          <p className="font-mono text-xs text-slate-400 text-center py-2">
+            Limite de 10 keywords atingido.
+          </p>
+        ) : null}
       </div>
     </div>
   );

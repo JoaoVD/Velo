@@ -2,6 +2,7 @@ import { createClient as createServerClient } from "@/lib/supabase-server";
 import { apiFetch } from "@/lib/api";
 import { GeoScoreCard } from "@/components/GeoScoreCard";
 import { Score } from "@/lib/types";
+import Link from "next/link";
 
 async function getBrandId(token: string): Promise<string | null> {
   try {
@@ -22,16 +23,30 @@ export default async function DashboardPage() {
   if (!brandId) {
     return (
       <div>
-        <h1 className="font-display font-bold text-3xl text-ink">Dashboard</h1>
-        <p className="mt-4 font-mono text-sm text-ink/50">
-          Nenhuma marca cadastrada.{" "}
-          <a href="/settings" className="text-signal hover:underline">Adicione sua marca →</a>
-        </p>
+        <div className="mb-8">
+          <h1 className="font-display font-black text-3xl text-slate-900">Dashboard</h1>
+          <p className="font-mono text-sm text-slate-500 mt-1.5">
+            Presença da sua marca nas IAs generativas
+          </p>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-2xl p-10 text-center shadow-sm">
+          <p className="font-mono text-sm text-slate-500 mb-3">
+            Nenhuma marca cadastrada ainda.
+          </p>
+          <Link
+            href="/settings"
+            className="inline-flex items-center gap-1.5 font-mono text-sm text-moss-600 hover:text-moss-700 font-semibold"
+          >
+            Adicione sua marca →
+          </Link>
+        </div>
       </div>
     );
   }
 
-  const scores = await apiFetch<Score[]>(`/brands/${brandId}/scores`, token).catch(() => [] as Score[]);
+  const scores = await apiFetch<Score[]>(`/brands/${brandId}/scores`, token).catch(
+    () => [] as Score[]
+  );
 
   const latestByEngine: Record<string, Score[]> = {};
   for (const score of scores) {
@@ -48,16 +63,23 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <h1 className="font-display font-bold text-3xl text-ink">Dashboard</h1>
-      <p className="font-mono text-sm text-ink/50 mt-1">Presença da sua marca nas IAs generativas</p>
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="mb-8">
+        <h1 className="font-display font-black text-3xl text-slate-900">Dashboard</h1>
+        <p className="font-mono text-sm text-slate-500 mt-1.5">
+          Presença da sua marca nas IAs generativas
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {Object.entries(currentScores).map(([engine, score]) => (
           <GeoScoreCard key={engine} engine={engine} score={score} />
         ))}
         {Object.keys(currentScores).length === 0 && (
-          <p className="font-mono text-sm text-ink/40 col-span-2">
-            Nenhum score disponível ainda. O primeiro relatório será gerado na próxima segunda-feira.
-          </p>
+          <div className="col-span-2 bg-white border border-slate-200 rounded-2xl p-10 text-center shadow-sm">
+            <p className="font-mono text-sm text-slate-400">
+              Nenhum score disponível ainda. O primeiro relatório será gerado na próxima segunda-feira.
+            </p>
+          </div>
         )}
       </div>
     </div>
