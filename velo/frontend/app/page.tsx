@@ -13,11 +13,6 @@ import {
   AlertTriangle,
   Menu,
   X,
-  ChevronRight,
-  BarChart3,
-  Shield,
-  Zap,
-  FileText,
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────
