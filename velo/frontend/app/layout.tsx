@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/lib/toast";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -24,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body className={`${fraunces.variable} ${ibmPlexMono.variable} font-mono bg-bone text-ink`}>
-        {children}
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );
