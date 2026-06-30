@@ -3,133 +3,45 @@ export const dynamic = "force-dynamic";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import {
+  ArrowRight,
+  Check,
+  TrendingUp,
+  Bell,
+  Target,
+  Activity,
+  AlertTriangle,
+  Menu,
+  X,
+  ChevronRight,
+  BarChart3,
+  Shield,
+  Zap,
+  FileText,
+} from "lucide-react";
 
-/* ─── Simulated AI responses for the demo section ─── */
-const DEMO_RESPONSES = [
-  {
-    id: 0,
-    query: "melhores advogados trabalhistas em São Paulo",
-    engine: "ChatGPT",
-    text: "Entre os escritórios de advocacia trabalhista mais recomendados em São Paulo, destaco: 1. Carvalho & Associados — 20 anos de experiência em causas trabalhistas complexas; 2. Silva & Pereira Advocacia — especialistas com alta taxa de êxito; 3. Lima Direito do Trabalho — atendimento humanizado e equipe sênior.",
-    mentioned: false,
-    brand: "Advocacia Moura",
-  },
-  {
-    id: 1,
-    query: "clínica de implante dentário recomendada em Campinas",
-    engine: "Gemini",
-    text: "Para implantes dentários em Campinas, recomendo a Clínica Sorriso, referência em implantodontia com tecnologia digital e equipe especializada. Em segundo lugar, a OdontoCampinas e a Clínica Dr. Paulo Mendes também são bem avaliadas pelos pacientes.",
-    mentioned: true,
-    brand: "Clínica Sorriso",
-    highlight: "Clínica Sorriso",
-  },
-  {
-    id: 2,
-    query: "nutricionista esportiva online no Brasil",
-    engine: "ChatGPT",
-    text: "Há boas opções de nutricionistas esportivas que atendem online no Brasil. Recomendo buscar profissionais registradas no CRN com especialização em nutrição esportiva. Plataformas como Doctoralia, Vacina Certa e Instagram são bons pontos de partida para encontrar profissionais avaliados.",
-    mentioned: false,
-    brand: "Nutri Performance",
-  },
-];
+/* ─────────────────────────────────────────────
+   HELPERS
+───────────────────────────────────────────── */
 
-/* ─── Typewriter component ─── */
-function TypewriterText({
-  text,
-  highlight,
-  speed = 16,
+function FadeIn({
+  children,
+  delay = 0,
+  className = "",
 }: {
-  text: string;
-  highlight?: string;
-  speed?: number;
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
 }) {
-  const [displayed, setDisplayed] = useState("");
-  const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    setDisplayed("");
-    setDone(false);
-    let i = 0;
-    const id = setInterval(() => {
-      i++;
-      setDisplayed(text.slice(0, i));
-      if (i >= text.length) {
-        setDone(true);
-        clearInterval(id);
-      }
-    }, speed);
-    return () => clearInterval(id);
-  }, [text, speed]);
-
-  if (!highlight || !done) {
-    return (
-      <>
-        {displayed}
-        {!done && (
-          <span className="inline-block w-0.5 h-3.5 bg-ink/60 align-middle ml-0.5 animate-pulse" />
-        )}
-      </>
-    );
-  }
-
-  const parts = displayed.split(new RegExp(`(${highlight})`, "gi"));
-  return (
-    <>
-      {parts.map((part, i) =>
-        part.toLowerCase() === highlight.toLowerCase() ? (
-          <mark key={i} className="bg-confirm/20 text-confirm rounded px-0.5 not-italic">
-            {part}
-          </mark>
-        ) : (
-          <span key={i}>{part}</span>
-        )
-      )}
-    </>
-  );
-}
-
-/* ─── Animated counter ─── */
-function AnimatedScore({ target, color }: { target: number; color: string }) {
-  const [val, setVal] = useState(0);
-  const ref = useRef<HTMLParagraphElement>(null);
-  const done = useRef(false);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !done.current) {
-          done.current = true;
-          let i = 0;
-          const step = Math.max(1, Math.floor(1400 / target));
-          const id = setInterval(() => {
-            i++;
-            setVal(i);
-            if (i >= target) clearInterval(id);
-          }, step);
-        }
-      },
-      { threshold: 0.6 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [target]);
-
-  return (
-    <p ref={ref} className={`font-display font-black text-6xl leading-none ${color}`}>
-      {val}
-    </p>
-  );
-}
-
-/* ─── Section fade-in ─── */
-function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) setVisible(true); },
-      { threshold: 0.1 }
+      ([e]) => {
+        if (e.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.08 }
     );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
@@ -138,11 +50,12 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   return (
     <div
       ref={ref}
+      className={className}
       style={{
         transitionDelay: `${delay}ms`,
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(24px)",
-        transition: "opacity 0.6s ease, transform 0.6s ease",
+        transform: visible ? "translateY(0)" : "translateY(28px)",
+        transition: "opacity 0.65s ease, transform 0.65s ease",
       }}
     >
       {children}
@@ -150,325 +63,532 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
   );
 }
 
-/* ═══════════════════════════════════════════════════════ */
-export default function LandingPage() {
-  const [activeDemo, setActiveDemo] = useState(0);
-  const demo = DEMO_RESPONSES[activeDemo];
+/* SVG circular progress for GEO Score */
+function ScoreRing({ score, size = 92 }: { score: number; size?: number }) {
+  const r = 34;
+  const c = 2 * Math.PI * r;
+  const dash = (score / 100) * c;
+  return (
+    <div
+      className="relative inline-flex items-center justify-center shrink-0"
+      style={{ width: size, height: size }}
+    >
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 92 92"
+        style={{ position: "absolute", transform: "rotate(-90deg)" }}
+      >
+        <circle cx="46" cy="46" r={r} fill="none" stroke="#e2e8f0" strokeWidth="7" />
+        <circle
+          cx="46"
+          cy="46"
+          r={r}
+          fill="none"
+          stroke="#10b981"
+          strokeWidth="7"
+          strokeDasharray={`${dash} ${c}`}
+          strokeLinecap="round"
+        />
+      </svg>
+      <span className="relative z-10 font-display font-black text-2xl text-slate-900 leading-none">
+        {score}
+      </span>
+    </div>
+  );
+}
 
-  /* Auto-rotate demos */
-  useEffect(() => {
-    const id = setTimeout(
-      () => setActiveDemo((p) => (p + 1) % DEMO_RESPONSES.length),
-      8000
-    );
-    return () => clearTimeout(id);
-  }, [activeDemo]);
+/* Simple horizontal progress bar */
+function Bar({
+  value,
+  color = "bg-emerald-400",
+}: {
+  value: number;
+  color?: string;
+}) {
+  return (
+    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden w-full">
+      <div className={`h-full rounded-full ${color}`} style={{ width: `${value}%` }} />
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   DATA
+───────────────────────────────────────────── */
+
+const engines = [
+  {
+    name: "ChatGPT",
+    status: "Menção Positiva",
+    score: 85,
+    chip: "text-emerald-700 bg-emerald-50",
+    bar: "bg-emerald-400",
+  },
+  {
+    name: "Perplexity",
+    status: "Menção Neutra",
+    score: 72,
+    chip: "text-amber-700 bg-amber-50",
+    bar: "bg-amber-400",
+  },
+  {
+    name: "Gemini",
+    status: "Não mencionado",
+    score: 38,
+    chip: "text-slate-500 bg-slate-100",
+    bar: "bg-slate-300",
+  },
+  {
+    name: "Claude",
+    status: "Menção Positiva",
+    score: 79,
+    chip: "text-emerald-700 bg-emerald-50",
+    bar: "bg-emerald-400",
+  },
+];
+
+const actionPlan = [
+  { text: "Adicionar schema FAQ na página principal", done: true },
+  { text: "Publicar artigo sobre procedimentos mais buscados", done: true },
+  { text: 'Otimizar seção "Sobre" para menções no Gemini', done: false },
+];
+
+const plans = [
+  {
+    name: "Starter",
+    monthly: 149,
+    annual: 119,
+    tagline: "Ideal para profissionais autônomos e consultórios locais.",
+    highlight: false,
+    badge: null,
+    cta: "Começar grátis",
+    features: [
+      "1 marca monitorada",
+      "Até 10 keywords",
+      "ChatGPT + Gemini",
+      "Monitoramento semanal",
+      "GEO Score consolidado",
+      "Plano de ação mensal",
+      "Relatório por e-mail",
+    ],
+  },
+  {
+    name: "Pro",
+    monthly: 399,
+    annual: 319,
+    tagline:
+      "Ideal para empresas de serviços em expansão e clínicas com múltiplos especialistas.",
+    highlight: true,
+    badge: "Mais escolhido",
+    cta: "Começar grátis",
+    features: [
+      "3 marcas monitoradas",
+      "Até 30 keywords",
+      "ChatGPT + Gemini + Perplexity",
+      "Monitoramento diário",
+      "Benchmark competitivo",
+      "Alertas proativos",
+      "Plano de ação semanal",
+      "Relatório completo em PDF",
+    ],
+  },
+  {
+    name: "Agency",
+    monthly: 799,
+    annual: 639,
+    tagline:
+      "Focado em agências. Relatórios White-Label, PDF customizados para clientes e múltiplos acessos.",
+    highlight: false,
+    badge: null,
+    cta: "Falar com vendas",
+    features: [
+      "Marcas ilimitadas",
+      "Keywords ilimitadas",
+      "Todos os engines",
+      "Entrega White-Label",
+      "PDF com identidade do cliente",
+      "Múltiplos acessos por workspace",
+      "Suporte prioritário",
+      "API de integração",
+    ],
+  },
+];
+
+/* ─────────────────────────────────────────────
+   MAIN COMPONENT
+───────────────────────────────────────────── */
+
+export default function LandingPage() {
+  const [annual, setAnnual] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-bone overflow-x-hidden">
+    <div className="min-h-screen bg-white text-slate-900 antialiased overflow-x-hidden">
 
-      {/* ── NAV ── */}
-      <nav className="sticky top-0 z-50 bg-bone/95 backdrop-blur-sm border-b border-ink/8">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center">
-          <span className="font-display font-black text-xl tracking-tight select-none">
-            Vel<span className="text-signal">o</span>
-          </span>
-          <div className="hidden md:flex items-center gap-8 ml-10">
-            <a href="#problema" className="font-mono text-xs text-ink/50 hover:text-ink transition-colors uppercase tracking-wider">
-              Problema
-            </a>
-            <a href="#como-funciona" className="font-mono text-xs text-ink/50 hover:text-ink transition-colors uppercase tracking-wider">
-              Como funciona
-            </a>
-            <a href="#precos" className="font-mono text-xs text-ink/50 hover:text-ink transition-colors uppercase tracking-wider">
-              Preços
-            </a>
+      {/* ══════════════════════════════════════
+          NAVBAR
+      ══════════════════════════════════════ */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 h-[68px] flex items-center justify-between">
+
+          {/* Logo */}
+          <div className="flex items-center gap-1">
+            <span className="font-display font-black text-[1.6rem] tracking-tight text-slate-900 leading-none">
+              Velo
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-teal-600 mb-0.5 ml-0.5" />
           </div>
-          <div className="ml-auto flex items-center gap-3">
+
+          {/* Center links */}
+          <div className="hidden md:flex items-center gap-10">
+            {[
+              ["#problema", "Problema"],
+              ["#como-funciona", "Como funciona"],
+              ["#precos", "Preços"],
+            ].map(([href, label]) => (
+              <a
+                key={href}
+                href={href}
+                className="font-mono text-[11px] uppercase tracking-widest text-slate-500 hover:text-slate-900 transition-colors"
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+
+          {/* Right */}
+          <div className="hidden md:flex items-center gap-5">
             <Link
               href="/auth/login"
-              className="font-mono text-xs text-ink/60 hover:text-ink transition-colors px-4 py-2"
+              className="font-mono text-sm text-slate-500 hover:text-slate-900 transition-colors"
             >
               Entrar
             </Link>
             <Link
               href="/auth/signup"
-              className="font-mono text-xs bg-signal text-white px-4 py-2 rounded-lg hover:bg-signal/90 transition-colors font-medium"
+              className="inline-flex items-center gap-1.5 bg-teal-600 text-white font-mono text-sm font-medium px-5 py-2.5 rounded-xl hover:bg-teal-700 transition-colors"
             >
               Começar grátis
             </Link>
           </div>
+
+          {/* Mobile toggle */}
+          <button
+            className="md:hidden text-slate-600 p-1"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
-      </nav>
 
-      {/* ── HERO ── */}
-      <section className="relative max-w-6xl mx-auto px-6 pt-20 pb-28">
-        {/* Background dot grid */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(circle, #0f192318 1px, transparent 1px)",
-            backgroundSize: "28px 28px",
-          }}
-        />
-
-        <div className="relative grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          {/* Left */}
-          <div className="pt-4">
-            <div className="inline-flex items-center gap-2 bg-white border border-ink/10 rounded-full px-4 py-1.5 mb-8 shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-confirm animate-pulse" />
-              <span className="font-mono text-xs text-ink/50">GEO SaaS · Brasil · Beta aberto</span>
-            </div>
-
-            <h1 className="font-display font-black text-5xl lg:text-[3.5rem] text-ink leading-[1.05] tracking-tight">
-              O que as IAs falam<br />
-              sobre você quando{" "}
-              <em className="text-signal not-italic">ninguém</em>{" "}
-              está olhando.
-            </h1>
-
-            <p className="mt-7 font-mono text-sm text-ink/55 leading-[1.85] max-w-lg">
-              A Velo consulta ChatGPT e Gemini com perguntas reais de consumidores, analisa se sua marca aparece,
-              calcula um <strong className="text-ink font-semibold">GEO Score (0–100)</strong> e entrega um plano
-              de ação semanal em português — sem jargão, sem promessa vaga.
-            </p>
-
-            <div className="mt-10 flex flex-col sm:flex-row gap-3">
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div className="md:hidden bg-white border-t border-slate-100 px-6 py-6 space-y-4">
+            {[
+              ["#problema", "Problema"],
+              ["#como-funciona", "Como funciona"],
+              ["#precos", "Preços"],
+            ].map(([href, label]) => (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setMobileOpen(false)}
+                className="block font-mono text-sm text-slate-600 hover:text-slate-900 transition-colors"
+              >
+                {label}
+              </a>
+            ))}
+            <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
+              <Link href="/auth/login" className="text-center font-mono text-sm text-slate-600">
+                Entrar
+              </Link>
               <Link
                 href="/auth/signup"
-                className="inline-flex items-center justify-center gap-2 bg-signal text-white font-mono text-sm font-semibold px-7 py-3.5 rounded-xl hover:bg-signal/90 transition-colors shadow-lg shadow-signal/20"
+                className="bg-teal-600 text-white text-center font-mono text-sm font-semibold py-3 rounded-xl"
+              >
+                Começar grátis
+              </Link>
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* ══════════════════════════════════════
+          HERO
+      ══════════════════════════════════════ */}
+      <section className="pt-36 pb-28 px-6">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+
+          {/* Left — copy */}
+          <div>
+            <div className="inline-flex items-center gap-2 bg-teal-50 border border-teal-100 rounded-full px-4 py-1.5 mb-10">
+              <Activity size={12} className="text-teal-600" />
+              <span className="font-mono text-xs text-teal-700 font-medium">
+                GEO Monitoring · ChatGPT, Gemini, Perplexity, Claude
+              </span>
+            </div>
+
+            <h1 className="font-display font-black text-[3.2rem] lg:text-[3.8rem] leading-[1.04] tracking-tight text-slate-900 mb-8">
+              O que as IAs falam<br />
+              sobre você quando<br />
+              <em className="text-teal-600 not-italic">ninguém</em> está<br />
+              olhando
+            </h1>
+
+            <p className="font-mono text-sm text-slate-500 leading-[1.95] max-w-[440px] mb-10">
+              O Velo monitora continuamente o que ChatGPT, Gemini, Perplexity e Claude
+              dizem sobre a sua marca — e consolida tudo em um único{" "}
+              <strong className="text-slate-800 font-semibold">GEO Score</strong>{" "}
+              acionável com plano de ação semanal em português.
+            </p>
+
+            <div className="flex flex-wrap gap-4 mb-8">
+              <Link
+                href="/auth/signup"
+                className="inline-flex items-center gap-2 bg-teal-600 text-white font-mono text-sm font-semibold px-7 py-3.5 rounded-xl hover:bg-teal-700 transition-colors shadow-lg shadow-teal-600/20"
               >
                 Ver minha presença agora
-                <span className="text-base">→</span>
+                <ArrowRight size={15} />
               </Link>
               <a
                 href="#como-funciona"
-                className="inline-flex items-center justify-center gap-2 border border-ink/15 text-ink font-mono text-sm px-7 py-3.5 rounded-xl hover:bg-ink/5 transition-colors"
+                className="inline-flex items-center gap-2 border border-slate-200 text-slate-700 font-mono text-sm px-7 py-3.5 rounded-xl hover:bg-slate-50 transition-colors"
               >
                 Como funciona
               </a>
             </div>
 
-            <p className="mt-5 font-mono text-xs text-ink/25">
-              Sem cartão de crédito · 7 dias grátis · Resultado em &lt; 24h
+            <p className="font-mono text-xs text-slate-400">
+              Sem cartão de crédito &nbsp;·&nbsp; 7 dias grátis &nbsp;·&nbsp; Resultado em &lt;24h
             </p>
           </div>
 
-          {/* Right — Score mockup card */}
-          <div className="relative mt-4 lg:mt-0">
-            <div className="bg-white border border-ink/10 rounded-2xl p-6 shadow-2xl shadow-ink/8">
-              {/* Card header */}
-              <div className="flex items-center justify-between mb-5">
-                <div>
-                  <p className="font-mono text-xs text-ink/35">Clínica Sorriso</p>
-                  <p className="font-mono text-xs text-ink/20">Semana de 23–29 jun 2025</p>
+          {/* Right — dashboard mockup */}
+          <div className="relative">
+            {/* Subtle glow behind card */}
+            <div className="absolute -inset-6 bg-teal-50 rounded-3xl blur-2xl opacity-40 pointer-events-none" />
+
+            <div className="relative bg-white border border-slate-200 rounded-2xl shadow-2xl shadow-slate-200/70 overflow-hidden">
+              {/* Window chrome */}
+              <div className="flex items-center gap-2 bg-slate-50 border-b border-slate-100 px-5 py-3">
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-slate-200" />
+                  <div className="w-3 h-3 rounded-full bg-slate-200" />
+                  <div className="w-3 h-3 rounded-full bg-slate-200" />
                 </div>
-                <span className="font-mono text-xs bg-confirm/10 text-confirm border border-confirm/20 px-2.5 py-1 rounded-full font-medium">
-                  ↑ +11 pts
+                <span className="font-mono text-[10px] text-slate-400 mx-auto">
+                  velo.app — Clínica São Lucas
                 </span>
               </div>
 
-              {/* Engine scores */}
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="bg-ice rounded-xl p-4">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-ink/35 mb-2">ChatGPT</p>
-                  <p className="font-display font-black text-5xl text-signal leading-none">72</p>
-                  <p className="font-mono text-[10px] text-ink/25 mt-1">/ 100</p>
-                </div>
-                <div className="bg-ice rounded-xl p-4">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-ink/35 mb-2">Gemini</p>
-                  <p className="font-display font-black text-5xl text-confirm leading-none">84</p>
-                  <p className="font-mono text-[10px] text-ink/25 mt-1">/ 100</p>
-                </div>
-              </div>
-
-              {/* Keyword rows */}
-              <div className="mb-1">
-                <p className="font-mono text-[10px] text-ink/30 uppercase tracking-widest mb-3">
-                  Keywords monitoradas
-                </p>
-                {[
-                  { term: "implante dentário Campinas", gpt: 81, gem: 92 },
-                  { term: "dentista especialista Campinas", gpt: 65, gem: 78 },
-                  { term: "clínica odontológica Campinas", gpt: 58, gem: 82 },
-                ].map((kw) => (
-                  <div key={kw.term} className="flex items-center justify-between py-2 border-b border-ink/5 last:border-0">
-                    <span className="font-mono text-xs text-ink/55 truncate flex-1 mr-4">{kw.term}</span>
-                    <div className="flex gap-3 shrink-0">
-                      <span className={`font-mono text-xs font-semibold ${kw.gpt >= 70 ? "text-confirm" : "text-signal"}`}>{kw.gpt}</span>
-                      <span className={`font-mono text-xs font-semibold ${kw.gem >= 70 ? "text-confirm" : "text-signal"}`}>{kw.gem}</span>
-                    </div>
+              <div className="p-6 space-y-5">
+                {/* Header row */}
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400">
+                      GEO Score geral
+                    </p>
+                    <p className="font-mono text-[10px] text-slate-400 mt-0.5">
+                      Atualizado há 2 horas
+                    </p>
                   </div>
-                ))}
+                  <span className="inline-flex items-center gap-1.5 font-mono text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-100 px-2.5 py-1 rounded-full font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Ativo
+                  </span>
+                </div>
+
+                {/* GEO Score card */}
+                <div className="bg-slate-50 rounded-xl p-4 flex items-center gap-5">
+                  <ScoreRing score={78} size={92} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-1 mb-1">
+                      <span className="font-display font-black text-4xl text-slate-900 leading-none">
+                        78
+                      </span>
+                      <span className="font-mono text-sm text-slate-400">/100</span>
+                    </div>
+                    <span className="inline-flex items-center gap-1 font-mono text-xs text-emerald-600 font-semibold">
+                      <TrendingUp size={11} />
+                      +4 pts esta semana
+                    </span>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="font-mono text-[10px] text-slate-400">Ranking</p>
+                    <p className="font-mono text-sm font-semibold text-slate-700 mt-0.5">
+                      #3 / 12
+                    </p>
+                    <p className="font-mono text-[10px] text-slate-400">no setor</p>
+                  </div>
+                </div>
+
+                {/* Engine breakdown */}
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-3">
+                    Performance por Engine
+                  </p>
+                  <div className="space-y-2.5">
+                    {engines.map(({ name, status, score, chip, bar }) => (
+                      <div key={name} className="flex items-center gap-3">
+                        <span className="font-mono text-xs font-medium text-slate-600 w-20 shrink-0">
+                          {name}
+                        </span>
+                        <div className="flex-1">
+                          <Bar value={score} color={bar} />
+                        </div>
+                        <span
+                          className={`font-mono text-[10px] font-medium px-2 py-0.5 rounded-full shrink-0 ${chip}`}
+                        >
+                          {status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Action plan mini */}
+                <div className="border border-slate-100 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Target size={12} className="text-teal-600" />
+                    <p className="font-mono text-xs font-semibold text-slate-700">
+                      Plano de Ação · Semana 27
+                    </p>
+                  </div>
+                  <div className="space-y-2">
+                    {actionPlan.map(({ text, done }) => (
+                      <div key={text} className="flex items-start gap-2">
+                        <div
+                          className={`mt-0.5 w-3.5 h-3.5 rounded shrink-0 flex items-center justify-center border ${
+                            done
+                              ? "bg-teal-600 border-teal-600"
+                              : "border-slate-300"
+                          }`}
+                        >
+                          {done && <Check size={9} className="text-white" />}
+                        </div>
+                        <p
+                          className={`font-mono text-xs leading-snug ${
+                            done ? "line-through text-slate-400" : "text-slate-600"
+                          }`}
+                        >
+                          {text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Floating action-plan chip */}
-            <div className="absolute -bottom-5 -left-4 bg-white border border-ink/10 rounded-2xl p-4 shadow-xl max-w-[260px]">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="font-mono text-[10px] bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded-full font-medium">
-                  Alta prioridade
+            {/* Floating alert chip */}
+            <div className="absolute -bottom-4 -left-5 bg-white border border-red-100 rounded-2xl p-4 shadow-xl max-w-[240px] hidden lg:block">
+              <div className="flex items-center gap-2 mb-1.5">
+                <AlertTriangle size={12} className="text-red-500" />
+                <span className="font-mono text-[10px] font-semibold text-red-600 uppercase tracking-wide">
+                  Alerta detectado
                 </span>
               </div>
-              <p className="font-mono text-xs text-ink/65 leading-relaxed">
-                Publique um artigo sobre &ldquo;implante dentário sem dor&rdquo; com depoimentos reais de pacientes.
+              <p className="font-mono text-xs text-slate-600 leading-snug">
+                Gemini afirmou incorretamente que você não atende planos de saúde.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── ENGINE STRIP ── */}
-      <div className="border-y border-ink/8 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-center gap-8 flex-wrap">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-ink/25">
-            Monitoramos em tempo real
+      {/* ══════════════════════════════════════
+          ENGINE STRIP
+      ══════════════════════════════════════ */}
+      <div className="border-y border-slate-100 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-slate-400">
+            Motores monitorados
           </span>
-          <span className="font-mono text-sm font-medium text-ink">ChatGPT</span>
-          <span className="w-px h-4 bg-ink/12" />
-          <span className="font-mono text-sm font-medium text-ink">Gemini</span>
-          <span className="w-px h-4 bg-ink/12" />
-          <span className="font-mono text-sm text-ink/30">
-            Perplexity <span className="text-[10px]">(em breve)</span>
-          </span>
-          <span className="w-px h-4 bg-ink/12" />
-          <span className="font-mono text-sm text-ink/30">
-            Claude <span className="text-[10px]">(em breve)</span>
-          </span>
+          {[
+            { name: "ChatGPT", live: true },
+            { name: "Gemini", live: true },
+            { name: "Perplexity", live: false },
+            { name: "Claude", live: false },
+          ].map(({ name, live }) => (
+            <span
+              key={name}
+              className={`flex items-center gap-2 font-mono text-sm ${
+                live ? "text-slate-800 font-semibold" : "text-slate-400"
+              }`}
+            >
+              <span
+                className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                  live ? "bg-emerald-500" : "bg-slate-300"
+                }`}
+              />
+              {name}
+              {!live && (
+                <span className="font-mono text-[10px] text-slate-400">(em breve)</span>
+              )}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* ── PROBLEM ── */}
-      <section id="problema" className="max-w-6xl mx-auto px-6 py-28">
-        <FadeIn>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-signal mb-5">O problema</p>
-          <h2 className="font-display font-black text-4xl lg:text-5xl text-ink leading-tight mb-8 max-w-2xl">
-            Seu cliente pergunta para a IA.{" "}
-            <span className="text-ink/25">Você aparece?</span>
-          </h2>
-          <p className="font-mono text-sm text-ink/55 leading-[1.85] max-w-2xl mb-14">
-            ChatGPT, Gemini e Perplexity estão se tornando o novo ponto de entrada para decisões de compra e
-            contratação no Brasil. Quando alguém pergunta{" "}
-            <em className="text-ink not-italic font-medium">&ldquo;qual advogado trabalhista em SP você recomenda?&rdquo;</em>,
-            as IAs respondem com nomes específicos — e a maioria das empresas não sabe se aparece, como aparece,
-            ou se está sendo preterida por concorrentes.
-          </p>
-        </FadeIn>
-
-        {/* Live demo box */}
-        <FadeIn delay={100}>
-          <div className="bg-white border border-ink/10 rounded-2xl overflow-hidden shadow-sm">
-            {/* Window chrome */}
-            <div className="border-b border-ink/8 px-6 py-4 flex items-center gap-4 bg-bone/50">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-ink/10" />
-                <div className="w-3 h-3 rounded-full bg-ink/10" />
-                <div className="w-3 h-3 rounded-full bg-ink/10" />
-              </div>
-              <span className="font-mono text-xs text-ink/35 flex-1 text-center">
-                Resposta do {demo.engine}
-              </span>
-              <span
-                className={`font-mono text-[10px] px-2.5 py-1 rounded-full font-medium border ${
-                  demo.mentioned
-                    ? "bg-confirm/10 text-confirm border-confirm/20"
-                    : "bg-red-50 text-red-600 border-red-100"
-                }`}
-              >
-                {demo.mentioned ? "✓ Mencionado" : "✗ Não mencionado"}
-              </span>
-            </div>
-
-            <div className="px-6 py-6">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-ink/30 mb-3">
-                Pergunta simulada
-              </p>
-              <p className="font-mono text-xs text-ink/50 italic mb-5">&ldquo;{demo.query}&rdquo;</p>
-
-              <p className="font-mono text-sm text-ink/65 leading-relaxed min-h-[4.5rem]">
-                <TypewriterText
-                  key={demo.id}
-                  text={demo.text}
-                  highlight={demo.mentioned ? demo.highlight : undefined}
-                />
-              </p>
-
-              {demo.mentioned && (
-                <div className="mt-5 inline-flex items-center gap-2 bg-confirm/8 border border-confirm/15 rounded-lg px-3 py-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-confirm" />
-                  <span className="font-mono text-xs text-confirm font-medium">
-                    {demo.brand} mencionada em 1ª posição com sentimento positivo
-                  </span>
-                </div>
-              )}
-
-              {!demo.mentioned && (
-                <div className="mt-5 inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                  <span className="font-mono text-xs text-red-600 font-medium">
-                    {demo.brand} não foi mencionada nesta resposta
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* Demo tab switcher */}
-            <div className="border-t border-ink/8 px-6 py-3 flex gap-2 bg-bone/30">
-              {DEMO_RESPONSES.map((r, i) => (
-                <button
-                  key={r.id}
-                  onClick={() => setActiveDemo(i)}
-                  className={`font-mono text-xs px-3 py-1.5 rounded-lg transition-colors ${
-                    i === activeDemo
-                      ? "bg-ink text-white"
-                      : "text-ink/40 hover:text-ink hover:bg-ink/5"
-                  }`}
-                >
-                  Exemplo {i + 1}
-                </button>
-              ))}
-            </div>
-          </div>
-        </FadeIn>
-      </section>
-
-      {/* ── HOW IT WORKS ── */}
-      <section id="como-funciona" className="bg-ink">
-        <div className="max-w-6xl mx-auto px-6 py-28">
-          <FadeIn>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-signal mb-5">
-              Como funciona
+      {/* ══════════════════════════════════════
+          PROBLEM
+      ══════════════════════════════════════ */}
+      <section id="problema" className="py-28 px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <FadeIn className="max-w-3xl mb-16">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-6">
+              O problema
             </p>
-            <h2 className="font-display font-black text-4xl text-white mb-16 max-w-xl leading-tight">
-              Três etapas.<br />Um relatório semanal.
+            <h2 className="font-display font-black text-5xl lg:text-[3.5rem] text-slate-900 leading-[1.06] mb-8">
+              Seu cliente já pergunta<br />
+              para a IA antes de ligar{" "}
+              <span className="text-slate-300">para você.</span>
             </h2>
+            <p className="font-mono text-sm text-slate-500 leading-[1.95]">
+              ChatGPT, Gemini e Perplexity tornaram-se o novo ponto de entrada para
+              decisões de compra e contratação no Brasil. Quando alguém pergunta{" "}
+              <em className="not-italic font-semibold text-slate-800">
+                &ldquo;qual clínica de implante dentário você recomenda em Campinas?&rdquo;
+              </em>
+              , as IAs respondem com nomes específicos — e a maioria das empresas não
+              sabe se aparece, como aparece, ou se está sendo preterida por concorrentes.{" "}
+              <strong className="text-slate-700">
+                Isso é o déficit de GEO que o Velo mede e resolve.
+              </strong>
+            </p>
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                n: "01",
-                title: "Consultamos as IAs",
-                body: "Disparamos 5 perguntas reais de consumidores por keyword, simulando exatamente o que seu cliente perguntaria ao ChatGPT ou Gemini — sem mencionar sua marca.",
+                stat: "72%",
+                label: "das decisões de compra",
+                desc: "começam com uma pergunta a um LLM antes da busca tradicional",
+                delay: 0,
               },
               {
-                n: "02",
-                title: "Calculamos seu GEO Score",
-                body: "O Claude analisa cada resposta: sua marca foi mencionada? Em qual posição? Com sentimento positivo? O resultado é um score de 0 a 100, calculado com 4 fatores ponderados.",
+                stat: "91%",
+                label: "das marcas brasileiras",
+                desc: "nunca monitoraram como são descritas dentro das respostas de IAs",
+                delay: 80,
               },
               {
-                n: "03",
-                title: "Entregamos o plano de ação",
-                body: "Todo relatório vem com recomendações específicas priorizadas por urgência: tipos de conteúdo, plataformas e ações concretas — sem jargão, direto ao ponto.",
+                stat: "3×",
+                label: "mais menções",
+                desc: "para empresas que otimizam GEO vs. a média do setor",
+                delay: 160,
               },
-            ].map((step, i) => (
-              <FadeIn key={step.n} delay={i * 80}>
-                <div className="border border-white/8 rounded-2xl p-8 h-full hover:border-signal/30 transition-colors">
-                  <span className="font-display font-black text-6xl text-signal/20 leading-none block mb-5">
-                    {step.n}
-                  </span>
-                  <h3 className="font-mono text-sm font-semibold text-white mb-3">{step.title}</h3>
-                  <p className="font-mono text-sm text-white/40 leading-relaxed">{step.body}</p>
+            ].map(({ stat, label, desc, delay }) => (
+              <FadeIn key={stat} delay={delay}>
+                <div className="border border-slate-100 rounded-2xl p-8 hover:border-teal-100 hover:shadow-sm transition-all">
+                  <p className="font-display font-black text-5xl text-teal-600 mb-2 leading-none">
+                    {stat}
+                  </p>
+                  <p className="font-mono text-xs font-semibold text-slate-800 mb-2">
+                    {label}
+                  </p>
+                  <p className="font-mono text-xs text-slate-400 leading-relaxed">{desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -476,69 +596,341 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── GEO SCORE SECTION ── */}
-      <section className="max-w-6xl mx-auto px-6 py-28">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      {/* ══════════════════════════════════════
+          FEATURE 1 — GEO Score
+          Text left · Mockup right
+      ══════════════════════════════════════ */}
+      <section className="py-28 px-6 bg-zinc-50 border-y border-slate-100">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          {/* Copy */}
           <FadeIn>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-signal mb-5">GEO Score</p>
-            <h2 className="font-display font-black text-4xl text-ink leading-tight mb-6">
-              Um número.<br />Quatro fatores.
-            </h2>
-            <p className="font-mono text-sm text-ink/55 leading-relaxed mb-8">
-              O GEO Score combina menção (30%), posição (25%), sentimento (25%) e frequência (20%)
-              numa escala de 0 a 100 — em linguagem de negócio, não de engenharia.
+            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-5">
+              Feature 01
             </p>
-            <div className="space-y-4">
+            <h2 className="font-display font-black text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
+              GEO Score
+              <br />
+              <span className="text-slate-400">
+                Um número que você<br />realmente entende
+              </span>
+            </h2>
+            <p className="font-mono text-sm text-slate-500 leading-[1.95] mb-8">
+              O GEO Score combina 4 fatores ponderados numa escala de 0 a 100 — em
+              linguagem de negócio, sem jargão técnico. Acompanhe sua evolução semana a
+              semana e saiba exatamente onde agir.
+            </p>
+            <div className="space-y-5">
               {[
-                { label: "Menção", pct: 30, desc: "Sua marca apareceu na resposta?" },
-                { label: "Posição", pct: 25, desc: "Em qual lugar da lista ela aparece?" },
-                { label: "Sentimento", pct: 25, desc: "A IA fala bem ou mal da sua marca?" },
-                { label: "Frequência", pct: 20, desc: "Em quantas das 5 consultas ela apareceu?" },
-              ].map((f) => (
-                <div key={f.label}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono text-xs font-semibold text-ink">{f.label}</span>
-                    <span className="font-mono text-xs text-signal font-semibold">{f.pct}%</span>
+                {
+                  label: "Menção",
+                  pct: 30,
+                  desc: "Sua marca apareceu na resposta da IA?",
+                },
+                {
+                  label: "Posição",
+                  pct: 25,
+                  desc: "Em qual lugar da lista ela foi citada?",
+                },
+                {
+                  label: "Sentimento",
+                  pct: 25,
+                  desc: "A IA fala bem, mal ou neutralmente?",
+                },
+                {
+                  label: "Frequência",
+                  pct: 20,
+                  desc: "Em quantas das consultas ela apareceu?",
+                },
+              ].map(({ label, pct, desc }) => (
+                <div key={label}>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="font-mono text-xs font-semibold text-slate-700">
+                      {label}
+                    </span>
+                    <span className="font-mono text-xs text-teal-600 font-bold">{pct}%</span>
                   </div>
-                  <div className="h-1.5 bg-ink/8 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-signal rounded-full"
-                      style={{ width: `${f.pct * 3}%` }}
-                    />
-                  </div>
-                  <p className="font-mono text-[10px] text-ink/35 mt-1">{f.desc}</p>
+                  <Bar value={pct * 3} color="bg-teal-500" />
+                  <p className="font-mono text-[10px] text-slate-400 mt-1">{desc}</p>
                 </div>
               ))}
             </div>
           </FadeIn>
 
+          {/* Score evolution mockup */}
           <FadeIn delay={120}>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { engine: "ChatGPT", score: 72, color: "text-signal" },
-                { engine: "Gemini", score: 84, color: "text-confirm" },
-              ].map((e) => (
-                <div key={e.engine} className="bg-ice border border-ink/8 rounded-2xl p-6 text-center">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-ink/35 mb-4">
-                    {e.engine}
+            <div className="bg-white border border-slate-200 rounded-2xl p-7 shadow-xl shadow-slate-100">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-7">
+                Evolução do GEO Score · últimas 8 semanas
+              </p>
+
+              {/* Bar chart */}
+              <div className="flex items-end gap-2.5 mb-6 h-36">
+                {[42, 48, 51, 55, 61, 67, 72, 78].map((v, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
+                    <span className="font-mono text-[9px] text-slate-400">{v}</span>
+                    <div
+                      className="w-full rounded-t"
+                      style={{
+                        height: `${(v / 100) * 100}px`,
+                        background: i === 7 ? "#0d9488" : "#e2e8f0",
+                      }}
+                    />
+                    <span className="font-mono text-[8px] text-slate-300">S{i + 20}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-between pt-5 border-t border-slate-100">
+                <div>
+                  <p className="font-mono text-[10px] text-slate-400">Score atual</p>
+                  <p className="font-display font-black text-4xl text-slate-900 leading-none mt-1">
+                    78
                   </p>
-                  <AnimatedScore target={e.score} color={e.color} />
-                  <p className="font-mono text-[10px] text-ink/25 mt-2">/ 100</p>
                 </div>
-              ))}
-              <div className="col-span-2 bg-white border border-ink/10 rounded-2xl p-5">
-                <p className="font-mono text-xs text-ink/35 mb-3 uppercase tracking-widest text-[10px]">
-                  Interpretação do score
-                </p>
+                <div className="text-right">
+                  <p className="font-mono text-[10px] text-slate-400">Evolução (8 sem.)</p>
+                  <p className="font-display font-black text-4xl text-emerald-500 leading-none mt-1">
+                    +36
+                  </p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          FEATURE 2 — Benchmark Competitivo
+          Mockup left · Text right
+      ══════════════════════════════════════ */}
+      <section className="py-28 px-6 bg-white">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          {/* Mockup */}
+          <FadeIn className="order-2 lg:order-1">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xl shadow-slate-100">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400 mb-5">
+                Share of Voice · Implantes Campinas · Jun 2025
+              </p>
+              <div className="space-y-3">
                 {[
-                  { range: "70–100", label: "Boa presença", color: "bg-confirm" },
-                  { range: "40–69", label: "Presença moderada", color: "bg-signal" },
-                  { range: "0–39",  label: "Baixa visibilidade", color: "bg-red-400" },
-                ].map((r) => (
-                  <div key={r.range} className="flex items-center gap-3 mb-2 last:mb-0">
-                    <span className={`w-2 h-2 rounded-full ${r.color} shrink-0`} />
-                    <span className="font-mono text-xs text-ink/55">{r.range}</span>
-                    <span className="font-mono text-xs text-ink/35">{r.label}</span>
+                  { name: "OdontoCampinas", score: 85, you: false },
+                  { name: "Clínica São Lucas", score: 78, you: true },
+                  { name: "Sorriso Perfeito", score: 71, you: false },
+                  { name: "Dr. Paulo Mendes", score: 52, you: false },
+                  { name: "DentalPro", score: 34, you: false },
+                ].map(({ name, score, you }, i) => (
+                  <div
+                    key={name}
+                    className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${
+                      you ? "bg-teal-50 border border-teal-100" : ""
+                    }`}
+                  >
+                    <span
+                      className={`font-mono text-[10px] font-medium shrink-0 w-4 ${
+                        you ? "text-teal-600" : "text-slate-400"
+                      }`}
+                    >
+                      #{i + 1}
+                    </span>
+                    <span
+                      className={`font-mono text-xs flex-1 min-w-0 flex items-center gap-2 ${
+                        you ? "font-semibold text-teal-700" : "text-slate-500"
+                      }`}
+                    >
+                      <span className="truncate">{name}</span>
+                      {you && (
+                        <span className="text-[9px] bg-teal-600 text-white px-1.5 py-0.5 rounded font-normal shrink-0">
+                          você
+                        </span>
+                      )}
+                    </span>
+                    <div className="w-24 shrink-0">
+                      <Bar
+                        value={score}
+                        color={you ? "bg-teal-500" : "bg-slate-200"}
+                      />
+                    </div>
+                    <span
+                      className={`font-mono text-xs font-bold w-7 text-right shrink-0 ${
+                        you ? "text-teal-600" : "text-slate-400"
+                      }`}
+                    >
+                      {score}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-5 pt-4 border-t border-slate-100 flex items-center gap-2">
+                <AlertTriangle size={12} className="text-amber-500" />
+                <p className="font-mono text-xs text-amber-700">
+                  OdontoCampinas subiu 3 posições na última semana.
+                </p>
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* Copy */}
+          <FadeIn delay={120} className="order-1 lg:order-2">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-5">
+              Feature 02
+            </p>
+            <h2 className="font-display font-black text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
+              Benchmark
+              <br />
+              Competitivo
+              <br />
+              <span className="text-slate-400">
+                Onde você está em<br />relação aos rivais
+              </span>
+            </h2>
+            <p className="font-mono text-sm text-slate-500 leading-[1.95] mb-7">
+              Acompanhe o share of voice da sua marca nas IAs comparado diretamente aos
+              seus concorrentes — por keyword, por engine e por semana. Saiba quem está
+              dominando as respostas e o que eles fazem diferente.
+            </p>
+            <ul className="space-y-3.5">
+              {[
+                "Ranking de concorrentes por GEO Score",
+                "Share of voice por keyword estratégica",
+                "Análise de gaps por engine",
+                "Alertas quando um rival superar você",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check size={14} className="text-teal-600 mt-0.5 shrink-0" />
+                  <span className="font-mono text-sm text-slate-600">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          FEATURE 3 — Plano de Ação
+          Text left · Mockup right
+      ══════════════════════════════════════ */}
+      <section className="py-28 px-6 bg-zinc-50 border-y border-slate-100">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          {/* Copy */}
+          <FadeIn>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-5">
+              Feature 03
+            </p>
+            <h2 className="font-display font-black text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
+              Plano de Ação
+              <br />
+              gerado por IA
+              <br />
+              <span className="text-slate-400">
+                Sem jargão.
+                <br />
+                Só o que fazer.
+              </span>
+            </h2>
+            <p className="font-mono text-sm text-slate-500 leading-[1.95] mb-7">
+              Toda semana o Velo entrega um plano de ação priorizado com base no seu GEO
+              Score — ações concretas de conteúdo, SEO técnico e presença digital que os
+              crawlers de IA usam para decidir quem recomendar.
+            </p>
+            <ul className="space-y-3.5">
+              {[
+                "Ações priorizadas por impacto estimado no GEO Score",
+                "Recomendações de tipo de conteúdo e plataforma",
+                "Sugestões de FAQ, schema markup e E-E-A-T",
+                "Em português claro, direto ao ponto",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check size={14} className="text-teal-600 mt-0.5 shrink-0" />
+                  <span className="font-mono text-sm text-slate-600">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </FadeIn>
+
+          {/* Mockup */}
+          <FadeIn delay={120}>
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl shadow-slate-100">
+              <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 bg-slate-50">
+                <div className="flex items-center gap-2">
+                  <Target size={13} className="text-teal-600" />
+                  <p className="font-mono text-xs font-semibold text-slate-700">
+                    Plano de Ação — Semana 27
+                  </p>
+                </div>
+                <span className="font-mono text-[10px] bg-amber-50 text-amber-700 border border-amber-100 px-2 py-0.5 rounded-full">
+                  3 pendentes
+                </span>
+              </div>
+              <div className="p-5 space-y-2.5">
+                {[
+                  {
+                    priority: "Alta",
+                    text: "Publicar artigo: '5 dúvidas frequentes sobre implante dentário'",
+                    done: false,
+                    impact: "+8 pts",
+                    priorityColor: "text-red-500",
+                  },
+                  {
+                    priority: "Alta",
+                    text: "Adicionar FAQ com schema JSON-LD na página de serviços",
+                    done: false,
+                    impact: "+6 pts",
+                    priorityColor: "text-red-500",
+                  },
+                  {
+                    priority: "Média",
+                    text: "Atualizar perfil Google Business com palavras-chave de IA",
+                    done: false,
+                    impact: "+4 pts",
+                    priorityColor: "text-amber-500",
+                  },
+                  {
+                    priority: "Feito",
+                    text: "Atualizar página 'Sobre' com histórico e credenciais",
+                    done: true,
+                    impact: "+5 pts",
+                    priorityColor: "text-slate-400",
+                  },
+                  {
+                    priority: "Feito",
+                    text: "Publicar depoimentos reais de pacientes com nome e cidade",
+                    done: true,
+                    impact: "+7 pts",
+                    priorityColor: "text-slate-400",
+                  },
+                ].map(({ priority, text, done, impact, priorityColor }) => (
+                  <div
+                    key={text}
+                    className={`flex items-start gap-3 p-3 rounded-lg ${
+                      done ? "opacity-50" : "bg-slate-50"
+                    }`}
+                  >
+                    <div
+                      className={`mt-0.5 w-4 h-4 rounded flex items-center justify-center border shrink-0 ${
+                        done ? "bg-teal-600 border-teal-600" : "border-slate-300"
+                      }`}
+                    >
+                      {done && <Check size={10} className="text-white" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <span className={`font-mono text-[10px] font-medium ${priorityColor}`}>
+                        {priority === "Feito" ? "Concluído" : `Prioridade ${priority}`}
+                      </span>
+                      <p
+                        className={`font-mono text-xs leading-snug mt-0.5 ${
+                          done ? "line-through text-slate-400" : "text-slate-700"
+                        }`}
+                      >
+                        {text}
+                      </p>
+                    </div>
+                    <span
+                      className={`font-mono text-xs font-bold shrink-0 ${
+                        done ? "text-emerald-500" : "text-teal-600"
+                      }`}
+                    >
+                      {impact}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -547,239 +939,168 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FEATURES GRID ── */}
-      <section className="bg-ice/60 border-y border-ink/8">
-        <div className="max-w-6xl mx-auto px-6 py-24">
-          <FadeIn>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-signal mb-5">Funcionalidades</p>
-            <h2 className="font-display font-black text-4xl text-ink mb-14 max-w-lg leading-tight">
-              Tudo para monitorar sua presença nas IAs.
-            </h2>
-          </FadeIn>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* ══════════════════════════════════════
+          FEATURE 4 — Alertas Proativos
+          Mockup left · Text right
+      ══════════════════════════════════════ */}
+      <section className="py-28 px-6 bg-white">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          {/* Mockup */}
+          <FadeIn className="order-2 lg:order-1 space-y-3">
             {[
               {
-                icon: "◎",
-                title: "GEO Score 0–100",
-                body: "Score composto, em linguagem de negócio. Não requer conhecimento técnico para interpretar.",
+                type: "critical",
+                icon: <AlertTriangle size={14} className="text-red-600" />,
+                iconBg: "bg-red-100",
+                border: "border-red-100 bg-red-50",
+                titleColor: "text-red-700",
+                chipColor: "bg-red-100 text-red-600",
+                engine: "Gemini",
+                title: "Distorção factual detectada",
+                body: "O Gemini afirmou incorretamente que sua clínica não aceita convênios odontológicos.",
+                time: "há 4 horas",
               },
               {
-                icon: "⟳",
-                title: "Monitoramento contínuo",
-                body: "Semanal no Starter, diário no Pro. Você vê a curva de evolução ao longo do tempo.",
+                type: "warning",
+                icon: <TrendingUp size={14} className="text-amber-600" />,
+                iconBg: "bg-amber-100",
+                border: "border-amber-100 bg-amber-50",
+                titleColor: "text-amber-700",
+                chipColor: "bg-amber-100 text-amber-600",
+                engine: "ChatGPT",
+                title: "Concorrente subiu 12 posições",
+                body: "OdontoCampinas passou sua clínica em 'implante dentário Campinas' no ChatGPT.",
+                time: "há 1 dia",
               },
               {
-                icon: "⊞",
-                title: "Multi-engine",
-                body: "ChatGPT e Gemini no MVP. Perplexity e Claude chegam no próximo ciclo.",
+                type: "success",
+                icon: <Bell size={14} className="text-emerald-600" />,
+                iconBg: "bg-emerald-100",
+                border: "border-emerald-100 bg-emerald-50",
+                titleColor: "text-emerald-700",
+                chipColor: "bg-emerald-100 text-emerald-600",
+                engine: "Perplexity",
+                title: "Nova menção positiva",
+                body: "Sua marca foi citada em 1ª posição para 'melhor clínica odontológica Campinas'.",
+                time: "há 2 dias",
               },
-              {
-                icon: "↯",
-                title: "Plano de ação por IA",
-                body: "Recomendações concretas por keyword — tipo de conteúdo, plataforma, prioridade.",
-              },
-              {
-                icon: "▦",
-                title: "Relatório semanal",
-                body: "Resumo executivo, comparativo por engine e destaque de keywords. Em markdown, legível no e-mail.",
-              },
-              {
-                icon: "◈",
-                title: "Histórico de evolução",
-                body: "Acompanhe a curva do GEO Score e correlacione com suas ações de conteúdo.",
-              },
-            ].map((f, i) => (
-              <FadeIn key={f.title} delay={i * 60}>
-                <div className="bg-white border border-ink/10 rounded-xl p-6 h-full hover:border-signal/25 hover:shadow-sm transition-all">
-                  <span className="font-mono text-xl text-signal/60 block mb-4">{f.icon}</span>
-                  <h3 className="font-mono text-sm font-semibold text-ink mb-2">{f.title}</h3>
-                  <p className="font-mono text-xs text-ink/45 leading-relaxed">{f.body}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PRICING ── */}
-      <section id="precos" className="max-w-6xl mx-auto px-6 py-28">
-        <FadeIn>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-signal mb-5">Preços</p>
-          <h2 className="font-display font-black text-4xl text-ink mb-3 leading-tight">
-            Simples. Previsível. Em BRL.
-          </h2>
-          <p className="font-mono text-sm text-ink/40 mb-16">
-            Cartão ou Pix. Sem contrato de fidelidade. Cancele quando quiser.
-          </p>
-        </FadeIn>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              name: "Starter",
-              price: "149",
-              desc: "Para PMEs que querem começar a monitorar.",
-              features: [
-                "1 marca monitorada",
-                "10 keywords",
-                "ChatGPT + Gemini",
-                "Monitoramento semanal",
-                "Relatório semanal por e-mail",
-                "Plano de ação por IA",
-              ],
-              cta: "Começar agora",
-              highlight: false,
-            },
-            {
-              name: "Pro",
-              price: "399",
-              desc: "Para empresas que querem monitorar de perto.",
-              features: [
-                "3 marcas monitoradas",
-                "30 keywords",
-                "ChatGPT + Gemini",
-                "Monitoramento diário",
-                "Alertas de queda de score",
-                "Plano de ação por IA",
-              ],
-              cta: "Escolher Pro",
-              highlight: true,
-            },
-            {
-              name: "Agency",
-              price: "799",
-              desc: "Para agências que vendem GEO para clientes.",
-              features: [
-                "Marcas ilimitadas",
-                "Keywords ilimitadas",
-                "Monitoramento diário",
-                "Relatório white-label",
-                "PDF com sua identidade",
-                "Plano de ação por IA",
-              ],
-              cta: "Falar com vendas",
-              highlight: false,
-            },
-          ].map((plan, i) => (
-            <FadeIn key={plan.name} delay={i * 80}>
-              <div
-                className={`rounded-2xl p-8 h-full flex flex-col ${
-                  plan.highlight
-                    ? "bg-ink text-white border-2 border-signal"
-                    : "bg-white border border-ink/10"
-                }`}
-              >
-                <p
-                  className={`font-mono text-[10px] uppercase tracking-widest mb-4 font-semibold ${
-                    plan.highlight ? "text-signal" : "text-ink/35"
-                  }`}
-                >
-                  {plan.name}
-                </p>
-                <div className="flex items-baseline gap-0.5 mb-1">
-                  <span className={`font-mono text-xs ${plan.highlight ? "text-white/40" : "text-ink/35"}`}>
-                    R$
-                  </span>
-                  <span
-                    className={`font-display font-black text-5xl leading-none ${
-                      plan.highlight ? "text-white" : "text-ink"
-                    }`}
-                  >
-                    {plan.price}
-                  </span>
-                  <span className={`font-mono text-xs ml-1 ${plan.highlight ? "text-white/40" : "text-ink/35"}`}>
-                    /mês
-                  </span>
-                </div>
-                <p
-                  className={`font-mono text-xs mt-3 mb-8 leading-relaxed ${
-                    plan.highlight ? "text-white/50" : "text-ink/45"
-                  }`}
-                >
-                  {plan.desc}
-                </p>
-
-                <ul className="space-y-2.5 mb-8 flex-1">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5">
-                      <span
-                        className={`mt-0.5 text-xs font-bold leading-none ${
-                          plan.highlight ? "text-signal" : "text-confirm"
-                        }`}
-                      >
-                        ✓
+            ].map(({ icon, iconBg, border, titleColor, chipColor, engine, title, body, time }) => (
+              <div key={title} className={`border rounded-xl p-5 ${border}`}>
+                <div className="flex items-start gap-3">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${iconBg}`}>
+                    {icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <span className={`font-mono text-xs font-semibold ${titleColor}`}>
+                        {title}
                       </span>
-                      <span
-                        className={`font-mono text-xs leading-relaxed ${
-                          plan.highlight ? "text-white/70" : "text-ink/60"
-                        }`}
-                      >
-                        {f}
+                      <span className="font-mono text-[10px] text-slate-400 shrink-0">
+                        {time}
                       </span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href="/auth/signup"
-                  className={`block text-center font-mono text-sm font-semibold py-3.5 rounded-xl transition-colors ${
-                    plan.highlight
-                      ? "bg-signal text-white hover:bg-signal/90"
-                      : "border border-ink/15 text-ink hover:bg-ink/5"
-                  }`}
-                >
-                  {plan.cta}
-                </Link>
+                    </div>
+                    <p className="font-mono text-xs text-slate-600 leading-snug mb-2.5">
+                      {body}
+                    </p>
+                    <span
+                      className={`font-mono text-[10px] font-medium px-2 py-0.5 rounded-full ${chipColor}`}
+                    >
+                      {engine}
+                    </span>
+                  </div>
+                </div>
               </div>
-            </FadeIn>
-          ))}
+            ))}
+          </FadeIn>
+
+          {/* Copy */}
+          <FadeIn delay={120} className="order-1 lg:order-2">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-5">
+              Feature 04
+            </p>
+            <h2 className="font-display font-black text-4xl lg:text-5xl text-slate-900 leading-tight mb-6">
+              Alertas Proativos
+              <br />
+              <span className="text-slate-400">
+                Antes que o problema
+                <br />
+                custe um cliente
+              </span>
+            </h2>
+            <p className="font-mono text-sm text-slate-500 leading-[1.95] mb-7">
+              Receba notificações imediatas quando uma menção crítica, uma distorção
+              factual ou uma queda de ranking for detectada nas respostas de IA — para
+              clínicas, escritórios e empresas onde reputação é o ativo mais importante.
+            </p>
+            <ul className="space-y-3.5">
+              {[
+                "Alertas de distorção factual em tempo real",
+                "Notificação quando concorrente ultrapassar você",
+                "Detecção de sentimento negativo inesperado",
+                "Canais: e-mail, Slack e webhook",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check size={14} className="text-teal-600 mt-0.5 shrink-0" />
+                  <span className="font-mono text-sm text-slate-600">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </FadeIn>
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
-      <section className="bg-white border-y border-ink/8">
-        <div className="max-w-6xl mx-auto px-6 py-24">
-          <FadeIn>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-signal mb-5">Resultados</p>
-            <h2 className="font-display font-black text-4xl text-ink mb-14 max-w-lg leading-tight">
-              O que nossos clientes dizem.
+      {/* ══════════════════════════════════════
+          HOW IT WORKS
+      ══════════════════════════════════════ */}
+      <section id="como-funciona" className="py-28 px-6 bg-zinc-50 border-y border-slate-100">
+        <div className="max-w-7xl mx-auto">
+          <FadeIn className="mb-20">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-6">
+              Como funciona
+            </p>
+            <h2 className="font-display font-black text-5xl lg:text-[3.5rem] text-slate-900 leading-[1.06] max-w-lg">
+              Três etapas.{" "}
+              <span className="text-slate-400">
+                Um relatório que você realmente usa.
+              </span>
             </h2>
           </FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <div className="space-y-0 divide-y divide-slate-200">
             {[
               {
-                quote:
-                  "Em 3 semanas publicando conteúdo baseado no plano da Velo, meu score no ChatGPT subiu de 28 para 61. Agora apareço antes do concorrente.",
-                author: "Dr. Rafael Lima",
-                role: "Advogado trabalhista · São Paulo",
-                tag: "+33 pts em 3 semanas",
+                n: "01",
+                title: "Cadastre sua marca",
+                body: "Informe o nome da sua empresa, site e até 30 keywords estratégicas. Não é necessário código, integração ou acesso técnico. O setup completo leva menos de 5 minutos.",
+                delay: 0,
               },
               {
-                quote:
-                  "A Velo virou um relatório que mando para todos os clientes da agência. Eles finalmente entendem o valor do GEO — com dados, não com promessa.",
-                author: "Marina Souza",
-                role: "Diretora · Agência Conteúdo+",
-                tag: "7 clientes ativos",
+                n: "02",
+                title: "A Velo sonda as IAs",
+                body: "Disparamos queries reais — simulando a jornada de consumidores reais — para ChatGPT, Gemini, Perplexity e Claude. Analisamos cada resposta com IA para detectar menções, posicionamento, sentimento e frequência.",
+                delay: 80,
               },
               {
-                quote:
-                  "Descobri que minha clínica não aparecia em nenhuma resposta do Gemini. Dois meses depois, estou em 2ª posição para 'implante dentário Campinas'.",
-                author: "Dra. Patricia Neves",
-                role: "Clínica odontológica · Campinas",
-                tag: "2ª posição no Gemini",
+                n: "03",
+                title: "Você recebe o GEO Score + plano de ação",
+                body: "Em menos de 24h você recebe seu primeiro relatório com o GEO Score consolidado, análise por engine, benchmark competitivo e um plano de ação semanal priorizado — em português, sem jargão.",
+                delay: 160,
               },
-            ].map((t, i) => (
-              <FadeIn key={t.author} delay={i * 70}>
-                <div className="border border-ink/8 rounded-2xl p-7 h-full flex flex-col">
-                  <span className="font-mono text-[10px] bg-signal/8 text-signal border border-signal/15 px-2.5 py-1 rounded-full inline-block mb-5 font-medium self-start">
-                    {t.tag}
-                  </span>
-                  <p className="font-mono text-sm text-ink/60 leading-relaxed flex-1 mb-6">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                  <div>
-                    <p className="font-mono text-xs font-semibold text-ink">{t.author}</p>
-                    <p className="font-mono text-[10px] text-ink/35 mt-0.5">{t.role}</p>
+            ].map(({ n, title, body, delay }) => (
+              <FadeIn key={n} delay={delay}>
+                <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 items-start py-12">
+                  <div className="lg:col-span-2">
+                    <span className="font-display font-black text-7xl lg:text-8xl text-teal-600/15 leading-none select-none">
+                      {n}
+                    </span>
+                  </div>
+                  <div className="lg:col-span-4">
+                    <h3 className="font-display font-black text-3xl text-slate-900 leading-tight">
+                      {title}
+                    </h3>
+                  </div>
+                  <div className="lg:col-span-6">
+                    <p className="font-mono text-sm text-slate-500 leading-[1.95]">{body}</p>
                   </div>
                 </div>
               </FadeIn>
@@ -788,57 +1109,256 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FINAL CTA ── */}
-      <section className="bg-signal">
-        <div className="max-w-6xl mx-auto px-6 py-28 text-center">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-6">
+      {/* ══════════════════════════════════════
+          PRICING
+      ══════════════════════════════════════ */}
+      <section id="precos" className="py-28 px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <FadeIn>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-teal-600 mb-6">
+              Preços
+            </p>
+
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8 mb-16">
+              <h2 className="font-display font-black text-5xl text-slate-900 leading-tight">
+                Simples e previsível.
+                <br />
+                <span className="text-slate-400">Cancele quando quiser.</span>
+              </h2>
+
+              {/* Toggle */}
+              <div className="flex items-center gap-3 pb-1 shrink-0">
+                <span
+                  className={`font-mono text-sm transition-colors ${
+                    !annual ? "text-slate-900 font-semibold" : "text-slate-400"
+                  }`}
+                >
+                  Mensal
+                </span>
+                <button
+                  onClick={() => setAnnual(!annual)}
+                  aria-label="Toggle anual/mensal"
+                  className={`relative w-12 h-6 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 ${
+                    annual ? "bg-teal-600" : "bg-slate-200"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${
+                      annual ? "translate-x-6" : "translate-x-0"
+                    }`}
+                  />
+                </button>
+                <span
+                  className={`font-mono text-sm transition-colors flex items-center gap-2 ${
+                    annual ? "text-slate-900 font-semibold" : "text-slate-400"
+                  }`}
+                >
+                  Anual
+                  <span className="bg-emerald-50 text-emerald-600 border border-emerald-100 font-mono text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                    −20%
+                  </span>
+                </span>
+              </div>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {plans.map(({ name, monthly, annual: annualPrice, tagline, highlight, badge, cta, features }, i) => {
+              const price = annual ? annualPrice : monthly;
+              const savings = (monthly - annualPrice) * 12;
+              return (
+                <FadeIn key={name} delay={i * 80}>
+                  <div
+                    className={`relative flex flex-col rounded-2xl p-8 h-full transition-shadow ${
+                      highlight
+                        ? "border-2 border-teal-500 bg-white shadow-2xl shadow-teal-100"
+                        : "border border-slate-200 bg-white hover:shadow-md"
+                    }`}
+                  >
+                    {/* Badge */}
+                    {badge && (
+                      <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+                        <span className="bg-teal-600 text-white font-mono text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg shadow-teal-600/30">
+                          {badge}
+                        </span>
+                      </div>
+                    )}
+
+                    <p
+                      className={`font-mono text-[10px] uppercase tracking-widest font-semibold mb-5 ${
+                        highlight ? "text-teal-600" : "text-slate-400"
+                      }`}
+                    >
+                      {name}
+                    </p>
+
+                    <div className="flex items-baseline gap-1 mb-1">
+                      <span className="font-mono text-sm text-slate-400">R$</span>
+                      <span className="font-display font-black text-5xl text-slate-900 leading-none">
+                        {price}
+                      </span>
+                      <span className="font-mono text-sm text-slate-400">/mês</span>
+                    </div>
+
+                    {annual && (
+                      <p className="font-mono text-xs text-emerald-600 mt-1 mb-1">
+                        Economia de R${savings}/ano na cobrança anual
+                      </p>
+                    )}
+
+                    <p className="font-mono text-xs text-slate-500 leading-relaxed mt-3 mb-8">
+                      {tagline}
+                    </p>
+
+                    <ul className="space-y-2.5 flex-1 mb-8">
+                      {features.map((f) => (
+                        <li key={f} className="flex items-start gap-2.5">
+                          <Check
+                            size={13}
+                            className={`mt-0.5 shrink-0 ${
+                              highlight ? "text-teal-600" : "text-emerald-500"
+                            }`}
+                          />
+                          <span className="font-mono text-xs text-slate-600">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Link
+                      href="/auth/signup"
+                      className={`block text-center font-mono text-sm font-semibold py-3.5 rounded-xl transition-colors ${
+                        highlight
+                          ? "bg-teal-600 text-white hover:bg-teal-700"
+                          : "border border-slate-200 text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      {cta}
+                    </Link>
+                  </div>
+                </FadeIn>
+              );
+            })}
+          </div>
+
+          <FadeIn delay={200}>
+            <p className="font-mono text-xs text-slate-400 text-center mt-10">
+              Cartão ou Pix &nbsp;·&nbsp; Sem contrato de fidelidade &nbsp;·&nbsp; 7 dias
+              grátis em todos os planos
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════
+          FINAL CTA
+      ══════════════════════════════════════ */}
+      <section className="py-28 px-6 bg-slate-900">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-teal-400 mb-8">
             Comece hoje
           </p>
-          <h2 className="font-display font-black text-5xl lg:text-6xl text-white mb-6 leading-tight tracking-tight">
+          <h2 className="font-display font-black text-5xl lg:text-6xl text-white leading-[1.05] mb-8">
             Descubra agora o que<br />
             as IAs falam sobre você.
           </h2>
-          <p className="font-mono text-sm text-white/60 mb-10 max-w-md mx-auto leading-relaxed">
-            Sem cartão de crédito. Resultado em menos de 24 horas.
+          <p className="font-mono text-sm text-slate-400 mb-12 max-w-md mx-auto leading-relaxed">
+            Sem cartão de crédito. Resultado em menos de 24 horas. 7 dias de acesso
+            completo, grátis.
           </p>
           <Link
             href="/auth/signup"
-            className="inline-flex items-center gap-2 bg-white text-signal font-mono text-sm font-bold px-8 py-4 rounded-xl hover:bg-bone transition-colors shadow-2xl shadow-ink/20"
+            className="inline-flex items-center gap-2 bg-teal-600 text-white font-mono text-sm font-bold px-10 py-4 rounded-xl hover:bg-teal-500 transition-colors shadow-2xl shadow-teal-900/40"
           >
-            Começar grátis
-            <span className="text-base">→</span>
+            Ver minha presença agora
+            <ArrowRight size={16} />
           </Link>
-          <p className="mt-5 font-mono text-xs text-white/30">
-            7 dias grátis · Cancele quando quiser
+          <p className="mt-6 font-mono text-xs text-slate-600">
+            7 dias grátis &nbsp;·&nbsp; Sem cartão &nbsp;·&nbsp; Cancele quando quiser
           </p>
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="border-t border-ink/8 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div>
-            <span className="font-display font-black text-lg text-ink">
-              Vel<span className="text-signal">o</span>
-            </span>
-            <p className="font-mono text-[10px] text-ink/25 mt-1">
-              Monitore sua presença nas IAs em tempo real.
-            </p>
+      {/* ══════════════════════════════════════
+          FOOTER
+      ══════════════════════════════════════ */}
+      <footer className="bg-white border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-1 mb-4">
+                <span className="font-display font-black text-2xl text-slate-900 leading-none">
+                  Velo
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-600 mb-0.5 ml-0.5" />
+              </div>
+              <p className="font-mono text-xs text-slate-400 leading-relaxed mb-5">
+                Monitore sua presença nas IAs. GEO Score, benchmark competitivo e plano
+                de ação — em português.
+              </p>
+              <p className="font-mono text-[10px] text-slate-300">
+                © 2025 Velo Tecnologia LTDA
+              </p>
+            </div>
+
+            {/* Produto */}
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+                Produto
+              </p>
+              <ul className="space-y-3">
+                {["Problema", "Como funciona", "Preços", "Changelog"].map((item) => (
+                  <li key={item}>
+                    <a
+                      href="#"
+                      className="font-mono text-xs text-slate-500 hover:text-slate-900 transition-colors"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Empresa */}
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+                Empresa
+              </p>
+              <ul className="space-y-3">
+                {["Sobre", "Blog", "Imprensa", "Contato"].map((item) => (
+                  <li key={item}>
+                    <a
+                      href="#"
+                      className="font-mono text-xs text-slate-500 hover:text-slate-900 transition-colors"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+                Legal
+              </p>
+              <ul className="space-y-3">
+                {["Privacidade", "Termos de uso", "LGPD", "Cookies"].map((item) => (
+                  <li key={item}>
+                    <a
+                      href="#"
+                      className="font-mono text-xs text-slate-500 hover:text-slate-900 transition-colors"
+                    >
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-6">
-            {[
-              ["#problema", "Problema"],
-              ["#como-funciona", "Como funciona"],
-              ["#precos", "Preços"],
-              ["/auth/login", "Entrar"],
-              ["/auth/signup", "Criar conta"],
-            ].map(([href, label]) => (
-              <a key={href} href={href} className="font-mono text-[10px] uppercase tracking-wider text-ink/30 hover:text-ink transition-colors">
-                {label}
-              </a>
-            ))}
-          </div>
-          <p className="font-mono text-[10px] text-ink/15">© 2025 Velo</p>
         </div>
       </footer>
     </div>
