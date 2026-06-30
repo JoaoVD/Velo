@@ -1,0 +1,5 @@
+# Claude Code agent files (skills, memory, session data)
+.claude/
+
+# Supabase CLI temp artifacts at repo root
+/supabase/
