@@ -32,7 +32,7 @@ function getPreviousScoreByEngine(scores: Score[]): Record<string, number> {
   const result: Record<string, number> = {};
   for (const [engine, list] of Object.entries(byEngine)) {
     const sorted = [...list].sort((a, b) => b.date.localeCompare(a.date));
-    const dates = [...new Set(sorted.map((s) => s.date))];
+    const dates = Array.from(new Set(sorted.map((s) => s.date)));
     if (dates.length < 2) continue;
     const prevDate = dates[1];
     const prev = sorted.filter((s) => s.date === prevDate);
