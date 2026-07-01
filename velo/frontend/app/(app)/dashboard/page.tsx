@@ -1,17 +1,44 @@
 import { createClient as createServerClient } from "@/lib/supabase-server";
 import { apiFetch } from "@/lib/api";
 import { GeoScoreCard } from "@/components/GeoScoreCard";
-import { Score } from "@/lib/types";
-import Link from "next/link";
+import { ScoreHistoryChart } from "@/components/ScoreHistoryChart";
+import { KeywordsTable } from "@/components/KeywordsTable";
+import { Brand, Keyword, Score } from "@/lib/types";
 import { redirect } from "next/navigation";
+import ForceScanButton from "./ForceScanButton";
 
-async function getBrandId(token: string): Promise<string | null> {
-  try {
-    const brands = await apiFetch<{ id: string }[]>("/brands", token);
-    return brands[0]?.id ?? null;
-  } catch {
-    return null;
+function getLatestScoreByEngine(scores: Score[]): Record<string, number> {
+  const byEngine: Record<string, Score[]> = {};
+  for (const s of scores) {
+    if (!byEngine[s.engine]) byEngine[s.engine] = [];
+    byEngine[s.engine].push(s);
   }
+  const result: Record<string, number> = {};
+  for (const [engine, list] of Object.entries(byEngine)) {
+    const sorted = [...list].sort((a, b) => b.date.localeCompare(a.date));
+    const latestDate = sorted[0].date;
+    const latest = sorted.filter((s) => s.date === latestDate);
+    result[engine] = latest.reduce((sum, s) => sum + s.geo_score, 0) / latest.length;
+  }
+  return result;
+}
+
+function getPreviousScoreByEngine(scores: Score[]): Record<string, number> {
+  const byEngine: Record<string, Score[]> = {};
+  for (const s of scores) {
+    if (!byEngine[s.engine]) byEngine[s.engine] = [];
+    byEngine[s.engine].push(s);
+  }
+  const result: Record<string, number> = {};
+  for (const [engine, list] of Object.entries(byEngine)) {
+    const sorted = [...list].sort((a, b) => b.date.localeCompare(a.date));
+    const dates = [...new Set(sorted.map((s) => s.date))];
+    if (dates.length < 2) continue;
+    const prevDate = dates[1];
+    const prev = sorted.filter((s) => s.date === prevDate);
+    result[engine] = prev.reduce((sum, s) => sum + s.geo_score, 0) / prev.length;
+  }
+  return result;
 }
 
 export default async function DashboardPage() {
@@ -19,50 +46,109 @@ export default async function DashboardPage() {
   const { data: { session } } = await supabase.auth.getSession();
   const token = session?.access_token ?? "";
 
-  const brandId = await getBrandId(token);
+  const brands = await apiFetch<Brand[]>("/brands", token).catch(() => [] as Brand[]);
+  const brand = brands[0];
+  if (!brand) redirect("/onboarding");
 
-  if (!brandId) {
-    redirect("/onboarding");
-  }
+  const [scores, keywords] = await Promise.all([
+    apiFetch<Score[]>(`/brands/${brand.id}/scores`, token).catch(() => [] as Score[]),
+    apiFetch<Keyword[]>(`/brands/${brand.id}/keywords`, token).catch(() => [] as Keyword[]),
+  ]);
 
-  const scores = await apiFetch<Score[]>(`/brands/${brandId}/scores`, token).catch(
-    () => [] as Score[]
-  );
+  const currentScores = getLatestScoreByEngine(scores);
+  const previousScores = getPreviousScoreByEngine(scores);
+  const engines = Object.keys(currentScores);
+  const overall =
+    engines.length > 0
+      ? engines.reduce((sum, e) => sum + currentScores[e], 0) / engines.length
+      : null;
+  const overallPrev =
+    engines.length > 0 && Object.keys(previousScores).length === engines.length
+      ? engines.reduce((sum, e) => sum + (previousScores[e] ?? currentScores[e]), 0) /
+        engines.length
+      : undefined;
 
-  const latestByEngine: Record<string, Score[]> = {};
-  for (const score of scores) {
-    if (!latestByEngine[score.engine]) latestByEngine[score.engine] = [];
-    latestByEngine[score.engine].push(score);
-  }
-
-  const currentScores: Record<string, number> = {};
-  for (const [engine, engineScores] of Object.entries(latestByEngine)) {
-    const sorted = engineScores.sort((a, b) => b.date.localeCompare(a.date));
-    const recent = sorted.slice(0, 10);
-    currentScores[engine] = recent.reduce((sum, s) => sum + s.geo_score, 0) / recent.length;
-  }
+  const hasScores = scores.length > 0;
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="font-display font-black text-3xl text-slate-900">Dashboard</h1>
-        <p className="font-mono text-sm text-slate-500 mt-1.5">
-          Presença da sua marca nas IAs generativas
-        </p>
+      {/* Header */}
+      <div className="mb-8 flex flex-wrap items-start gap-4 justify-between">
+        <div>
+          <h1 className="font-display font-black text-3xl text-slate-900">{brand.name}</h1>
+          <p className="font-mono text-sm text-slate-500 mt-1">
+            Presença nas IAs generativas
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-[10px] uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-semibold">
+            Starter
+          </span>
+          <ForceScanButton token={token} />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {Object.entries(currentScores).map(([engine, score]) => (
-          <GeoScoreCard key={engine} engine={engine} score={score} />
-        ))}
-        {Object.keys(currentScores).length === 0 && (
-          <div className="col-span-2 bg-white border border-slate-200 rounded-2xl p-10 text-center shadow-sm">
-            <p className="font-mono text-sm text-slate-400">
-              Nenhum score disponível ainda. O primeiro relatório será gerado na próxima segunda-feira.
-            </p>
+      {!hasScores ? (
+        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-sm">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-moss-50 border border-moss-100 mb-5">
+            <span className="font-display font-black text-2xl text-moss-600 animate-pulse">·</span>
           </div>
-        )}
-      </div>
+          <h2 className="font-display font-black text-xl text-slate-900 mb-2">
+            Primeiro scan em andamento
+          </h2>
+          <p className="font-mono text-sm text-slate-400 max-w-sm mx-auto">
+            Seu GEO Score estará pronto em até 24h após o cadastro.
+          </p>
+          <div className="mt-6 mx-auto max-w-xs h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-full bg-moss-200 rounded-full animate-pulse w-2/3" />
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* Score cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {overall !== null && (
+              <GeoScoreCard
+                engine="Geral"
+                score={Math.round(overall)}
+                previousScore={
+                  overallPrev !== undefined ? Math.round(overallPrev) : undefined
+                }
+              />
+            )}
+            {engines.map((engine) => (
+              <GeoScoreCard
+                key={engine}
+                engine={engine}
+                score={Math.round(currentScores[engine])}
+                previousScore={
+                  previousScores[engine] !== undefined
+                    ? Math.round(previousScores[engine])
+                    : undefined
+                }
+              />
+            ))}
+          </div>
+
+          {/* History chart */}
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+              Histórico de GEO Score
+            </h2>
+            <ScoreHistoryChart scores={scores} />
+          </div>
+
+          {/* Keywords table */}
+          {keywords.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+                Score por Keyword
+              </h2>
+              <KeywordsTable keywords={keywords} scores={scores} engineFilter="all" />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
