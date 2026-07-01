@@ -84,7 +84,7 @@ export default async function DashboardPage() {
           <span className="font-mono text-[10px] uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-semibold">
             Starter
           </span>
-          <ForceScanButton token={token} />
+          <ForceScanButton />
         </div>
       </div>
 

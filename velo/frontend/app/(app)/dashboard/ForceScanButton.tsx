@@ -3,7 +3,7 @@ import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { useToast } from "@/lib/toast";
 
-export default function ForceScanButton(_props: { token: string }) {
+export default function ForceScanButton() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
