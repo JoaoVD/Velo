@@ -1,55 +1,89 @@
 import { ActionPlan, Keyword } from "@/lib/types";
 
-const PRIORITY_LABEL: Record<string, string> = {
-  high: "Alta",
-  medium: "Média",
-  low: "Baixa",
-};
-
-const PRIORITY_STYLES: Record<string, string> = {
-  high:   "bg-red-50 text-red-700 border border-red-100",
-  medium: "bg-amber-50 text-amber-700 border border-amber-100",
-  low:    "bg-moss-50 text-moss-600 border border-moss-100",
-};
-
 interface Props {
   plans: ActionPlan[];
   keywords: Keyword[];
 }
 
+const PRIORITY_CONFIG = {
+  high: {
+    label: "Alta prioridade",
+    bg: "bg-red-50",
+    text: "text-red-700",
+    border: "border-red-100",
+  },
+  medium: {
+    label: "Média prioridade",
+    bg: "bg-amber-50",
+    text: "text-amber-700",
+    border: "border-amber-100",
+  },
+  low: {
+    label: "Baixa prioridade",
+    bg: "bg-emerald-50",
+    text: "text-emerald-700",
+    border: "border-emerald-100",
+  },
+} as const;
+
+const ENGINE_LABELS: Record<string, string> = {
+  chatgpt: "Resposta do ChatGPT",
+  gemini: "Resposta do Gemini",
+};
+
 export function ActionPlanList({ plans, keywords }: Props) {
   const kwMap = Object.fromEntries(keywords.map((k) => [k.id, k.term]));
-  const sorted = [...plans].sort((a, b) => {
-    const order: Record<string, number> = { high: 0, medium: 1, low: 2 };
-    return order[a.priority] - order[b.priority];
-  });
+  const grouped: Record<"high" | "medium" | "low", ActionPlan[]> = {
+    high: [],
+    medium: [],
+    low: [],
+  };
+  for (const p of plans) {
+    if (p.priority in grouped) grouped[p.priority].push(p);
+  }
 
   return (
-    <ul className="space-y-3">
-      {sorted.map((plan) => (
-        <li
-          key={plan.id}
-          className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:border-slate-300 transition-colors"
-        >
-          <div className="flex items-center gap-2 mb-2.5">
-            <span
-              className={`font-mono text-[10px] font-semibold px-2.5 py-1 rounded-full ${
-                PRIORITY_STYLES[plan.priority]
-              }`}
-            >
-              {PRIORITY_LABEL[plan.priority]}
-            </span>
-            <span className="font-mono text-[10px] text-slate-400 capitalize">{plan.engine}</span>
-            <span className="text-slate-200">·</span>
-            <span className="font-mono text-[10px] text-slate-500 truncate">
-              {kwMap[plan.keyword_id] ?? plan.keyword_id}
-            </span>
-          </div>
-          <p className="font-mono text-sm text-slate-700 leading-relaxed">
-            {plan.recommendation}
-          </p>
-        </li>
-      ))}
-    </ul>
+    <div className="space-y-6">
+      {(["high", "medium", "low"] as const).map((priority) => {
+        const group = grouped[priority];
+        if (!group.length) return null;
+        const cfg = PRIORITY_CONFIG[priority];
+        return (
+          <section key={priority}>
+            <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-3">
+              {cfg.label} ({group.length})
+            </h2>
+            <div className="space-y-3">
+              {group.map((plan) => (
+                <div
+                  key={plan.id}
+                  className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm"
+                >
+                  <div className="flex flex-wrap items-center gap-2 mb-3">
+                    <span
+                      className={`font-mono text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full border ${cfg.bg} ${cfg.text} ${cfg.border}`}
+                    >
+                      {cfg.label}
+                    </span>
+                    <span className="font-mono text-[10px] text-slate-400 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-full">
+                      {ENGINE_LABELS[plan.engine] ?? plan.engine}
+                    </span>
+                  </div>
+                  <p className="font-mono text-sm text-slate-800 leading-relaxed mb-3">
+                    {plan.recommendation}
+                  </p>
+                  {kwMap[plan.keyword_id] && (
+                    <p className="font-mono text-[10px] text-slate-400">
+                      Keyword:{" "}
+                      <span className="text-slate-600">{kwMap[plan.keyword_id]}</span>
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
   );
 }

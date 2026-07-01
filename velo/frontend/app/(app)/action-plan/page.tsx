@@ -2,22 +2,18 @@ import { createClient as createServerClient } from "@/lib/supabase-server";
 import { apiFetch } from "@/lib/api";
 import { ActionPlanList } from "@/components/ActionPlanList";
 import { ActionPlan, Keyword } from "@/lib/types";
+import { redirect } from "next/navigation";
 
 export default async function ActionPlanPage() {
   const supabase = await createServerClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   const token = session?.access_token ?? "";
 
   const brands = await apiFetch<{ id: string }[]>("/brands", token).catch(() => []);
   const brandId = brands[0]?.id;
-
-  if (!brandId) {
-    return (
-      <div className="font-mono text-sm text-slate-500 bg-white border border-slate-200 rounded-2xl p-10 text-center">
-        Nenhuma marca cadastrada.
-      </div>
-    );
-  }
+  if (!brandId) redirect("/onboarding");
 
   const [plans, keywords] = await Promise.all([
     apiFetch<ActionPlan[]>(`/brands/${brandId}/action-plans`, token).catch(
@@ -34,11 +30,13 @@ export default async function ActionPlanPage() {
           Recomendações por keyword, ordenadas por prioridade
         </p>
       </div>
-
       {plans.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-10 text-center">
-          <p className="font-mono text-sm text-slate-400">
-            Nenhum plano de ação disponível ainda.
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-12 text-center">
+          <p className="font-display font-black text-lg text-slate-700 mb-2">
+            Nenhum plano de ação ainda
+          </p>
+          <p className="font-mono text-sm text-slate-400 max-w-sm mx-auto">
+            Gerado automaticamente após análise dos primeiros scans.
           </p>
         </div>
       ) : (
