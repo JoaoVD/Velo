@@ -128,8 +128,8 @@ export default function SignupPage() {
 
           <p className="font-mono text-[10px] text-slate-400 text-center mt-5">
             Ao criar uma conta você concorda com nossos{" "}
-            <a href="#" className="underline">Termos</a> e{" "}
-            <a href="#" className="underline">Política de Privacidade</a>.
+            <Link href="/legal/termos" className="underline">Termos</Link> e{" "}
+            <Link href="/legal/privacidade" className="underline">Política de Privacidade</Link>.
           </p>
         </div>
 

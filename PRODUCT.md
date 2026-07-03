@@ -122,7 +122,7 @@ A Velo consulta periodicamente as LLMs com prompts que simulam perguntas reais d
 ```
 --color-ink:       #0f1923   /* cor principal, textos, fundo escuro */
 --color-navy:      #1a3a5c   /* azul profundo, elementos secundários */
---color-signal:    #c8460a   /* laranja-vermelho, acento principal, CTAs */
+--color-signal:    #3f6b4e   /* verde musgo, acento principal, CTAs */
 --color-ice:       #e8f0f7   /* fundo de seções de dados, cards */
 --color-bone:      #f5f2eb   /* fundo claro principal */
 --color-confirm:   #2d6a4f   /* verde, métricas positivas, scores altos */
@@ -149,12 +149,13 @@ UI / Dados / Código:  IBM Plex Mono (monospace, Google Fonts)
 - Scores e métricas grandes: Fraunces 900
 - Labels, tags, código, metadados: IBM Plex Mono 400–500
 - Corpo de texto e parágrafos: IBM Plex Mono 300, line-height: 1.7
-- Nunca usar Inter, Roboto, Arial ou Space Grotesk
+- Nunca usar Roboto, Arial ou Space Grotesk
+- **Exceção (landing page):** a landing usa Manrope (títulos) + Inter (corpo), aproximando a tipografia da Semrush (Factor A + Inter) — decisão de 2026-07-03. O app segue Fraunces + IBM Plex Mono.
 
 ### Logo
 
 - Nome "Velo" em Fraunces Bold (700), sem maiúsculas forçadas
-- O "e" ou detalhe tipográfico em `--color-signal` (#c8460a)
+- O "e" ou detalhe tipográfico em `--color-signal` (#3f6b4e)
 - Sem ícone complexo no MVP — wordmark é suficiente
 - Sem símbolo de IA, cérebro, circuito ou engrenagem — clichê
 - Variações obrigatórias: fundo escuro (ink) e fundo claro (bone)

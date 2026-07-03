@@ -24,7 +24,7 @@ SaaS B2B que monitora automaticamente como as principais IAs generativas descrev
 **Agências de marketing digital** — canal de revenda. A agência assina o plano Agency, repassa o serviço com margem para seus clientes e usa o relatório white-label para justificar o fee mensal.
 
 ---
-
+11
 ## Stack
 
 | Camada | Tecnologia |
@@ -51,7 +51,7 @@ SaaS B2B que monitora automaticamente como as principais IAs generativas descrev
 ```css
 --color-ink:     #0f1923   /* textos, fundo escuro */
 --color-navy:    #1a3a5c   /* elementos secundários */
---color-signal:  #c8460a   /* acento principal, CTAs */
+--color-signal:  #3f6b4e   /* verde musgo, acento principal, CTAs */
 --color-ice:     #e8f0f7   /* fundo de cards de dados */
 --color-bone:    #f5f2eb   /* fundo claro principal */
 --color-confirm: #2d6a4f   /* scores altos, métricas positivas */
