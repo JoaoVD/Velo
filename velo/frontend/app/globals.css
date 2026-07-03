@@ -16,3 +16,53 @@
     text-wrap: balance;
   }
 }
+
+/* ——— Landing page motion ——— */
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+@keyframes caret-blink {
+  0%, 45%  { opacity: 1; }
+  50%, 95% { opacity: 0; }
+  100%     { opacity: 1; }
+}
+
+.animate-caret {
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes stamp-in {
+  0%   { opacity: 0; transform: scale(1.4) rotate(-8deg); }
+  60%  { opacity: 1; transform: scale(0.95) rotate(-3deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-3deg); }
+}
+
+.animate-stamp {
+  animation: stamp-in 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-rise {
+  animation: rise-in 0.4s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-caret,
+  .animate-stamp,
+  .animate-rise {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+  }
+}
