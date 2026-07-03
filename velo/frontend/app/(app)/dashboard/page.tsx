@@ -7,6 +7,8 @@ import { ShareOfVoiceCard } from "@/components/ShareOfVoiceCard";
 import { Brand, Keyword, Score, ShareOfVoice } from "@/lib/types";
 import { redirect } from "next/navigation";
 import ForceScanButton from "./ForceScanButton";
+import AskAiCheck from "./AskAiCheck";
+import OnboardingChecklist from "./OnboardingChecklist";
 
 function getLatestScoreByEngine(scores: Score[]): Record<string, number> {
   const byEngine: Record<string, Score[]> = {};
@@ -52,11 +54,14 @@ export default async function DashboardPage() {
   const brand = brands[0];
   if (!brand) redirect("/onboarding");
 
-  const [scores, keywords, shareOfVoice] = await Promise.all([
+  const [scores, keywords, shareOfVoice, competitors] = await Promise.all([
     apiFetch<Score[]>(`/brands/${brand.id}/scores`, token).catch(() => [] as Score[]),
     apiFetch<Keyword[]>(`/brands/${brand.id}/keywords`, token).catch(() => [] as Keyword[]),
     apiFetch<ShareOfVoice>(`/brands/${brand.id}/competitors/share-of-voice`, token).catch(
       () => ({ date: null, keywords: [] }) as ShareOfVoice
+    ),
+    apiFetch<{ id: string }[]>(`/brands/${brand.id}/competitors`, token).catch(
+      () => [] as { id: string }[]
     ),
   ]);
 
@@ -93,20 +98,30 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      <OnboardingChecklist
+        keywordCount={keywords.length}
+        competitorCount={competitors.length}
+        hasScores={hasScores}
+      />
+
       {!hasScores ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-sm">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-moss-50 border border-moss-100 mb-5">
-            <span className="font-display font-black text-2xl text-moss-600 animate-pulse">·</span>
+        <div className="space-y-6">
+          <div className="bg-white border border-slate-200/80 rounded-3xl p-12 text-center shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)]">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-moss-50 border border-moss-100 mb-5">
+              <span className="font-display font-black text-2xl text-moss-600 animate-pulse">·</span>
+            </div>
+            <h2 className="font-display font-black text-xl text-slate-900 mb-2">
+              Primeiro scan em andamento
+            </h2>
+            <p className="font-mono text-sm text-slate-400 max-w-sm mx-auto">
+              Seu GEO Score estará pronto em até 24h após o cadastro.
+            </p>
+            <div className="mt-6 mx-auto max-w-xs h-1.5 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full bg-moss-200 rounded-full animate-pulse w-2/3" />
+            </div>
           </div>
-          <h2 className="font-display font-black text-xl text-slate-900 mb-2">
-            Primeiro scan em andamento
-          </h2>
-          <p className="font-mono text-sm text-slate-400 max-w-sm mx-auto">
-            Seu GEO Score estará pronto em até 24h após o cadastro.
-          </p>
-          <div className="mt-6 mx-auto max-w-xs h-1.5 bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-moss-200 rounded-full animate-pulse w-2/3" />
-          </div>
+          {/* Mesmo sem scores, o usuário já pode perguntar */}
+          <AskAiCheck brandId={brand.id} brandName={brand.name} />
         </div>
       ) : (
         <div className="space-y-6">
@@ -135,8 +150,11 @@ export default async function DashboardPage() {
             ))}
           </div>
 
+          {/* Pergunte como seu cliente */}
+          <AskAiCheck brandId={brand.id} brandName={brand.name} />
+
           {/* History chart */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
             <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
               Histórico de GEO Score
             </h2>
@@ -145,7 +163,7 @@ export default async function DashboardPage() {
 
           {/* Share of voice */}
           {shareOfVoice.keywords.length > 0 && (
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
               <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
                 Share of Voice · Você vs. Concorrentes
               </h2>
@@ -155,7 +173,7 @@ export default async function DashboardPage() {
 
           {/* Keywords table */}
           {keywords.length > 0 && (
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+            <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
               <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
                 Score por Keyword
               </h2>

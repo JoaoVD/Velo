@@ -57,11 +57,11 @@ export default async function ReportPage() {
       </div>
 
       {report ? (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
+        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-8">
           <ReportViewer markdown={report.content_md} />
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-12 text-center">
+        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-12 text-center">
           <p className="font-display font-black text-lg text-slate-700 mb-2">
             Nenhum relatório ainda
           </p>

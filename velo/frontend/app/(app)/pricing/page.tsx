@@ -70,7 +70,7 @@ export default function PricingPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
         {PLANS.map((plan) => (
-          <div key={plan.id} className={`bg-white rounded-2xl border shadow-sm p-6 relative flex flex-col ${plan.id === "pro" ? "border-moss-300 ring-1 ring-moss-200" : "border-slate-200"}`}>
+          <div key={plan.id} className={`bg-white rounded-3xl border p-6 relative flex flex-col shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] ${plan.id === "pro" ? "border-moss-300 ring-1 ring-moss-200" : "border-slate-200/80"}`}>
             {plan.tag && (
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 font-mono text-[10px] uppercase tracking-widest font-semibold bg-moss-600 text-white px-3 py-1 rounded-full">
                 {plan.tag}
@@ -92,17 +92,17 @@ export default function PricingPage() {
               ))}
             </ul>
             {plan.current ? (
-              <div className="text-center font-mono text-xs text-slate-400 border border-slate-100 rounded-xl py-2.5">
+              <div className="text-center font-mono text-xs text-slate-400 border border-slate-100 rounded-full py-2.5">
                 {plan.cta}
               </div>
             ) : "href" in plan && plan.href ? (
-              <a href={plan.href} className="block text-center font-mono text-sm font-semibold text-slate-700 border border-slate-200 rounded-xl py-2.5 hover:bg-slate-50 transition-colors">
+              <a href={plan.href} className="block text-center font-mono text-sm font-semibold text-slate-700 border border-slate-200 rounded-full py-2.5 hover:bg-slate-50 transition-colors">
                 {plan.cta}
               </a>
             ) : (
               <button
                 onClick={() => setModal(plan.id as "pro" | "agency")}
-                className="block w-full text-center font-mono text-sm font-semibold text-white bg-moss-600 rounded-xl py-2.5 hover:bg-moss-700 transition-colors"
+                className="block w-full text-center font-mono text-sm font-semibold text-white bg-moss-600 rounded-full py-2.5 shadow-[0_8px_20px_-6px_rgba(63,107,78,0.4)] hover:bg-moss-700 transition-colors"
               >
                 {plan.cta}
               </button>
@@ -114,7 +114,7 @@ export default function PricingPage() {
       {/* Upgrade interest modal */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-xl p-8 w-full max-w-sm relative">
+          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.05),0_32px_64px_-24px_rgba(15,25,35,0.3)] p-8 w-full max-w-sm relative">
             <button onClick={() => setModal(null)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><X size={16} /></button>
             <h2 className="font-display font-black text-xl text-slate-900 mb-1">Em breve</h2>
             <p className="font-mono text-xs text-slate-500 mb-5">
@@ -129,7 +129,7 @@ export default function PricingPage() {
                 required
                 className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 bg-white"
               />
-              <button type="submit" disabled={sending} className="w-full bg-moss-600 text-white py-2.5 rounded-xl font-mono text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60">
+              <button type="submit" disabled={sending} className="w-full bg-moss-600 text-white py-2.5 rounded-full font-mono text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60">
                 {sending ? "Enviando..." : "Me avisar quando lançar"}
               </button>
             </form>

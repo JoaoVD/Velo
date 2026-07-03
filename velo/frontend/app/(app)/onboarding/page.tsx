@@ -156,7 +156,7 @@ export default function OnboardingPage() {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Passo 1 — Marca */}
-          <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <section className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)]">
             <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
               01 — Sua marca
             </h2>
@@ -191,7 +191,7 @@ export default function OnboardingPage() {
           </section>
 
           {/* Passo 2 — Keywords */}
-          <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <section className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)]">
             <div className="flex items-center justify-between mb-1">
               <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
                 02 — Keywords para monitorar
@@ -239,7 +239,7 @@ export default function OnboardingPage() {
                 <button
                   type="button"
                   onClick={addKeyword}
-                  className="flex items-center gap-1 bg-moss-600 text-white px-3.5 py-2 rounded-xl font-mono text-xs font-semibold hover:bg-moss-700 transition-colors"
+                  className="flex items-center gap-1 bg-moss-600 text-white px-4 py-2 rounded-full font-mono text-xs font-semibold hover:bg-moss-700 transition-colors"
                 >
                   <Plus size={13} /> Adicionar
                 </button>
@@ -248,7 +248,7 @@ export default function OnboardingPage() {
           </section>
 
           {/* Passo 3 — Concorrentes */}
-          <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <section className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)]">
             <div className="flex items-center justify-between mb-1">
               <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
                 03 — Concorrentes{" "}
@@ -297,7 +297,7 @@ export default function OnboardingPage() {
                 <button
                   type="button"
                   onClick={addCompetitor}
-                  className="flex items-center gap-1 bg-slate-700 text-white px-3.5 py-2 rounded-xl font-mono text-xs font-semibold hover:bg-slate-800 transition-colors"
+                  className="flex items-center gap-1 bg-slate-700 text-white px-4 py-2 rounded-full font-mono text-xs font-semibold hover:bg-slate-800 transition-colors"
                 >
                   <Plus size={13} /> Adicionar
                 </button>
@@ -314,7 +314,7 @@ export default function OnboardingPage() {
           <button
             type="submit"
             disabled={saving}
-            className="w-full flex items-center justify-center gap-2 bg-moss-600 text-white py-3.5 rounded-xl font-mono text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 bg-moss-600 text-white py-3.5 rounded-full font-mono text-sm font-semibold shadow-[0_8px_20px_-6px_rgba(63,107,78,0.4)] hover:bg-moss-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {saving ? (
               "Salvando..."

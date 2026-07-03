@@ -39,7 +39,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-xl shadow-slate-100">
+        <div className="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_24px_56px_-24px_rgba(15,25,35,0.18)]">
           <h1 className="font-display font-black text-2xl text-slate-900 mb-1">Entrar</h1>
           <p className="font-mono text-xs text-slate-400 mb-7">Acesse sua conta Velo.</p>
 
@@ -80,7 +80,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-moss-600 text-white py-3 rounded-xl font-mono text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+              className="w-full bg-moss-600 text-white py-3 rounded-full font-mono text-sm font-semibold shadow-[0_8px_20px_-6px_rgba(63,107,78,0.4)] hover:bg-moss-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
             >
               {loading ? "Entrando..." : "Entrar"}
             </button>

@@ -50,9 +50,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <Link
                 key={href}
                 href={href}
-                className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg font-mono text-xs transition-colors ${
+                className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-full font-mono text-xs transition-colors ${
                   active
-                    ? "bg-moss-600/20 text-moss-200 font-semibold border-l-2 border-moss-200 pl-[10px]"
+                    ? "bg-moss-600/25 text-moss-200 font-semibold"
                     : "text-slate-400 hover:text-slate-100 hover:bg-slate-800"
                 }`}
               >
@@ -67,9 +67,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <div className="px-3 py-4 border-t border-slate-800 space-y-0.5">
           <Link
             href="/settings"
-            className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg font-mono text-xs transition-colors ${
+            className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-full font-mono text-xs transition-colors ${
               pathname === "/settings"
-                ? "bg-moss-600/20 text-moss-200 font-semibold border-l-2 border-moss-200 pl-[10px]"
+                ? "bg-moss-600/25 text-moss-200 font-semibold"
                 : "text-slate-400 hover:text-slate-100 hover:bg-slate-800"
             }`}
           >
@@ -78,7 +78,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </Link>
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg font-mono text-xs text-slate-500 hover:text-red-400 hover:bg-slate-800 transition-colors"
+            className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-full font-mono text-xs text-slate-500 hover:text-red-400 hover:bg-slate-800 transition-colors"
           >
             <LogOut size={14} className="shrink-0" />
             Sair
@@ -105,7 +105,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <Link
                   key={href}
                   href={href}
-                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded font-mono text-[10px] whitespace-nowrap transition-colors ${
+                  className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full font-mono text-[10px] whitespace-nowrap transition-colors ${
                     active ? "bg-moss-600/30 text-moss-200" : "text-slate-400 hover:text-slate-200"
                   }`}
                 >

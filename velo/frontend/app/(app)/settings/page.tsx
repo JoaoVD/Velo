@@ -155,7 +155,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Marca */}
-      <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <section className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
           Marca monitorada
         </h2>
@@ -197,7 +197,7 @@ export default function SettingsPage() {
             <button
               type="submit"
               disabled={creatingBrand}
-              className="flex items-center gap-1.5 bg-moss-600 text-white px-4 py-2.5 rounded-xl font-mono text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60"
+              className="flex items-center gap-1.5 bg-moss-600 text-white px-5 py-2.5 rounded-full font-mono text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60"
             >
               <Plus size={14} />
               {creatingBrand ? "Salvando..." : "Cadastrar marca"}
@@ -207,7 +207,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Keywords */}
-      <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <section className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
             Keywords monitoradas
@@ -244,7 +244,7 @@ export default function SettingsPage() {
             />
             <button
               type="submit"
-              className="flex items-center gap-1 bg-moss-600 text-white px-4 py-2.5 rounded-xl font-mono text-sm font-semibold hover:bg-moss-700 transition-colors shrink-0"
+              className="flex items-center gap-1 bg-moss-600 text-white px-5 py-2.5 rounded-full font-mono text-sm font-semibold hover:bg-moss-700 transition-colors shrink-0"
             >
               <Plus size={13} /> Adicionar
             </button>
@@ -258,7 +258,7 @@ export default function SettingsPage() {
 
       {/* Concorrentes */}
       {brand && (
-        <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <section className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
               Concorrentes
@@ -295,7 +295,7 @@ export default function SettingsPage() {
               />
               <button
                 type="submit"
-                className="flex items-center gap-1 bg-slate-700 text-white px-4 py-2.5 rounded-xl font-mono text-sm font-semibold hover:bg-slate-800 transition-colors shrink-0"
+                className="flex items-center gap-1 bg-slate-700 text-white px-5 py-2.5 rounded-full font-mono text-sm font-semibold hover:bg-slate-800 transition-colors shrink-0"
               >
                 <Plus size={13} /> Adicionar
               </button>
@@ -305,7 +305,7 @@ export default function SettingsPage() {
       )}
 
       {/* Plano atual */}
-      <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <section className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
           Plano atual
         </h2>
@@ -321,7 +321,7 @@ export default function SettingsPage() {
           </div>
           <Link
             href="/pricing"
-            className="flex items-center gap-1.5 font-mono text-xs font-semibold text-moss-600 border border-moss-200 px-3.5 py-2 rounded-xl hover:bg-moss-50 transition-colors shrink-0"
+            className="flex items-center gap-1.5 font-mono text-xs font-semibold text-moss-600 border border-moss-200 px-4 py-2 rounded-full hover:bg-moss-50 transition-colors shrink-0"
           >
             <ExternalLink size={12} /> Fazer upgrade
           </Link>

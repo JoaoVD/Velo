@@ -26,7 +26,7 @@ export default async function KeywordsPage() {
         <h1 className="font-display font-black text-3xl text-slate-900">Keywords</h1>
         <p className="font-mono text-sm text-slate-500 mt-1.5">GEO Score por keyword — última medição</p>
       </div>
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
         {keywords.length === 0 ? (
           <div className="text-center py-10">
             <p className="font-display font-black text-lg text-slate-700 mb-2">Nenhuma keyword ainda</p>
