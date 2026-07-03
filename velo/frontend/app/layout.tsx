@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, IBM_Plex_Mono, Manrope, Inter } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/lib/toast";
 
@@ -15,6 +15,19 @@ const ibmPlexMono = IBM_Plex_Mono({
   weight: ["300", "400", "500", "600"],
 });
 
+// Fontes da landing (estilo Semrush: Factor A ≈ Manrope, corpo = Inter)
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
+  weight: ["400", "700", "800"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["300", "400", "500", "600"],
+});
+
 export const metadata: Metadata = {
   title: "Velo — Monitore sua presença nas IAs em tempo real.",
   description:
@@ -24,7 +37,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className={`${fraunces.variable} ${ibmPlexMono.variable} font-mono bg-bone text-ink`}>
+      <body className={`${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${inter.variable} font-mono bg-bone text-ink`}>
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

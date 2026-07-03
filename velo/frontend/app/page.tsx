@@ -323,7 +323,160 @@ const NAV_LINKS = [
   { href: "#como-funciona", label: "Como funciona" },
   { href: "#geo-score", label: "GEO Score" },
   { href: "#precos", label: "Preços" },
+  { href: "#teste-gratis", label: "Teste grátis" },
 ];
+
+/* ————————————————————————————————————————————————
+   Checker gratuito (sem login)
+———————————————————————————————————————————————— */
+
+interface CheckResult {
+  mentioned: boolean;
+  position: number | null;
+  sentiment: "positive" | "neutral" | "negative" | null;
+  snippet: string;
+}
+
+const SENTIMENT_LABELS: Record<string, string> = {
+  positive: "descrita positivamente",
+  neutral: "citada de forma neutra",
+  negative: "descrita com críticas",
+};
+
+function FreeChecker() {
+  const [brandName, setBrandName] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<CheckResult | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/public/ai-check`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ brand_name: brandName, keyword }),
+          signal: AbortSignal.timeout(60000),
+        }
+      );
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(
+          body?.detail || "Não foi possível verificar agora. Tente novamente."
+        );
+      }
+      setResult(await res.json());
+    } catch (err) {
+      setError(
+        err instanceof Error && err.message && !err.message.includes("abort")
+          ? err.message
+          : "Não foi possível verificar agora. Tente novamente."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="border border-ink/20 bg-bone">
+      <form onSubmit={handleSubmit} className="p-6 sm:p-8">
+        <div className="grid sm:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label htmlFor="fc-brand" className="block font-mono text-[11px] uppercase tracking-[0.15em] text-ink/50 mb-2">
+              Sua marca
+            </label>
+            <input
+              id="fc-brand"
+              type="text"
+              required
+              minLength={2}
+              maxLength={80}
+              value={brandName}
+              onChange={(e) => setBrandName(e.target.value)}
+              placeholder="Clínica Sorriso Real"
+              className="w-full bg-transparent border border-ink/25 px-4 py-3 font-mono text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal"
+            />
+          </div>
+          <div>
+            <label htmlFor="fc-keyword" className="block font-mono text-[11px] uppercase tracking-[0.15em] text-ink/50 mb-2">
+              O que seu cliente pergunta
+            </label>
+            <input
+              id="fc-keyword"
+              type="text"
+              required
+              minLength={3}
+              maxLength={120}
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              placeholder="melhor dentista em Campinas"
+              className="w-full bg-transparent border border-ink/25 px-4 py-3 font-mono text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal"
+            />
+          </div>
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-signal text-bone font-mono text-sm font-semibold px-8 py-3.5 hover:bg-ink transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {loading ? "Perguntando ao ChatGPT..." : "Verificar grátis"}
+          {!loading && <ArrowRight size={16} />}
+        </button>
+        <p className="font-mono text-[10px] text-ink/40 mt-3">
+          3 verificações gratuitas por dia · Sem cadastro
+        </p>
+      </form>
+
+      {error && (
+        <div className="border-t border-ink/20 px-6 sm:px-8 py-5">
+          <p className="font-mono text-xs text-signal">{error}</p>
+        </div>
+      )}
+
+      {result && (
+        <div className="border-t border-ink/20 px-6 sm:px-8 py-6 animate-rise">
+          <p
+            className={`inline-block font-mono text-[11px] uppercase tracking-[0.2em] font-semibold px-3 py-1.5 border-2 mb-4 ${
+              result.mentioned
+                ? "border-confirm text-confirm"
+                : "border-signal text-signal"
+            }`}
+          >
+            {result.mentioned ? "✓ Marca mencionada" : "✗ Marca não mencionada"}
+          </p>
+          {result.mentioned && (
+            <p className="font-mono text-sm text-ink/70 mb-3">
+              {result.position !== null && (
+                <>Aparece na <strong className="text-ink">posição {result.position}</strong></>
+              )}
+              {result.sentiment && SENTIMENT_LABELS[result.sentiment] && (
+                <>{result.position !== null ? ", " : "Sua marca é "}{SENTIMENT_LABELS[result.sentiment]}.</>
+              )}
+            </p>
+          )}
+          <blockquote className="border-l-2 border-ink/20 pl-4 font-mono text-[13px] font-light leading-[1.7] text-ink/60 mb-5">
+            &ldquo;{result.snippet}…&rdquo;
+          </blockquote>
+          <Link
+            href="/auth/signup"
+            className="group inline-flex items-center gap-2 font-mono text-sm font-semibold text-signal hover:text-ink transition-colors"
+          >
+            {result.mentioned
+              ? "Monitore isso toda semana, em 2 IAs e várias keywords"
+              : "Descubra como fazer as IAs citarem sua marca"}
+            <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
 
 const ENGINES = [
   { name: "ChatGPT", status: "monitorando" },
@@ -449,7 +602,17 @@ export default function LandingPage() {
   const [annual, setAnnual] = useState(false);
 
   return (
-    <main className="bg-bone text-ink antialiased">
+    <main
+      className="bg-bone text-ink antialiased"
+      // Tipografia da landing (estilo Semrush): títulos em Manrope, corpo em Inter.
+      // Sobrescreve as vars localmente — o resto do app segue Fraunces + IBM Plex Mono.
+      style={
+        {
+          "--font-fraunces": "var(--font-manrope)",
+          "--font-mono": "var(--font-inter)",
+        } as React.CSSProperties
+      }
+    >
       {/* ————— Navbar ————— */}
       <header className="sticky top-0 z-50 bg-bone/95 backdrop-blur-sm border-b border-ink/15">
         <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -954,6 +1117,27 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ————— Teste grátis ————— */}
+      <section id="teste-gratis" className="border-t border-ink/15">
+        <div className="max-w-4xl mx-auto px-6 py-24 lg:py-32">
+          <FadeIn>
+            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
+              Teste grátis — sem cadastro
+            </p>
+            <h2 className="font-display font-black text-3xl sm:text-5xl tracking-tight mb-6 text-balance">
+              Veja agora como o ChatGPT descreve sua marca
+            </h2>
+            <p className="font-mono text-sm font-light leading-[1.8] text-ink/70 mb-10 max-w-lg">
+              Digite sua marca e o que seu cliente perguntaria. Nós perguntamos
+              ao ChatGPT de verdade e mostramos a resposta.
+            </p>
+          </FadeIn>
+          <FadeIn delay={120}>
+            <FreeChecker />
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ————— CTA final ————— */}
       <section className="bg-ink text-bone border-t-2 border-ink">
         <div className="max-w-4xl mx-auto px-6 py-24 lg:py-32 text-center">
@@ -1012,10 +1196,30 @@ export default function LandingPage() {
           </nav>
         </div>
         <div className="border-t border-bone/10">
-          <div className="max-w-6xl mx-auto px-6 py-5">
+          <div className="max-w-6xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
             <p className="font-mono text-[11px] text-bone/30">
               © 2026 Velo · Feito no Brasil
             </p>
+            <nav className="flex flex-wrap gap-x-6 gap-y-2">
+              <Link
+                href="/legal/termos"
+                className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
+              >
+                Termos de Uso
+              </Link>
+              <Link
+                href="/legal/privacidade"
+                className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
+              >
+                Privacidade
+              </Link>
+              <Link
+                href="/legal/lgpd"
+                className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
+              >
+                LGPD
+              </Link>
+            </nav>
           </div>
         </div>
       </footer>
