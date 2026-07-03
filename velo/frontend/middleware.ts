@@ -25,6 +25,7 @@ export async function middleware(request: NextRequest) {
   const isAuthPage = pathname.startsWith("/auth");
   const isPublic =
     pathname === "/" ||
+    pathname.startsWith("/legal") ||
     pathname.startsWith("/_next") ||
     pathname === "/favicon.ico";
 

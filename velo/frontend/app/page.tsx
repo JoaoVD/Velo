@@ -109,9 +109,9 @@ function FillBar({
 }) {
   const { ref, inView } = useInView<HTMLDivElement>(0.5);
   return (
-    <div ref={ref} className={`h-1.5 bg-ink/10 overflow-hidden ${className}`}>
+    <div ref={ref} className={`h-1.5 rounded-full bg-ink/10 overflow-hidden ${className}`}>
       <div
-        className={`h-full ${color}`}
+        className={`h-full rounded-full ${color}`}
         style={{
           width: inView ? `${pct}%` : "0%",
           transition: `width 1.1s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
@@ -211,34 +211,48 @@ function HeroSimulator() {
 
   return (
     <div className="relative">
-      {/* moldura tipo relatório */}
-      <div className="border-2 border-ink bg-white">
-        {/* barra do terminal */}
-        <div className="flex items-center justify-between border-b-2 border-ink px-4 py-2.5">
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/60">
-            Resposta do ChatGPT
+      {/* halo suave atrás do cartão */}
+      <div
+        aria-hidden
+        className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-gradient-to-br from-signal/15 via-transparent to-confirm/10 blur-2xl"
+      />
+      {/* cartão de resposta */}
+      <div className="rounded-3xl border border-ink/10 bg-white overflow-hidden shadow-[0_1px_2px_rgba(15,25,35,0.05),0_12px_32px_-8px_rgba(15,25,35,0.14),0_32px_64px_-24px_rgba(15,25,35,0.18)]">
+        {/* barra superior */}
+        <div className="flex items-center justify-between border-b border-ink/10 bg-bone/60 px-5 py-3">
+          <span className="flex items-center gap-2.5">
+            <span className="flex gap-1.5" aria-hidden>
+              <span className="w-2 h-2 rounded-full bg-ink/15" />
+              <span className="w-2 h-2 rounded-full bg-ink/15" />
+              <span className="w-2 h-2 rounded-full bg-ink/15" />
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
+              Resposta do ChatGPT
+            </span>
           </span>
           <span
-            className={`font-mono text-[10px] uppercase tracking-[0.2em] px-2 py-0.5 border ${
+            className={`font-mono text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full transition-colors ${
               withVelo
-                ? "border-confirm text-confirm"
-                : "border-ink/30 text-ink/40"
+                ? "bg-confirm/10 text-confirm"
+                : "bg-ink/5 text-ink/45"
             }`}
           >
             {withVelo ? "após 6 semanas de Velo" : "hoje"}
           </span>
         </div>
 
-        <div className="p-5 min-h-[280px] sm:min-h-[310px]">
+        <div className="p-6 min-h-[280px] sm:min-h-[310px]">
           {/* pergunta do consumidor */}
           <div className="mb-5">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40 mb-1.5">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40 mb-2">
               Pergunta real de consumidor
             </p>
-            <p className="font-mono text-sm text-ink leading-relaxed">
-              <span className="text-signal font-semibold">›</span> {typed}
-              <span className="inline-block w-2 h-4 bg-ink align-text-bottom ml-0.5 animate-caret" />
-            </p>
+            <div className="rounded-2xl rounded-bl-md bg-bone px-4 py-3">
+              <p className="font-mono text-sm text-ink leading-relaxed">
+                {typed}
+                <span className="inline-block w-0.5 h-4 bg-signal align-text-bottom ml-0.5 rounded-full animate-caret" />
+              </p>
+            </div>
           </div>
 
           {/* resposta da IA */}
@@ -251,15 +265,17 @@ function HeroSimulator() {
                 {rows.slice(0, visibleRows).map((r) => (
                   <li
                     key={`${withVelo}-${r.pos}`}
-                    className={`animate-rise flex items-center gap-3 border px-3 py-2.5 ${
+                    className={`animate-rise flex items-center gap-3 rounded-xl px-3.5 py-2.5 ${
                       r.you
-                        ? "border-confirm bg-confirm/5"
-                        : "border-ink/15 bg-bone/60"
+                        ? "bg-confirm/[0.07] ring-1 ring-confirm/25"
+                        : "bg-bone/70"
                     }`}
                   >
                     <span
-                      className={`font-display font-black text-lg leading-none w-5 ${
-                        r.you ? "text-confirm" : "text-ink/30"
+                      className={`flex items-center justify-center w-7 h-7 shrink-0 rounded-full font-display font-bold text-sm leading-none ${
+                        r.you
+                          ? "bg-confirm text-white"
+                          : "bg-ink/[0.06] text-ink/40"
                       }`}
                     >
                       {r.pos}
@@ -272,7 +288,7 @@ function HeroSimulator() {
                       {r.name}
                     </span>
                     {r.you && (
-                      <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.15em] text-confirm border border-confirm px-1.5 py-0.5">
+                      <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.15em] text-confirm bg-confirm/10 rounded-full px-2.5 py-1">
                         sua marca
                       </span>
                     )}
@@ -280,10 +296,11 @@ function HeroSimulator() {
                 ))}
               </ol>
 
-              {/* carimbo: marca ausente */}
+              {/* aviso: marca ausente */}
               {(phase === "stamp" || phase === "hold-without") && (
                 <div className="mt-5 flex justify-center">
-                  <span className="animate-stamp inline-block border-2 border-signal text-signal font-display font-black text-lg px-4 py-1.5 select-none">
+                  <span className="animate-stamp inline-flex items-center gap-2 rounded-full bg-signal/10 text-signal font-display font-bold text-base px-5 py-2 select-none">
+                    <span className="w-1.5 h-1.5 rounded-full bg-signal" aria-hidden />
                     Sua marca não aparece.
                   </span>
                 </div>
@@ -291,8 +308,8 @@ function HeroSimulator() {
 
               {/* selo de score */}
               {phase === "hold-with" && (
-                <div className="mt-5 flex items-center justify-between border-t border-ink/10 pt-4 animate-rise">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40">
+                <div className="mt-5 flex items-center justify-between rounded-xl bg-confirm/[0.06] px-4 py-3 animate-rise">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/45">
                     GEO Score
                   </span>
                   <span className="font-display font-black text-2xl text-confirm">
@@ -307,9 +324,6 @@ function HeroSimulator() {
           )}
         </div>
       </div>
-
-      {/* sombra dura editorial */}
-      <div className="absolute inset-0 border-2 border-ink bg-ink -z-10 translate-x-2 translate-y-2" />
     </div>
   );
 }
@@ -384,7 +398,7 @@ function FreeChecker() {
   }
 
   return (
-    <div className="border border-ink/20 bg-bone">
+    <div className="rounded-3xl border border-ink/10 bg-white overflow-hidden shadow-[0_1px_2px_rgba(15,25,35,0.04),0_20px_48px_-24px_rgba(15,25,35,0.16)]">
       <form onSubmit={handleSubmit} className="p-6 sm:p-8">
         <div className="grid sm:grid-cols-2 gap-4 mb-4">
           <div>
@@ -400,7 +414,7 @@ function FreeChecker() {
               value={brandName}
               onChange={(e) => setBrandName(e.target.value)}
               placeholder="Clínica Sorriso Real"
-              className="w-full bg-transparent border border-ink/25 px-4 py-3 font-mono text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal"
+              className="w-full bg-bone/60 border border-ink/15 rounded-xl px-4 py-3 font-mono text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal focus:bg-white transition-colors"
             />
           </div>
           <div>
@@ -416,14 +430,14 @@ function FreeChecker() {
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               placeholder="melhor dentista em Campinas"
-              className="w-full bg-transparent border border-ink/25 px-4 py-3 font-mono text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal"
+              className="w-full bg-bone/60 border border-ink/15 rounded-xl px-4 py-3 font-mono text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal focus:bg-white transition-colors"
             />
           </div>
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-signal text-bone font-mono text-sm font-semibold px-8 py-3.5 hover:bg-ink transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-signal text-bone font-mono text-sm font-semibold rounded-full px-8 py-3.5 shadow-[0_8px_20px_-6px_rgba(63,107,78,0.45)] hover:bg-ink transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading ? "Perguntando ao ChatGPT..." : "Verificar grátis"}
           {!loading && <ArrowRight size={16} />}
@@ -434,18 +448,18 @@ function FreeChecker() {
       </form>
 
       {error && (
-        <div className="border-t border-ink/20 px-6 sm:px-8 py-5">
+        <div className="border-t border-ink/10 px-6 sm:px-8 py-5">
           <p className="font-mono text-xs text-signal">{error}</p>
         </div>
       )}
 
       {result && (
-        <div className="border-t border-ink/20 px-6 sm:px-8 py-6 animate-rise">
+        <div className="border-t border-ink/10 px-6 sm:px-8 py-6 animate-rise">
           <p
-            className={`inline-block font-mono text-[11px] uppercase tracking-[0.2em] font-semibold px-3 py-1.5 border-2 mb-4 ${
+            className={`inline-block font-mono text-[11px] uppercase tracking-[0.2em] font-semibold rounded-full px-4 py-1.5 mb-4 ${
               result.mentioned
-                ? "border-confirm text-confirm"
-                : "border-signal text-signal"
+                ? "bg-confirm/10 text-confirm"
+                : "bg-signal/10 text-signal"
             }`}
           >
             {result.mentioned ? "✓ Marca mencionada" : "✗ Marca não mencionada"}
@@ -641,7 +655,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/auth/signup"
-              className="font-mono text-xs uppercase tracking-[0.15em] bg-ink text-bone px-4 py-2.5 hover:bg-signal transition-colors"
+              className="font-mono text-xs uppercase tracking-[0.15em] bg-ink text-bone rounded-full px-5 py-2.5 hover:bg-signal transition-colors"
             >
               Começar grátis
             </Link>
@@ -671,13 +685,13 @@ export default function LandingPage() {
             <div className="pt-3 border-t border-ink/10 flex gap-3">
               <Link
                 href="/auth/login"
-                className="flex-1 text-center font-mono text-xs uppercase tracking-[0.15em] border border-ink px-4 py-2.5"
+                className="flex-1 text-center font-mono text-xs uppercase tracking-[0.15em] border border-ink/25 rounded-full px-4 py-2.5"
               >
                 Entrar
               </Link>
               <Link
                 href="/auth/signup"
-                className="flex-1 text-center font-mono text-xs uppercase tracking-[0.15em] bg-ink text-bone px-4 py-2.5"
+                className="flex-1 text-center font-mono text-xs uppercase tracking-[0.15em] bg-ink text-bone rounded-full px-4 py-2.5"
               >
                 Começar
               </Link>
@@ -714,7 +728,7 @@ export default function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
                 <Link
                   href="/auth/signup"
-                  className="group inline-flex items-center justify-center gap-2.5 bg-signal text-bone font-mono text-sm font-semibold px-7 py-4 hover:bg-ink transition-colors"
+                  className="group inline-flex items-center justify-center gap-2.5 bg-signal text-bone font-mono text-sm font-semibold rounded-full px-8 py-4 shadow-[0_8px_20px_-6px_rgba(63,107,78,0.45)] hover:bg-ink hover:shadow-[0_8px_20px_-6px_rgba(15,25,35,0.4)] transition-all"
                 >
                   Ver minha presença agora
                   <ArrowRight
@@ -724,7 +738,7 @@ export default function LandingPage() {
                 </Link>
                 <a
                   href="#como-funciona"
-                  className="inline-flex items-center justify-center border border-ink/25 font-mono text-sm px-7 py-4 text-ink/70 hover:border-ink hover:text-ink transition-colors"
+                  className="inline-flex items-center justify-center border border-ink/20 rounded-full font-mono text-sm px-8 py-4 text-ink/70 hover:border-ink/50 hover:text-ink hover:bg-white/60 transition-colors"
                 >
                   Como funciona
                 </a>
@@ -820,10 +834,10 @@ export default function LandingPage() {
             </h2>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-px bg-ink/15 border border-ink/15">
+          <div className="grid md:grid-cols-3 gap-6">
             {STEPS.map((step, i) => (
-              <FadeIn key={step.num} delay={i * 120} className="bg-bone">
-                <div className="p-8 lg:p-10 h-full">
+              <FadeIn key={step.num} delay={i * 120} className="h-full">
+                <div className="rounded-3xl border border-ink/10 bg-white p-8 lg:p-10 h-full shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.15)]">
                   <p className="font-display font-black text-5xl text-ink/15 mb-6">
                     {step.num}
                   </p>
@@ -882,7 +896,11 @@ export default function LandingPage() {
           {/* Mockup evolução */}
           <FadeIn delay={200}>
             <div className="relative">
-              <div className="border-2 border-ink bg-white p-6 sm:p-8">
+              <div
+                aria-hidden
+                className="absolute -inset-5 -z-10 rounded-[2.5rem] bg-gradient-to-br from-signal/12 via-transparent to-transparent blur-2xl"
+              />
+              <div className="rounded-3xl border border-ink/10 bg-white p-6 sm:p-8 shadow-[0_1px_2px_rgba(15,25,35,0.05),0_24px_56px_-24px_rgba(15,25,35,0.2)]">
                 <div className="flex items-baseline justify-between mb-8">
                   <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
                     Evolução — 8 semanas
@@ -902,7 +920,6 @@ export default function LandingPage() {
                   </span>
                 </div>
               </div>
-              <div className="absolute inset-0 border-2 border-ink bg-signal -z-10 translate-x-2 translate-y-2" />
             </div>
           </FadeIn>
         </div>
@@ -927,7 +944,11 @@ export default function LandingPage() {
 
           <FadeIn delay={150} className="lg:order-1">
             <div className="relative">
-              <div className="border-2 border-ink bg-white p-6 sm:p-8">
+              <div
+                aria-hidden
+                className="absolute -inset-5 -z-10 rounded-[2.5rem] bg-gradient-to-tl from-confirm/12 via-transparent to-transparent blur-2xl"
+              />
+              <div className="rounded-3xl border border-ink/10 bg-white p-6 sm:p-8 shadow-[0_1px_2px_rgba(15,25,35,0.05),0_24px_56px_-24px_rgba(15,25,35,0.2)]">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50 mb-6">
                   Share of voice — sua keyword principal
                 </p>
@@ -959,7 +980,6 @@ export default function LandingPage() {
                   ▲ OdontoPrime subiu 3 posições no Gemini esta semana
                 </p>
               </div>
-              <div className="absolute inset-0 border-2 border-ink bg-ink -z-10 translate-x-2 translate-y-2" />
             </div>
           </FadeIn>
         </div>
@@ -984,14 +1004,18 @@ export default function LandingPage() {
 
           <FadeIn delay={150}>
             <div className="relative">
-              <div className="border-2 border-ink bg-white divide-y divide-ink/10">
+              <div
+                aria-hidden
+                className="absolute -inset-5 -z-10 rounded-[2.5rem] bg-gradient-to-br from-confirm/12 via-transparent to-transparent blur-2xl"
+              />
+              <div className="rounded-3xl border border-ink/10 bg-white divide-y divide-ink/[0.07] overflow-hidden shadow-[0_1px_2px_rgba(15,25,35,0.05),0_24px_56px_-24px_rgba(15,25,35,0.2)]">
                 {ACTIONS.map((a) => (
                   <div key={a.text} className="p-5 flex gap-4 items-start">
                     <span
-                      className={`shrink-0 font-mono text-[10px] uppercase tracking-[0.15em] px-2 py-1 border mt-0.5 ${
+                      className={`shrink-0 font-mono text-[10px] uppercase tracking-[0.15em] rounded-full px-2.5 py-1 mt-0.5 ${
                         a.priority === "alta"
-                          ? "border-signal text-signal"
-                          : "border-navy text-navy"
+                          ? "bg-signal/10 text-signal"
+                          : "bg-navy/10 text-navy"
                       }`}
                     >
                       {a.priority}
@@ -1002,7 +1026,6 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <div className="absolute inset-0 border-2 border-ink bg-confirm -z-10 translate-x-2 translate-y-2" />
             </div>
           </FadeIn>
         </div>
@@ -1025,11 +1048,11 @@ export default function LandingPage() {
 
             {/* toggle */}
             <div className="flex justify-center mb-14">
-              <div className="inline-flex border border-ink">
+              <div className="inline-flex rounded-full border border-ink/15 bg-white p-1 shadow-[0_1px_2px_rgba(15,25,35,0.05)]">
                 <button
                   onClick={() => setAnnual(false)}
                   aria-pressed={!annual}
-                  className={`font-mono text-xs uppercase tracking-[0.15em] px-5 py-2.5 transition-colors ${
+                  className={`font-mono text-xs uppercase tracking-[0.15em] rounded-full px-5 py-2 transition-colors ${
                     !annual ? "bg-ink text-bone" : "text-ink/60 hover:text-ink"
                   }`}
                 >
@@ -1038,7 +1061,7 @@ export default function LandingPage() {
                 <button
                   onClick={() => setAnnual(true)}
                   aria-pressed={annual}
-                  className={`font-mono text-xs uppercase tracking-[0.15em] px-5 py-2.5 transition-colors ${
+                  className={`font-mono text-xs uppercase tracking-[0.15em] rounded-full px-5 py-2 transition-colors ${
                     annual ? "bg-ink text-bone" : "text-ink/60 hover:text-ink"
                   }`}
                 >
@@ -1048,20 +1071,20 @@ export default function LandingPage() {
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-0 lg:border lg:border-ink/15 lg:divide-x lg:divide-ink/15 items-stretch">
+          <div className="grid md:grid-cols-3 gap-6 items-stretch">
             {PLANS.map((plan, i) => {
               const price = annual ? Math.round(plan.monthly * 0.8) : plan.monthly;
               return (
                 <FadeIn key={plan.name} delay={i * 120} className="h-full">
                   <div
-                    className={`relative h-full p-8 lg:p-10 flex flex-col ${
+                    className={`relative h-full rounded-3xl p-8 lg:p-10 flex flex-col ${
                       plan.highlight
-                        ? "bg-ink text-bone border-2 border-ink"
-                        : "border border-ink/15 lg:border-0 bg-bone"
+                        ? "bg-ink text-bone shadow-[0_24px_56px_-20px_rgba(15,25,35,0.4)]"
+                        : "border border-ink/10 bg-white shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)]"
                     }`}
                   >
                     {plan.highlight && (
-                      <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-signal text-bone font-mono text-[10px] uppercase tracking-[0.2em] px-3 py-1.5">
+                      <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-signal text-bone font-mono text-[10px] uppercase tracking-[0.2em] rounded-full px-4 py-1.5 shadow-[0_6px_16px_-4px_rgba(63,107,78,0.5)]">
                         Mais escolhido
                       </span>
                     )}
@@ -1101,10 +1124,10 @@ export default function LandingPage() {
                     </ul>
                     <Link
                       href="/auth/signup"
-                      className={`block text-center font-mono text-sm font-semibold px-6 py-3.5 transition-colors ${
+                      className={`block text-center font-mono text-sm font-semibold rounded-full px-6 py-3.5 transition-colors ${
                         plan.highlight
                           ? "bg-signal text-bone hover:bg-bone hover:text-ink"
-                          : "border border-ink text-ink hover:bg-ink hover:text-bone"
+                          : "border border-ink/25 text-ink hover:bg-ink hover:text-bone hover:border-ink"
                       }`}
                     >
                       Começar 7 dias grátis
@@ -1150,7 +1173,7 @@ export default function LandingPage() {
             </h2>
             <Link
               href="/auth/signup"
-              className="group inline-flex items-center gap-3 bg-signal text-bone font-mono text-sm font-semibold px-9 py-4 hover:bg-bone hover:text-ink transition-colors"
+              className="group inline-flex items-center gap-3 bg-signal text-bone font-mono text-sm font-semibold rounded-full px-9 py-4 shadow-[0_10px_28px_-8px_rgba(63,107,78,0.6)] hover:bg-bone hover:text-ink transition-colors"
             >
               Ver minha presença agora
               <ArrowRight
@@ -1236,7 +1259,7 @@ function ScoreBars() {
       {WEEKLY_SCORES.map((s, i) => (
         <div key={i} className="flex-1 flex flex-col justify-end h-full">
           <div
-            className={i === WEEKLY_SCORES.length - 1 ? "bg-confirm" : "bg-ink/25"}
+            className={`rounded-t-md ${i === WEEKLY_SCORES.length - 1 ? "bg-confirm" : "bg-ink/20"}`}
             style={{
               height: inView ? `${(s / max) * 100}%` : "0%",
               transition: `height 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${i * 90}ms`,
