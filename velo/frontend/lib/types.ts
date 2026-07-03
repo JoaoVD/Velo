@@ -32,6 +32,26 @@ export interface Score {
   geo_score: number;
 }
 
+export interface ShareOfVoiceCompetitor {
+  id: string;
+  name: string;
+  frequency_score: number;
+  position_score: number;
+}
+
+export interface ShareOfVoiceEntry {
+  keyword_id: string;
+  term: string;
+  engine: "chatgpt" | "gemini";
+  brand_frequency: number;
+  competitors: ShareOfVoiceCompetitor[];
+}
+
+export interface ShareOfVoice {
+  date: string | null;
+  keywords: ShareOfVoiceEntry[];
+}
+
 export interface Report {
   id: string;
   brand_id: string;

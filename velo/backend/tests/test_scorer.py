@@ -1,5 +1,5 @@
 import pytest
-from app.analysis.scorer import calculate_geo_score
+from app.analysis.scorer import calculate_geo_score, calculate_competitor_scores
 
 
 def test_all_mentioned_first_positive():
@@ -77,3 +77,35 @@ def test_fourth_position_maps_to_40():
     ]
     result = calculate_geo_score(analyses)
     assert result["position_score"] == 40.0  # 3rd+ = 40
+
+
+def test_competitor_scores_frequency_and_position():
+    analyses = [
+        {"mentioned": True, "position": 1, "sentiment": "positive",
+         "competitors": {"Rival A": {"mentioned": True, "position": 2},
+                         "Rival B": {"mentioned": False, "position": None}}},
+        {"mentioned": False, "position": None, "sentiment": None,
+         "competitors": {"Rival A": {"mentioned": True, "position": 1},
+                         "Rival B": {"mentioned": False, "position": None}}},
+    ]
+    result = calculate_competitor_scores(analyses, ["Rival A", "Rival B"])
+    assert result["Rival A"]["frequency_score"] == 100.0
+    assert result["Rival A"]["position_score"] == 85.0  # (70 + 100) / 2
+    assert result["Rival B"]["frequency_score"] == 0.0
+    assert result["Rival B"]["position_score"] == 0.0
+
+
+def test_competitor_scores_missing_competitor_data_counts_as_not_mentioned():
+    analyses = [
+        {"mentioned": True, "position": 1, "sentiment": "positive", "competitors": {}},
+        {"mentioned": True, "position": 1, "sentiment": "positive",
+         "competitors": {"Rival A": {"mentioned": True, "position": 3}}},
+    ]
+    result = calculate_competitor_scores(analyses, ["Rival A"])
+    assert result["Rival A"]["frequency_score"] == 50.0
+    assert result["Rival A"]["position_score"] == 40.0  # fora do POSITION_MAP -> 40
+
+
+def test_competitor_scores_empty_inputs():
+    assert calculate_competitor_scores([], ["Rival A"]) == {"Rival A": {"frequency_score": 0.0, "position_score": 0.0}}
+    assert calculate_competitor_scores([{"mentioned": False, "position": None, "sentiment": None, "competitors": {}}], []) == {}

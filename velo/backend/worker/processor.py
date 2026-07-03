@@ -7,7 +7,8 @@ from app.connectors.chatgpt import ChatGPTConnector
 from app.connectors.gemini import GeminiConnector
 from app.connectors.base import build_consumer_prompt
 from app.analysis.analyzer import analyze_response
-from app.analysis.scorer import calculate_geo_score
+from app.analysis.scorer import calculate_geo_score, calculate_competitor_scores
+from app.analysis.alerts import compute_scan_delta
 from app.analysis.reporter import generate_report, generate_action_plan
 
 logger = logging.getLogger(__name__)
@@ -24,6 +25,9 @@ async def process_job(job_id: str) -> None:
     if not brand:
         raise ValueError(f"Brand {job['brand_id']} não encontrada para o job {job_id}")
     keywords = db.table("keywords").select("*").eq("brand_id", brand["id"]).execute().data or []
+    competitors = db.table("competitors").select("*").eq("brand_id", brand["id"]).execute().data or []
+    competitor_names = [c["name"] for c in competitors]
+    competitor_ids = {c["name"]: c["id"] for c in competitors}
 
     db.table("jobs").update({"status": "running", "started_at": "now()"}).eq("id", job_id).execute()
 
@@ -34,6 +38,7 @@ async def process_job(job_id: str) -> None:
 
     scores_by_engine: dict[str, list[float]] = {"chatgpt": [], "gemini": []}
     keyword_scores: list[dict] = []
+    current_score_rows: list[dict] = []
     sample_responses: list[str] = []
 
     for keyword in keywords:
@@ -56,6 +61,7 @@ async def process_job(job_id: str) -> None:
                     query=keyword["term"],
                     response=response_text,
                     api_key=settings.anthropic_api_key,
+                    competitors=competitor_names or None,
                 )
                 analyses.append(analysis)
 
@@ -72,6 +78,23 @@ async def process_job(job_id: str) -> None:
 
             scores_by_engine[engine].append(score["geo_score"])
             keyword_scores.append({"term": keyword["term"], "geo_score": score["geo_score"]})
+            current_score_rows.append({
+                "keyword_id": keyword["id"],
+                "engine": engine,
+                "geo_score": score["geo_score"],
+                "mention_score": score["mention_score"],
+            })
+
+            if competitor_names:
+                comp_scores = calculate_competitor_scores(analyses, competitor_names)
+                for comp_name, cs in comp_scores.items():
+                    db.table("competitor_scores").upsert({
+                        "competitor_id": competitor_ids[comp_name],
+                        "keyword_id": keyword["id"],
+                        "engine": engine,
+                        "date": str(datetime.now(timezone.utc).date()),
+                        **cs,
+                    }, on_conflict="competitor_id,keyword_id,engine,date").execute()
 
             action = await generate_action_plan(
                 brand_name=brand["name"],
@@ -93,6 +116,28 @@ async def process_job(job_id: str) -> None:
         for engine, scores in scores_by_engine.items()
     }
 
+    # Compara com o scan anterior para digest (variação real) e alertas
+    scan_delta = {"score_change": 0, "lost_mentions": [], "should_alert": False}
+    keyword_ids = [k["id"] for k in keywords]
+    if keyword_ids:
+        previous_rows = db.table("scores").select(
+            "keyword_id, engine, date, geo_score, mention_score"
+        ).in_("keyword_id", keyword_ids).lt(
+            "date", str(datetime.now(timezone.utc).date())
+        ).order("date", desc=True).execute().data or []
+        if previous_rows:
+            last_date = previous_rows[0]["date"]
+            previous_scores = [
+                {
+                    "keyword_id": r["keyword_id"],
+                    "engine": r["engine"],
+                    "geo_score": float(r["geo_score"]),
+                    "mention_score": float(r["mention_score"]),
+                }
+                for r in previous_rows if r["date"] == last_date
+            ]
+            scan_delta = compute_scan_delta(previous_scores, current_score_rows)
+
     report_md = await generate_report(
         brand_name=brand["name"],
         scores_by_engine=avg_scores,
@@ -112,10 +157,10 @@ async def process_job(job_id: str) -> None:
         "content_md": report_md,
     }).execute()
 
-    # Send weekly report email (non-blocking: errors logged, job not failed)
+    # Send weekly report + alert emails (non-blocking: errors logged, job not failed)
     if settings.resend_api_key:
         try:
-            from app.email.sender import send_weekly_report_email
+            from app.email.sender import send_weekly_report_email, send_alert_email
             users_result = db.table("user_organizations").select("user_id").eq(
                 "organization_id", brand["organization_id"]
             ).execute()
@@ -136,10 +181,23 @@ async def process_job(job_id: str) -> None:
                         to_email=to_email,
                         brand_name=brand["name"],
                         geo_score=overall_score,
-                        score_change=0,
+                        score_change=scan_delta["score_change"],
                         report_url="https://app.velo.com.br/report",
                         top_action=top_action_text,
                     )
+                    if scan_delta["should_alert"]:
+                        terms_by_id = {k["id"]: k["term"] for k in keywords}
+                        send_alert_email(
+                            api_key=settings.resend_api_key,
+                            to_email=to_email,
+                            brand_name=brand["name"],
+                            score_change=scan_delta["score_change"],
+                            lost_keywords=[
+                                {"term": terms_by_id.get(lm["keyword_id"], "?"), "engine": lm["engine"]}
+                                for lm in scan_delta["lost_mentions"]
+                            ],
+                            dashboard_url="https://app.velo.com.br/dashboard",
+                        )
         except Exception as email_err:
             logger.warning("Erro ao enviar email de relatório: %s", email_err)
 

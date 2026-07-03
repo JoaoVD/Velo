@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.routers import brands, keywords, scores, reports, action_plans, internal, competitors
+from app.routers import brands, keywords, scores, reports, action_plans, internal, competitors, public
 
 app = FastAPI(title="Velo API", version="0.1.0")
 app.add_middleware(
@@ -17,6 +17,7 @@ app.include_router(reports.router)
 app.include_router(action_plans.router)
 app.include_router(internal.router)
 app.include_router(competitors.router)
+app.include_router(public.router)
 
 
 @app.get("/health")

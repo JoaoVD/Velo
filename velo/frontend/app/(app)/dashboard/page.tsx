@@ -3,7 +3,8 @@ import { apiFetch } from "@/lib/api";
 import { GeoScoreCard } from "@/components/GeoScoreCard";
 import { ScoreHistoryChart } from "@/components/ScoreHistoryChart";
 import { KeywordsTable } from "@/components/KeywordsTable";
-import { Brand, Keyword, Score } from "@/lib/types";
+import { ShareOfVoiceCard } from "@/components/ShareOfVoiceCard";
+import { Brand, Keyword, Score, ShareOfVoice } from "@/lib/types";
 import { redirect } from "next/navigation";
 import ForceScanButton from "./ForceScanButton";
 
@@ -51,9 +52,12 @@ export default async function DashboardPage() {
   const brand = brands[0];
   if (!brand) redirect("/onboarding");
 
-  const [scores, keywords] = await Promise.all([
+  const [scores, keywords, shareOfVoice] = await Promise.all([
     apiFetch<Score[]>(`/brands/${brand.id}/scores`, token).catch(() => [] as Score[]),
     apiFetch<Keyword[]>(`/brands/${brand.id}/keywords`, token).catch(() => [] as Keyword[]),
+    apiFetch<ShareOfVoice>(`/brands/${brand.id}/competitors/share-of-voice`, token).catch(
+      () => ({ date: null, keywords: [] }) as ShareOfVoice
+    ),
   ]);
 
   const currentScores = getLatestScoreByEngine(scores);
@@ -138,6 +142,16 @@ export default async function DashboardPage() {
             </h2>
             <ScoreHistoryChart scores={scores} />
           </div>
+
+          {/* Share of voice */}
+          {shareOfVoice.keywords.length > 0 && (
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+              <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+                Share of Voice · Você vs. Concorrentes
+              </h2>
+              <ShareOfVoiceCard entries={shareOfVoice.keywords} brandName={brand.name} />
+            </div>
+          )}
 
           {/* Keywords table */}
           {keywords.length > 0 && (

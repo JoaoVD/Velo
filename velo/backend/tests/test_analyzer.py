@@ -41,6 +41,50 @@ async def test_analyze_not_mentioned():
     assert result["sentiment"] is None
 
 @pytest.mark.asyncio
+async def test_analyze_with_competitors():
+    mock_response = MagicMock()
+    mock_response.content = [MagicMock(text=(
+        '{"mentioned": true, "position": 2, "sentiment": "neutral", '
+        '"competitors": {"Escritório Pereira": {"mentioned": true, "position": 1}, '
+        '"Escritório Almeida": {"mentioned": false, "position": null}}}'
+    ))]
+
+    with patch("app.analysis.analyzer.anthropic.Anthropic") as MockAnthropic:
+        instance = MockAnthropic.return_value
+        instance.messages.create.return_value = mock_response
+        result = await analyze_response(
+            brand_name="Advocacia Silva",
+            query="advogado trabalhista SP",
+            response="1. Escritório Pereira, 2. Advocacia Silva",
+            api_key="fake-key",
+            competitors=["Escritório Pereira", "Escritório Almeida"],
+        )
+
+    assert result["mentioned"] is True
+    assert result["competitors"]["Escritório Pereira"]["mentioned"] is True
+    assert result["competitors"]["Escritório Pereira"]["position"] == 1
+    assert result["competitors"]["Escritório Almeida"]["mentioned"] is False
+
+
+@pytest.mark.asyncio
+async def test_analyze_without_competitors_returns_empty_dict():
+    mock_response = MagicMock()
+    mock_response.content = [MagicMock(text='{"mentioned": false, "position": null, "sentiment": null}')]
+
+    with patch("app.analysis.analyzer.anthropic.Anthropic") as MockAnthropic:
+        instance = MockAnthropic.return_value
+        instance.messages.create.return_value = mock_response
+        result = await analyze_response(
+            brand_name="Advocacia Silva",
+            query="advogado trabalhista SP",
+            response="Recomendo o Escritório Pereira...",
+            api_key="fake-key",
+        )
+
+    assert result["competitors"] == {}
+
+
+@pytest.mark.asyncio
 async def test_analyze_mentioned_third_neutral():
     mock_response = MagicMock()
     mock_response.content = [MagicMock(text='{"mentioned": true, "position": 3, "sentiment": "neutral"}')]
