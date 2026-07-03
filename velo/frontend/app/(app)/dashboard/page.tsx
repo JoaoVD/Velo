@@ -44,7 +44,8 @@ function getPreviousScoreByEngine(scores: Score[]): Record<string, number> {
 export default async function DashboardPage() {
   const supabase = await createServerClient();
   const { data: { session } } = await supabase.auth.getSession();
-  const token = session?.access_token ?? "";
+  if (!session) redirect("/auth/login");
+  const token = session.access_token;
 
   const brands = await apiFetch<Brand[]>("/brands", token).catch(() => [] as Brand[]);
   const brand = brands[0];
@@ -84,7 +85,7 @@ export default async function DashboardPage() {
           <span className="font-mono text-[10px] uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-semibold">
             Starter
           </span>
-          <ForceScanButton />
+          <ForceScanButton brandId={brand.id} />
         </div>
       </div>
 

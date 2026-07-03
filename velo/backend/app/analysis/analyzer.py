@@ -1,4 +1,5 @@
 import json
+import re
 import anthropic
 
 ANALYSIS_PROMPT = """Analise a resposta abaixo e determine se "{brand_name}" foi mencionada.
@@ -37,5 +38,13 @@ async def analyze_response(
             messages=[{"role": "user", "content": prompt}],
         )
     )
+    if not message.content:
+        raise ValueError("Analyzer: Claude retornou resposta vazia")
     raw = message.content[0].text.strip()
-    return json.loads(raw)
+    # Remove markdown code fences if present
+    raw = re.sub(r'^```(?:json)?\s*', '', raw, flags=re.MULTILINE)
+    raw = re.sub(r'\s*```\s*$', '', raw, flags=re.MULTILINE)
+    try:
+        return json.loads(raw.strip())
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Analyzer: JSON inválido do Claude: {raw[:200]}") from e

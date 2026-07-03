@@ -1,6 +1,6 @@
 import asyncio
 from fastapi import APIRouter, Depends, HTTPException
-from app.auth import get_current_user
+from app.auth import get_current_user, require_brand_access
 from app.models.schemas import KeywordCreate, KeywordOut, UserContext
 from app.database import supabase_client
 
@@ -9,6 +9,7 @@ router = APIRouter(prefix="/brands/{brand_id}/keywords", tags=["keywords"])
 
 @router.get("", response_model=list[KeywordOut])
 async def list_keywords(brand_id: str, user: UserContext = Depends(get_current_user)):
+    await require_brand_access(brand_id, user)
     result = await asyncio.to_thread(
         lambda: supabase_client().table("keywords").select("*").eq("brand_id", brand_id).execute()
     )
@@ -17,6 +18,7 @@ async def list_keywords(brand_id: str, user: UserContext = Depends(get_current_u
 
 @router.post("", response_model=KeywordOut, status_code=201)
 async def create_keyword(brand_id: str, body: KeywordCreate, user: UserContext = Depends(get_current_user)):
+    await require_brand_access(brand_id, user)
     existing = await asyncio.to_thread(
         lambda: supabase_client().table("keywords").select("id").eq("brand_id", brand_id).execute()
     )
@@ -33,6 +35,7 @@ async def create_keyword(brand_id: str, body: KeywordCreate, user: UserContext =
 
 @router.delete("/{keyword_id}", status_code=204)
 async def delete_keyword(brand_id: str, keyword_id: str, user: UserContext = Depends(get_current_user)):
+    await require_brand_access(brand_id, user)
     await asyncio.to_thread(
         lambda: supabase_client().table("keywords").delete().eq("id", keyword_id).eq("brand_id", brand_id).execute()
     )

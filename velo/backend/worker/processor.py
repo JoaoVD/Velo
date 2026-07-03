@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from datetime import date, timedelta
+from datetime import datetime, timedelta, timezone
 from app.config import settings
 from app.database import supabase_client
 from app.connectors.chatgpt import ChatGPTConnector
@@ -18,8 +18,12 @@ ENGINES = ["chatgpt", "gemini"]
 async def process_job(job_id: str) -> None:
     db = supabase_client()
     job = db.table("jobs").select("*").eq("id", job_id).single().execute().data
+    if not job:
+        raise ValueError(f"Job {job_id} não encontrado")
     brand = db.table("brands").select("*").eq("id", job["brand_id"]).single().execute().data
-    keywords = db.table("keywords").select("*").eq("brand_id", brand["id"]).execute().data
+    if not brand:
+        raise ValueError(f"Brand {job['brand_id']} não encontrada para o job {job_id}")
+    keywords = db.table("keywords").select("*").eq("brand_id", brand["id"]).execute().data or []
 
     db.table("jobs").update({"status": "running", "started_at": "now()"}).eq("id", job_id).execute()
 
@@ -62,7 +66,7 @@ async def process_job(job_id: str) -> None:
             db.table("scores").upsert({
                 "keyword_id": keyword["id"],
                 "engine": engine,
-                "date": str(date.today()),
+                "date": str(datetime.now(timezone.utc).date()),
                 **score,
             }).execute()
 
@@ -97,7 +101,7 @@ async def process_job(job_id: str) -> None:
         api_key=settings.anthropic_api_key,
     )
 
-    _today = date.today()
+    _today = datetime.now(timezone.utc).date()
     _period_start = _today - timedelta(days=_today.weekday())
     _period_end = _period_start + timedelta(days=6)
 

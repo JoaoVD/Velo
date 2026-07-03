@@ -1,7 +1,7 @@
 import asyncio
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from app.auth import get_current_user
+from app.auth import get_current_user, require_brand_access
 from app.models.schemas import UserContext
 from app.database import supabase_client
 
@@ -21,6 +21,7 @@ class CompetitorOut(BaseModel):
 
 @router.get("", response_model=list[CompetitorOut])
 async def list_competitors(brand_id: str, user: UserContext = Depends(get_current_user)):
+    await require_brand_access(brand_id, user)
     result = await asyncio.to_thread(
         lambda: supabase_client().table("competitors").select("*").eq("brand_id", brand_id).execute()
     )
@@ -31,6 +32,7 @@ async def list_competitors(brand_id: str, user: UserContext = Depends(get_curren
 async def create_competitor(
     brand_id: str, body: CompetitorCreate, user: UserContext = Depends(get_current_user)
 ):
+    await require_brand_access(brand_id, user)
     existing = await asyncio.to_thread(
         lambda: supabase_client().table("competitors").select("id").eq("brand_id", brand_id).execute()
     )
@@ -49,6 +51,7 @@ async def create_competitor(
 async def delete_competitor(
     brand_id: str, competitor_id: str, user: UserContext = Depends(get_current_user)
 ):
+    await require_brand_access(brand_id, user)
     await asyncio.to_thread(
         lambda: supabase_client()
         .table("competitors")

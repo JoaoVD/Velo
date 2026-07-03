@@ -7,7 +7,8 @@ import { redirect } from "next/navigation";
 export default async function HistoryPage() {
   const supabase = await createServerClient();
   const { data: { session } } = await supabase.auth.getSession();
-  const token = session?.access_token ?? "";
+  if (!session) redirect("/auth/login");
+  const token = session.access_token;
 
   const brands = await apiFetch<{ id: string }[]>("/brands", token).catch(() => []);
   const brandId = brands[0]?.id;

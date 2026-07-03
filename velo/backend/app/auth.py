@@ -24,7 +24,7 @@ async def get_current_user(
     except HTTPException:
         raise
     except Exception as e:
-        logger.warning("Auth error: %s", type(e).__name__)
+        logger.warning("Auth error: %s: %s", type(e).__name__, e)
         raise HTTPException(status_code=401, detail="Token inválido ou expirado")
 
 
@@ -40,3 +40,19 @@ async def get_user_organization_id(user: UserContext) -> str:
     if not result.data:
         raise HTTPException(status_code=404, detail="Organização não encontrada")
     return result.data["organization_id"]
+
+
+async def require_brand_access(brand_id: str, user: UserContext) -> str:
+    """Valida que o brand pertence à organização do usuário. Retorna o org_id."""
+    org_id = await get_user_organization_id(user)
+    result = await asyncio.to_thread(
+        lambda: supabase_client()
+        .table("brands")
+        .select("id")
+        .eq("id", brand_id)
+        .eq("organization_id", org_id)
+        .execute()
+    )
+    if not result.data:
+        raise HTTPException(status_code=404, detail="Marca não encontrada")
+    return org_id

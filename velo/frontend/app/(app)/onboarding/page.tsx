@@ -29,22 +29,31 @@ export default function OnboardingPage() {
   const [compInput, setCompInput] = useState("");
 
   useEffect(() => {
+    let cancelled = false;
     const supabase = createBrowserClient();
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       const t = session?.access_token ?? "";
+      if (cancelled) return;
+      if (!t) {
+        router.replace("/auth/login");
+        return;
+      }
       setToken(t);
       // If brand already exists, skip onboarding
       try {
         const brands = await apiFetch<{ id: string }[]>("/brands", t);
-        if (brands[0]) {
+        if (!cancelled && brands[0]) {
           router.replace("/dashboard");
           return;
         }
-      } catch {
-        // No brands — proceed with onboarding
+      } catch (err) {
+        console.error("Erro ao verificar marcas existentes:", err);
       }
-      setChecking(false);
+      if (!cancelled) setChecking(false);
     });
+    return () => {
+      cancelled = true;
+    };
   }, [router]);
 
   function addKeyword(e: React.FormEvent) {

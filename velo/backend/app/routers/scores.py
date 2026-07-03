@@ -1,7 +1,7 @@
 import asyncio
 from fastapi import APIRouter, Depends, Query
 from typing import Optional
-from app.auth import get_current_user
+from app.auth import get_current_user, require_brand_access
 from app.models.schemas import ScoreOut, UserContext
 from app.database import supabase_client
 
@@ -14,6 +14,7 @@ async def list_scores(
     engine: Optional[str] = Query(None),
     user: UserContext = Depends(get_current_user),
 ):
+    await require_brand_access(brand_id, user)
     keyword_ids_result = await asyncio.to_thread(
         lambda: supabase_client().table("keywords").select("id").eq("brand_id", brand_id).execute()
     )

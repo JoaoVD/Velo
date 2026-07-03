@@ -61,6 +61,8 @@ async def generate_report(
             messages=[{"role": "user", "content": prompt}],
         )
     )
+    if not message.content:
+        raise ValueError("Reporter: Claude retornou resposta vazia")
     return message.content[0].text
 
 
@@ -87,6 +89,8 @@ async def generate_action_plan(
             messages=[{"role": "user", "content": prompt}],
         )
     )
+    if not message.content:
+        raise ValueError("Reporter: Claude retornou resposta vazia")
     raw = message.content[0].text.strip()
     # Remove markdown code fences if present
     raw = re.sub(r'^```(?:json)?\s*', '', raw, flags=re.MULTILINE)

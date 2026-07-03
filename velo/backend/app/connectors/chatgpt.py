@@ -13,4 +13,6 @@ class ChatGPTConnector(LLMConnector):
             max_tokens=800,
             temperature=0.7,
         )
+        if not response.choices or response.choices[0].message.content is None:
+            raise ValueError("ChatGPT retornou resposta vazia")
         return response.choices[0].message.content

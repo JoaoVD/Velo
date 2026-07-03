@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     anthropic_api_key: str
     internal_api_key: str
     resend_api_key: Optional[str] = None
+    cors_origins: str = "http://localhost:3000,https://app.velo.com.br"
 
     class Config:
         env_file = ".env"

@@ -2,27 +2,25 @@
 import { useState } from "react";
 import { RefreshCw } from "lucide-react";
 import { useToast } from "@/lib/toast";
+import { createClient } from "@/lib/supabase-browser";
+import { apiFetch } from "@/lib/api";
 
-export default function ForceScanButton() {
+export default function ForceScanButton({ brandId }: { brandId: string }) {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   async function handleScan() {
     setLoading(true);
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/internal/create-jobs`,
-        {
-          method: "POST",
-          headers: {
-            "X-Internal-Key": process.env.NEXT_PUBLIC_INTERNAL_KEY ?? "",
-          },
-        }
-      );
-      if (!res.ok) throw new Error("Erro ao agendar scan");
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) throw new Error("Sessão expirada. Faça login novamente.");
+      await apiFetch(`/brands/${brandId}/scan`, token, { method: "POST" });
       toast("Scan agendado! Resultado em até 24h.");
-    } catch {
-      toast("Erro ao agendar scan. Tente novamente.", "error");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Erro ao agendar scan. Tente novamente.";
+      toast(msg, "error");
     } finally {
       setLoading(false);
     }
