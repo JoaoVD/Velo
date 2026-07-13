@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default function TermosPage() {
   return (
-    <article className="prose prose-slate max-w-none prose-headings:font-display prose-headings:text-ink prose-p:font-mono prose-p:text-sm prose-p:leading-7 prose-li:font-mono prose-li:text-sm prose-li:leading-7">
-      <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-signal">
+    <article className="prose prose-slate max-w-none prose-headings:font-display prose-headings:text-ink prose-p:font-body prose-p:text-sm prose-p:leading-7 prose-li:font-body prose-li:text-sm prose-li:leading-7">
+      <p className="font-body text-[11px] uppercase tracking-[0.15em] text-signal">
         Última atualização: 3 de julho de 2026
       </p>
       <h1>Termos de Uso</h1>

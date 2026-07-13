@@ -7,8 +7,8 @@ export const metadata: Metadata = {
 
 export default function PrivacidadePage() {
   return (
-    <article className="prose prose-slate max-w-none prose-headings:font-display prose-headings:text-ink prose-p:font-mono prose-p:text-sm prose-p:leading-7 prose-li:font-mono prose-li:text-sm prose-li:leading-7 prose-td:font-mono prose-td:text-sm prose-th:font-mono prose-th:text-xs">
-      <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-signal">
+    <article className="prose prose-slate max-w-none prose-headings:font-display prose-headings:text-ink prose-p:font-body prose-p:text-sm prose-p:leading-7 prose-li:font-body prose-li:text-sm prose-li:leading-7 prose-td:font-body prose-td:text-sm prose-th:font-body prose-th:text-xs">
+      <p className="font-body text-[11px] uppercase tracking-[0.15em] text-signal">
         Última atualização: 3 de julho de 2026
       </p>
       <h1>Política de Privacidade</h1>

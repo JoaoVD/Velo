@@ -14,7 +14,7 @@ function Bar({ label, value, highlight, losing }: {
   return (
     <div className="flex items-center gap-3">
       <span
-        className={`font-mono text-xs w-36 shrink-0 truncate ${
+        className={`font-body text-xs w-36 shrink-0 truncate ${
           highlight ? "text-slate-900 font-semibold" : "text-slate-500"
         }`}
         title={label}
@@ -29,7 +29,7 @@ function Bar({ label, value, highlight, losing }: {
           style={{ width: `${Math.min(value, 100)}%` }}
         />
       </div>
-      <span className="font-mono text-xs text-slate-500 w-10 text-right">
+      <span className="font-body text-xs text-slate-500 w-10 text-right">
         {Math.round(value)}%
       </span>
     </div>
@@ -51,14 +51,14 @@ export function ShareOfVoiceCard({
         return (
           <div key={`${entry.keyword_id}-${entry.engine}`}>
             <div className="flex items-center justify-between mb-2.5">
-              <p className="font-mono text-xs text-slate-700 font-semibold">
+              <p className="font-body text-xs text-slate-700 font-semibold">
                 &ldquo;{entry.term}&rdquo;
                 <span className="ml-2 text-[10px] uppercase tracking-widest text-slate-400 font-normal">
                   {ENGINE_LABELS[entry.engine] ?? entry.engine}
                 </span>
               </p>
               {losing && (
-                <span className="font-mono text-[10px] uppercase tracking-widest text-amber-600 font-semibold">
+                <span className="font-body text-[10px] uppercase tracking-widest text-amber-600 font-semibold">
                   Concorrente à frente
                 </span>
               )}

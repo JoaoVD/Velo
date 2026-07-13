@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Mono, Manrope, Inter } from "next/font/google";
+import { Fraunces, Manrope, Nunito } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/lib/toast";
 
@@ -9,23 +9,18 @@ const fraunces = Fraunces({
   weight: ["300", "700", "900"],
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["300", "400", "500", "600"],
-});
-
-// Fontes da landing (estilo Semrush: Factor A ≈ Manrope, corpo = Inter)
+// Títulos da landing (estilo Semrush)
 const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
   weight: ["400", "700", "800"],
 });
 
-const inter = Inter({
+// Fonte do corpo do texto em todo o produto
+const nunito = Nunito({
   subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["300", "400", "500", "600"],
+  variable: "--font-body",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -37,7 +32,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className={`${fraunces.variable} ${ibmPlexMono.variable} ${manrope.variable} ${inter.variable} font-mono bg-bone text-ink`}>
+      <body className={`${fraunces.variable} ${manrope.variable} ${nunito.variable} font-body bg-bone text-ink`}>
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

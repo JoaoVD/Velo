@@ -20,13 +20,13 @@ export default async function HistoryPage() {
     <div>
       <div className="mb-8">
         <h1 className="font-display font-black text-3xl text-slate-900">Histórico</h1>
-        <p className="font-mono text-sm text-slate-500 mt-1.5">Evolução do GEO Score ao longo do tempo</p>
+        <p className="font-body text-sm text-slate-500 mt-1.5">Evolução do GEO Score ao longo do tempo</p>
       </div>
       <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
         {scores.length === 0 ? (
           <div className="text-center py-10">
             <p className="font-display font-black text-lg text-slate-700 mb-2">Nenhum histórico ainda</p>
-            <p className="font-mono text-sm text-slate-400">Histórico disponível após o primeiro scan completo.</p>
+            <p className="font-body text-sm text-slate-400">Histórico disponível após o primeiro scan completo.</p>
           </div>
         ) : (
           <ScoreHistoryChart scores={scores} />

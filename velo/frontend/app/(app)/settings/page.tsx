@@ -141,7 +141,7 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="font-mono text-sm text-slate-400 animate-pulse">Carregando...</div>
+      <div className="font-body text-sm text-slate-400 animate-pulse">Carregando...</div>
     );
   }
 
@@ -149,14 +149,14 @@ export default function SettingsPage() {
     <div className="max-w-2xl space-y-4">
       <div className="mb-8">
         <h1 className="font-display font-black text-3xl text-slate-900">Configurações</h1>
-        <p className="font-mono text-sm text-slate-500 mt-1.5">
+        <p className="font-body text-sm text-slate-500 mt-1.5">
           Gerencie sua marca e monitoramento
         </p>
       </div>
 
       {/* Marca */}
       <section className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
-        <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
+        <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
           Marca monitorada
         </h2>
         {brand ? (
@@ -167,9 +167,9 @@ export default function SettingsPage() {
               </span>
             </div>
             <div>
-              <p className="font-mono text-sm font-semibold text-slate-900">{brand.name}</p>
+              <p className="font-body text-sm font-semibold text-slate-900">{brand.name}</p>
               {brand.website && (
-                <p className="font-mono text-xs text-slate-400 mt-0.5">{brand.website}</p>
+                <p className="font-body text-xs text-slate-400 mt-0.5">{brand.website}</p>
               )}
             </div>
           </div>
@@ -177,7 +177,7 @@ export default function SettingsPage() {
           <form onSubmit={handleCreateBrand} className="space-y-3">
             <div className="flex items-center gap-2 mb-2">
               <Building2 size={13} className="text-slate-400" />
-              <p className="font-mono text-xs text-slate-500">
+              <p className="font-body text-xs text-slate-500">
                 Cadastre sua marca para começar o monitoramento.
               </p>
             </div>
@@ -186,18 +186,18 @@ export default function SettingsPage() {
               onChange={(e) => setNewBrandName(e.target.value)}
               placeholder="Nome da marca *"
               required
-              className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
+              className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
             />
             <input
               value={newBrandWebsite}
               onChange={(e) => setNewBrandWebsite(e.target.value)}
               placeholder="Site (opcional)"
-              className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
+              className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
             />
             <button
               type="submit"
               disabled={creatingBrand}
-              className="flex items-center gap-1.5 bg-moss-600 text-white px-5 py-2.5 rounded-full font-mono text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60"
+              className="flex items-center gap-1.5 bg-moss-600 text-white px-5 py-2.5 rounded-full font-body text-sm font-semibold hover:bg-moss-700 transition-colors disabled:opacity-60"
             >
               <Plus size={14} />
               {creatingBrand ? "Salvando..." : "Cadastrar marca"}
@@ -209,10 +209,10 @@ export default function SettingsPage() {
       {/* Keywords */}
       <section className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
+          <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
             Keywords monitoradas
           </h2>
-          <span className="font-mono text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium">
+          <span className="font-body text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium">
             {keywords.length} / 10
           </span>
         </div>
@@ -223,7 +223,7 @@ export default function SettingsPage() {
                 key={kw.id}
                 className="flex items-center justify-between py-2 px-3 rounded-xl bg-slate-50 border border-slate-100"
               >
-                <span className="font-mono text-sm text-slate-700">{kw.term}</span>
+                <span className="font-body text-sm text-slate-700">{kw.term}</span>
                 <button
                   onClick={() => handleDeleteKeyword(kw.id)}
                   className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded"
@@ -240,17 +240,17 @@ export default function SettingsPage() {
               value={newKeyword}
               onChange={(e) => setNewKeyword(e.target.value)}
               placeholder="ex: advogado trabalhista SP"
-              className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
+              className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
             />
             <button
               type="submit"
-              className="flex items-center gap-1 bg-moss-600 text-white px-5 py-2.5 rounded-full font-mono text-sm font-semibold hover:bg-moss-700 transition-colors shrink-0"
+              className="flex items-center gap-1 bg-moss-600 text-white px-5 py-2.5 rounded-full font-body text-sm font-semibold hover:bg-moss-700 transition-colors shrink-0"
             >
               <Plus size={13} /> Adicionar
             </button>
           </form>
         ) : keywords.length >= 10 ? (
-          <p className="font-mono text-xs text-slate-400 text-center py-2">
+          <p className="font-body text-xs text-slate-400 text-center py-2">
             Limite de 10 keywords atingido no plano Starter.
           </p>
         ) : null}
@@ -260,10 +260,10 @@ export default function SettingsPage() {
       {brand && (
         <section className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
+            <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
               Concorrentes
             </h2>
-            <span className="font-mono text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium">
+            <span className="font-body text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium">
               {competitors.length} / 3
             </span>
           </div>
@@ -274,7 +274,7 @@ export default function SettingsPage() {
                   key={c.id}
                   className="flex items-center justify-between py-2 px-3 rounded-xl bg-slate-50 border border-slate-100"
                 >
-                  <span className="font-mono text-sm text-slate-700">{c.name}</span>
+                  <span className="font-body text-sm text-slate-700">{c.name}</span>
                   <button
                     onClick={() => handleDeleteCompetitor(c.id)}
                     className="text-slate-400 hover:text-red-500 transition-colors p-1 rounded"
@@ -291,11 +291,11 @@ export default function SettingsPage() {
                 value={newCompetitor}
                 onChange={(e) => setNewCompetitor(e.target.value)}
                 placeholder="ex: Concorrente S/A"
-                className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
+                className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
               />
               <button
                 type="submit"
-                className="flex items-center gap-1 bg-slate-700 text-white px-5 py-2.5 rounded-full font-mono text-sm font-semibold hover:bg-slate-800 transition-colors shrink-0"
+                className="flex items-center gap-1 bg-slate-700 text-white px-5 py-2.5 rounded-full font-body text-sm font-semibold hover:bg-slate-800 transition-colors shrink-0"
               >
                 <Plus size={13} /> Adicionar
               </button>
@@ -306,22 +306,22 @@ export default function SettingsPage() {
 
       {/* Plano atual */}
       <section className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
-        <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
+        <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
           Plano atual
         </h2>
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="font-display font-black text-xl text-slate-900">Starter</p>
-            <p className="font-mono text-xs text-slate-400 mt-1">
+            <p className="font-body text-xs text-slate-400 mt-1">
               1 marca · até 10 keywords · scan semanal
             </p>
-            <p className="font-mono text-xs text-slate-400">
+            <p className="font-body text-xs text-slate-400">
               Keywords usadas: {keywords.length} / 10
             </p>
           </div>
           <Link
             href="/pricing"
-            className="flex items-center gap-1.5 font-mono text-xs font-semibold text-moss-600 border border-moss-200 px-4 py-2 rounded-full hover:bg-moss-50 transition-colors shrink-0"
+            className="flex items-center gap-1.5 font-body text-xs font-semibold text-moss-600 border border-moss-200 px-4 py-2 rounded-full hover:bg-moss-50 transition-colors shrink-0"
           >
             <ExternalLink size={12} /> Fazer upgrade
           </Link>

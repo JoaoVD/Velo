@@ -226,12 +226,12 @@ function HeroSimulator() {
               <span className="w-2 h-2 rounded-full bg-ink/15" />
               <span className="w-2 h-2 rounded-full bg-ink/15" />
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
+            <span className="font-body text-[10px] uppercase tracking-[0.2em] text-ink/50">
               Resposta do ChatGPT
             </span>
           </span>
           <span
-            className={`font-mono text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full transition-colors ${
+            className={`font-body text-[10px] uppercase tracking-[0.15em] px-3 py-1 rounded-full transition-colors ${
               withVelo
                 ? "bg-confirm/10 text-confirm"
                 : "bg-ink/5 text-ink/45"
@@ -244,11 +244,11 @@ function HeroSimulator() {
         <div className="p-6 min-h-[280px] sm:min-h-[310px]">
           {/* pergunta do consumidor */}
           <div className="mb-5">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40 mb-2">
+            <p className="font-body text-[10px] uppercase tracking-[0.2em] text-ink/40 mb-2">
               Pergunta real de consumidor
             </p>
             <div className="rounded-2xl rounded-bl-md bg-bone px-4 py-3">
-              <p className="font-mono text-sm text-ink leading-relaxed">
+              <p className="font-body text-sm text-ink leading-relaxed">
                 {typed}
                 <span className="inline-block w-0.5 h-4 bg-signal align-text-bottom ml-0.5 rounded-full animate-caret" />
               </p>
@@ -258,7 +258,7 @@ function HeroSimulator() {
           {/* resposta da IA */}
           {answering && (
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/40 mb-2.5">
+              <p className="font-body text-[10px] uppercase tracking-[0.2em] text-ink/40 mb-2.5">
                 Recomendações da IA
               </p>
               <ol className="space-y-2">
@@ -281,14 +281,14 @@ function HeroSimulator() {
                       {r.pos}
                     </span>
                     <span
-                      className={`font-mono text-sm ${
+                      className={`font-body text-sm ${
                         r.you ? "text-confirm font-semibold" : "text-ink/70"
                       }`}
                     >
                       {r.name}
                     </span>
                     {r.you && (
-                      <span className="ml-auto font-mono text-[10px] uppercase tracking-[0.15em] text-confirm bg-confirm/10 rounded-full px-2.5 py-1">
+                      <span className="ml-auto font-body text-[10px] uppercase tracking-[0.15em] text-confirm bg-confirm/10 rounded-full px-2.5 py-1">
                         sua marca
                       </span>
                     )}
@@ -309,12 +309,12 @@ function HeroSimulator() {
               {/* selo de score */}
               {phase === "hold-with" && (
                 <div className="mt-5 flex items-center justify-between rounded-xl bg-confirm/[0.06] px-4 py-3 animate-rise">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/45">
+                  <span className="font-body text-[10px] uppercase tracking-[0.2em] text-ink/45">
                     GEO Score
                   </span>
                   <span className="font-display font-black text-2xl text-confirm">
                     78
-                    <span className="text-sm text-ink/30 font-mono font-normal">
+                    <span className="text-sm text-ink/30 font-body font-normal">
                       /100
                     </span>
                   </span>
@@ -402,7 +402,7 @@ function FreeChecker() {
       <form onSubmit={handleSubmit} className="p-6 sm:p-8">
         <div className="grid sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label htmlFor="fc-brand" className="block font-mono text-[11px] uppercase tracking-[0.15em] text-ink/50 mb-2">
+            <label htmlFor="fc-brand" className="block font-body text-[11px] uppercase tracking-[0.15em] text-ink/50 mb-2">
               Sua marca
             </label>
             <input
@@ -414,11 +414,11 @@ function FreeChecker() {
               value={brandName}
               onChange={(e) => setBrandName(e.target.value)}
               placeholder="Clínica Sorriso Real"
-              className="w-full bg-bone/60 border border-ink/15 rounded-xl px-4 py-3 font-mono text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal focus:bg-white transition-colors"
+              className="w-full bg-bone/60 border border-ink/15 rounded-xl px-4 py-3 font-body text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal focus:bg-white transition-colors"
             />
           </div>
           <div>
-            <label htmlFor="fc-keyword" className="block font-mono text-[11px] uppercase tracking-[0.15em] text-ink/50 mb-2">
+            <label htmlFor="fc-keyword" className="block font-body text-[11px] uppercase tracking-[0.15em] text-ink/50 mb-2">
               O que seu cliente pergunta
             </label>
             <input
@@ -430,33 +430,33 @@ function FreeChecker() {
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
               placeholder="melhor dentista em Campinas"
-              className="w-full bg-bone/60 border border-ink/15 rounded-xl px-4 py-3 font-mono text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal focus:bg-white transition-colors"
+              className="w-full bg-bone/60 border border-ink/15 rounded-xl px-4 py-3 font-body text-sm placeholder:text-ink/30 focus:outline-none focus:border-signal focus:bg-white transition-colors"
             />
           </div>
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-signal text-bone font-mono text-sm font-semibold rounded-full px-8 py-3.5 shadow-[0_8px_20px_-6px_rgba(63,107,78,0.45)] hover:bg-ink transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-signal text-bone font-body text-sm font-semibold rounded-full px-8 py-3.5 shadow-[0_8px_20px_-6px_rgba(63,107,78,0.45)] hover:bg-ink transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {loading ? "Perguntando ao ChatGPT..." : "Verificar grátis"}
           {!loading && <ArrowRight size={16} />}
         </button>
-        <p className="font-mono text-[10px] text-ink/40 mt-3">
+        <p className="font-body text-[10px] text-ink/40 mt-3">
           3 verificações gratuitas por dia · Sem cadastro
         </p>
       </form>
 
       {error && (
         <div className="border-t border-ink/10 px-6 sm:px-8 py-5">
-          <p className="font-mono text-xs text-signal">{error}</p>
+          <p className="font-body text-xs text-signal">{error}</p>
         </div>
       )}
 
       {result && (
         <div className="border-t border-ink/10 px-6 sm:px-8 py-6 animate-rise">
           <p
-            className={`inline-block font-mono text-[11px] uppercase tracking-[0.2em] font-semibold rounded-full px-4 py-1.5 mb-4 ${
+            className={`inline-block font-body text-[11px] uppercase tracking-[0.2em] font-semibold rounded-full px-4 py-1.5 mb-4 ${
               result.mentioned
                 ? "bg-confirm/10 text-confirm"
                 : "bg-signal/10 text-signal"
@@ -465,7 +465,7 @@ function FreeChecker() {
             {result.mentioned ? "✓ Marca mencionada" : "✗ Marca não mencionada"}
           </p>
           {result.mentioned && (
-            <p className="font-mono text-sm text-ink/70 mb-3">
+            <p className="font-body text-sm text-ink/70 mb-3">
               {result.position !== null && (
                 <>Aparece na <strong className="text-ink">posição {result.position}</strong></>
               )}
@@ -474,12 +474,12 @@ function FreeChecker() {
               )}
             </p>
           )}
-          <blockquote className="border-l-2 border-ink/20 pl-4 font-mono text-[13px] font-light leading-[1.7] text-ink/60 mb-5">
+          <blockquote className="border-l-2 border-ink/20 pl-4 font-body text-[13px] font-light leading-[1.7] text-ink/60 mb-5">
             &ldquo;{result.snippet}…&rdquo;
           </blockquote>
           <Link
             href="/auth/signup"
-            className="group inline-flex items-center gap-2 font-mono text-sm font-semibold text-signal hover:text-ink transition-colors"
+            className="group inline-flex items-center gap-2 font-body text-sm font-semibold text-signal hover:text-ink transition-colors"
           >
             {result.mentioned
               ? "Monitore isso toda semana, em 2 IAs e várias keywords"
@@ -618,12 +618,10 @@ export default function LandingPage() {
   return (
     <main
       className="bg-bone text-ink antialiased"
-      // Tipografia da landing (estilo Semrush): títulos em Manrope, corpo em Inter.
-      // Sobrescreve as vars localmente — o resto do app segue Fraunces + IBM Plex Mono.
+      // Tipografia da landing: títulos em Manrope; corpo segue a Nunito global.
       style={
         {
           "--font-fraunces": "var(--font-manrope)",
-          "--font-mono": "var(--font-inter)",
         } as React.CSSProperties
       }
     >
@@ -639,7 +637,7 @@ export default function LandingPage() {
               <a
                 key={l.href}
                 href={l.href}
-                className="font-mono text-xs uppercase tracking-[0.15em] text-ink/60 hover:text-ink transition-colors"
+                className="font-body text-xs uppercase tracking-[0.15em] text-ink/60 hover:text-ink transition-colors"
               >
                 {l.label}
               </a>
@@ -649,13 +647,13 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/auth/login"
-              className="font-mono text-xs uppercase tracking-[0.15em] text-ink/60 hover:text-ink px-3 py-2 transition-colors"
+              className="font-body text-xs uppercase tracking-[0.15em] text-ink/60 hover:text-ink px-3 py-2 transition-colors"
             >
               Entrar
             </Link>
             <Link
               href="/auth/signup"
-              className="font-mono text-xs uppercase tracking-[0.15em] bg-ink text-bone rounded-full px-5 py-2.5 hover:bg-signal transition-colors"
+              className="font-body text-xs uppercase tracking-[0.15em] bg-ink text-bone rounded-full px-5 py-2.5 hover:bg-signal transition-colors"
             >
               Começar grátis
             </Link>
@@ -677,7 +675,7 @@ export default function LandingPage() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setMobileOpen(false)}
-                className="block font-mono text-sm text-ink/70 py-1.5"
+                className="block font-body text-sm text-ink/70 py-1.5"
               >
                 {l.label}
               </a>
@@ -685,13 +683,13 @@ export default function LandingPage() {
             <div className="pt-3 border-t border-ink/10 flex gap-3">
               <Link
                 href="/auth/login"
-                className="flex-1 text-center font-mono text-xs uppercase tracking-[0.15em] border border-ink/25 rounded-full px-4 py-2.5"
+                className="flex-1 text-center font-body text-xs uppercase tracking-[0.15em] border border-ink/25 rounded-full px-4 py-2.5"
               >
                 Entrar
               </Link>
               <Link
                 href="/auth/signup"
-                className="flex-1 text-center font-mono text-xs uppercase tracking-[0.15em] bg-ink text-bone rounded-full px-4 py-2.5"
+                className="flex-1 text-center font-body text-xs uppercase tracking-[0.15em] bg-ink text-bone rounded-full px-4 py-2.5"
               >
                 Começar
               </Link>
@@ -705,7 +703,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6 pt-16 pb-20 lg:pt-24 lg:pb-28 grid lg:grid-cols-2 gap-14 lg:gap-12 items-center">
           <div>
             <FadeIn>
-              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6 flex items-center gap-2">
+              <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6 flex items-center gap-2">
                 <span className="inline-block w-8 h-px bg-signal" />
                 GEO · Generative Engine Optimization · Brasil
               </p>
@@ -718,7 +716,7 @@ export default function LandingPage() {
               </h1>
             </FadeIn>
             <FadeIn delay={200}>
-              <p className="font-mono text-sm sm:text-[15px] font-light leading-[1.8] text-ink/70 max-w-lg mb-9">
+              <p className="font-body text-sm sm:text-[15px] font-light leading-[1.8] text-ink/70 max-w-lg mb-9">
                 Seus clientes já perguntam ao ChatGPT antes de contratar. A Velo
                 monitora como as IAs descrevem, citam e recomendam a sua marca —
                 calcula um GEO Score de 0 a 100 e entrega o plano para subir.
@@ -728,7 +726,7 @@ export default function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
                 <Link
                   href="/auth/signup"
-                  className="group inline-flex items-center justify-center gap-2.5 bg-signal text-bone font-mono text-sm font-semibold rounded-full px-8 py-4 shadow-[0_8px_20px_-6px_rgba(63,107,78,0.45)] hover:bg-ink hover:shadow-[0_8px_20px_-6px_rgba(15,25,35,0.4)] transition-all"
+                  className="group inline-flex items-center justify-center gap-2.5 bg-signal text-bone font-body text-sm font-semibold rounded-full px-8 py-4 shadow-[0_8px_20px_-6px_rgba(63,107,78,0.45)] hover:bg-ink hover:shadow-[0_8px_20px_-6px_rgba(15,25,35,0.4)] transition-all"
                 >
                   Ver minha presença agora
                   <ArrowRight
@@ -738,14 +736,14 @@ export default function LandingPage() {
                 </Link>
                 <a
                   href="#como-funciona"
-                  className="inline-flex items-center justify-center border border-ink/20 rounded-full font-mono text-sm px-8 py-4 text-ink/70 hover:border-ink/50 hover:text-ink hover:bg-white/60 transition-colors"
+                  className="inline-flex items-center justify-center border border-ink/20 rounded-full font-body text-sm px-8 py-4 text-ink/70 hover:border-ink/50 hover:text-ink hover:bg-white/60 transition-colors"
                 >
                   Como funciona
                 </a>
               </div>
             </FadeIn>
             <FadeIn delay={400}>
-              <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink/40">
+              <p className="font-body text-[11px] uppercase tracking-[0.15em] text-ink/40">
                 Resultado em &lt;24h &nbsp;·&nbsp; 7 dias grátis &nbsp;·&nbsp; Sem cartão
               </p>
             </FadeIn>
@@ -765,7 +763,7 @@ export default function LandingPage() {
               {[...ENGINES, ...ENGINES].map((e, i) => (
                 <span
                   key={`${copy}-${i}`}
-                  className="font-mono text-xs uppercase tracking-[0.25em] px-8 flex items-center gap-3 whitespace-nowrap"
+                  className="font-body text-xs uppercase tracking-[0.25em] px-8 flex items-center gap-3 whitespace-nowrap"
                 >
                   <span
                     className={`inline-block w-1.5 h-1.5 rounded-full ${
@@ -787,13 +785,13 @@ export default function LandingPage() {
       <section id="problema" className="bg-ink text-bone">
         <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32">
           <FadeIn>
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
+            <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
               01 — O problema
             </p>
             <h2 className="font-display font-black text-3xl sm:text-5xl tracking-tight max-w-3xl mb-6 text-balance">
               Seu cliente já pergunta para a IA antes de ligar para você
             </h2>
-            <p className="font-mono text-sm font-light leading-[1.8] text-bone/60 max-w-2xl mb-16">
+            <p className="font-body text-sm font-light leading-[1.8] text-bone/60 max-w-2xl mb-16">
               &ldquo;Qual advogado trabalhista em SP você recomenda?&rdquo;
               &ldquo;Melhor clínica odontológica em Campinas?&rdquo; As IAs
               respondem com nomes específicos. Se o seu não está na resposta, o do
@@ -812,7 +810,7 @@ export default function LandingPage() {
                   <p className="font-display font-black text-6xl sm:text-7xl text-signal mb-4">
                     <Counter to={stat.value} suffix={stat.suffix} />
                   </p>
-                  <p className="font-mono text-[13px] font-light leading-[1.7] text-bone/60">
+                  <p className="font-body text-[13px] font-light leading-[1.7] text-bone/60">
                     {stat.text}
                   </p>
                 </div>
@@ -826,7 +824,7 @@ export default function LandingPage() {
       <section id="como-funciona" className="border-b border-ink/15">
         <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32">
           <FadeIn>
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
+            <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
               02 — Como funciona
             </p>
             <h2 className="font-display font-black text-3xl sm:text-5xl tracking-tight max-w-3xl mb-16 text-balance">
@@ -842,7 +840,7 @@ export default function LandingPage() {
                     {step.num}
                   </p>
                   <h3 className="font-display font-bold text-xl mb-3">{step.title}</h3>
-                  <p className="font-mono text-[13px] font-light leading-[1.7] text-ink/60">
+                  <p className="font-body text-[13px] font-light leading-[1.7] text-ink/60">
                     {step.text}
                   </p>
                 </div>
@@ -857,13 +855,13 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32 grid lg:grid-cols-2 gap-14 items-center">
           <div>
             <FadeIn>
-              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
+              <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
                 03 — GEO Score
               </p>
               <h2 className="font-display font-black text-3xl sm:text-4xl tracking-tight mb-6 text-balance">
                 Uma métrica de 0 a 100 que seu cliente entende
               </h2>
-              <p className="font-mono text-sm font-light leading-[1.8] text-ink/70 mb-10 max-w-lg">
+              <p className="font-body text-sm font-light leading-[1.8] text-ink/70 mb-10 max-w-lg">
                 Quatro fatores ponderados, medidos em cada engine e em cada
                 keyword. Sem jargão técnico: um número, uma direção.
               </p>
@@ -874,7 +872,7 @@ export default function LandingPage() {
                 <FadeIn key={f.label} delay={i * 100}>
                   <div>
                     <div className="flex items-baseline justify-between mb-1.5">
-                      <p className="font-mono text-sm">
+                      <p className="font-body text-sm">
                         <span className="font-semibold">{f.label}</span>{" "}
                         <span className="text-ink/40 text-xs">— {f.desc}</span>
                       </p>
@@ -902,18 +900,18 @@ export default function LandingPage() {
               />
               <div className="rounded-3xl border border-ink/10 bg-white p-6 sm:p-8 shadow-[0_1px_2px_rgba(15,25,35,0.05),0_24px_56px_-24px_rgba(15,25,35,0.2)]">
                 <div className="flex items-baseline justify-between mb-8">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50">
+                  <p className="font-body text-[10px] uppercase tracking-[0.2em] text-ink/50">
                     Evolução — 8 semanas
                   </p>
                   <p className="font-display font-black text-5xl">
                     <Counter from={42} to={78} duration={1800} />
-                    <span className="font-mono font-normal text-sm text-ink/30">
+                    <span className="font-body font-normal text-sm text-ink/30">
                       /100
                     </span>
                   </p>
                 </div>
                 <ScoreBars />
-                <div className="mt-6 pt-4 border-t border-ink/10 flex justify-between font-mono text-[11px] text-ink/40">
+                <div className="mt-6 pt-4 border-t border-ink/10 flex justify-between font-body text-[11px] text-ink/40">
                   <span>semana 1 — score 42</span>
                   <span className="text-confirm font-semibold">
                     semana 8 — score 78 (+36)
@@ -929,13 +927,13 @@ export default function LandingPage() {
       <section className="border-b border-ink/15">
         <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32 grid lg:grid-cols-2 gap-14 items-center">
           <FadeIn className="lg:order-2">
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
+            <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
               04 — Benchmark
             </p>
             <h2 className="font-display font-black text-3xl sm:text-4xl tracking-tight mb-6 text-balance">
               Saiba quando o concorrente aparece no seu lugar
             </h2>
-            <p className="font-mono text-sm font-light leading-[1.8] text-ink/70 max-w-lg">
+            <p className="font-body text-sm font-light leading-[1.8] text-ink/70 max-w-lg">
               Monitore até 3 concorrentes por marca. A Velo avisa quando alguém
               ultrapassa seu score ou quando uma IA passa a recomendá-lo antes de
               você — com dados, não com achismo.
@@ -949,7 +947,7 @@ export default function LandingPage() {
                 className="absolute -inset-5 -z-10 rounded-[2.5rem] bg-gradient-to-tl from-confirm/12 via-transparent to-transparent blur-2xl"
               />
               <div className="rounded-3xl border border-ink/10 bg-white p-6 sm:p-8 shadow-[0_1px_2px_rgba(15,25,35,0.05),0_24px_56px_-24px_rgba(15,25,35,0.2)]">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink/50 mb-6">
+                <p className="font-body text-[10px] uppercase tracking-[0.2em] text-ink/50 mb-6">
                   Share of voice — sua keyword principal
                 </p>
                 <div className="space-y-4">
@@ -957,7 +955,7 @@ export default function LandingPage() {
                     <div key={b.name}>
                       <div className="flex justify-between mb-1.5">
                         <span
-                          className={`font-mono text-[13px] ${
+                          className={`font-body text-[13px] ${
                             b.you ? "font-semibold text-confirm" : "text-ink/60"
                           }`}
                         >
@@ -976,7 +974,7 @@ export default function LandingPage() {
                     </div>
                   ))}
                 </div>
-                <p className="mt-6 pt-4 border-t border-ink/10 font-mono text-[11px] text-signal">
+                <p className="mt-6 pt-4 border-t border-ink/10 font-body text-[11px] text-signal">
                   ▲ OdontoPrime subiu 3 posições no Gemini esta semana
                 </p>
               </div>
@@ -989,13 +987,13 @@ export default function LandingPage() {
       <section className="border-b border-ink/15">
         <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32 grid lg:grid-cols-2 gap-14 items-center">
           <FadeIn>
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
+            <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
               05 — Plano de ação
             </p>
             <h2 className="font-display font-black text-3xl sm:text-4xl tracking-tight mb-6 text-balance">
               Dados sem direção não movem score
             </h2>
-            <p className="font-mono text-sm font-light leading-[1.8] text-ink/70 max-w-lg">
+            <p className="font-body text-sm font-light leading-[1.8] text-ink/70 max-w-lg">
               Para cada keyword com score baixo, a Velo gera recomendações
               específicas de conteúdo — o que publicar, onde e por quê.
               Priorizado pelo impacto estimado no seu GEO Score.
@@ -1012,7 +1010,7 @@ export default function LandingPage() {
                 {ACTIONS.map((a) => (
                   <div key={a.text} className="p-5 flex gap-4 items-start">
                     <span
-                      className={`shrink-0 font-mono text-[10px] uppercase tracking-[0.15em] rounded-full px-2.5 py-1 mt-0.5 ${
+                      className={`shrink-0 font-body text-[10px] uppercase tracking-[0.15em] rounded-full px-2.5 py-1 mt-0.5 ${
                         a.priority === "alta"
                           ? "bg-signal/10 text-signal"
                           : "bg-navy/10 text-navy"
@@ -1020,7 +1018,7 @@ export default function LandingPage() {
                     >
                       {a.priority}
                     </span>
-                    <p className="font-mono text-[13px] font-light leading-[1.7] text-ink/70">
+                    <p className="font-body text-[13px] font-light leading-[1.7] text-ink/70">
                       {a.text}
                     </p>
                   </div>
@@ -1035,13 +1033,13 @@ export default function LandingPage() {
       <section id="precos">
         <div className="max-w-6xl mx-auto px-6 py-24 lg:py-32">
           <FadeIn>
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6 text-center">
+            <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6 text-center">
               06 — Preços
             </p>
             <h2 className="font-display font-black text-3xl sm:text-5xl tracking-tight text-center mb-4 text-balance">
               Menos que uma hora de agência por mês
             </h2>
-            <p className="font-mono text-sm font-light text-ink/60 text-center mb-10">
+            <p className="font-body text-sm font-light text-ink/60 text-center mb-10">
               7 dias grátis em qualquer plano. Cartão ou Pix. Sem contrato de
               fidelidade.
             </p>
@@ -1052,7 +1050,7 @@ export default function LandingPage() {
                 <button
                   onClick={() => setAnnual(false)}
                   aria-pressed={!annual}
-                  className={`font-mono text-xs uppercase tracking-[0.15em] rounded-full px-5 py-2 transition-colors ${
+                  className={`font-body text-xs uppercase tracking-[0.15em] rounded-full px-5 py-2 transition-colors ${
                     !annual ? "bg-ink text-bone" : "text-ink/60 hover:text-ink"
                   }`}
                 >
@@ -1061,7 +1059,7 @@ export default function LandingPage() {
                 <button
                   onClick={() => setAnnual(true)}
                   aria-pressed={annual}
-                  className={`font-mono text-xs uppercase tracking-[0.15em] rounded-full px-5 py-2 transition-colors ${
+                  className={`font-body text-xs uppercase tracking-[0.15em] rounded-full px-5 py-2 transition-colors ${
                     annual ? "bg-ink text-bone" : "text-ink/60 hover:text-ink"
                   }`}
                 >
@@ -1084,21 +1082,21 @@ export default function LandingPage() {
                     }`}
                   >
                     {plan.highlight && (
-                      <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-signal text-bone font-mono text-[10px] uppercase tracking-[0.2em] rounded-full px-4 py-1.5 shadow-[0_6px_16px_-4px_rgba(63,107,78,0.5)]">
+                      <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-signal text-bone font-body text-[10px] uppercase tracking-[0.2em] rounded-full px-4 py-1.5 shadow-[0_6px_16px_-4px_rgba(63,107,78,0.5)]">
                         Mais escolhido
                       </span>
                     )}
-                    <p className="font-mono text-[11px] uppercase tracking-[0.25em] mb-5 opacity-60">
+                    <p className="font-body text-[11px] uppercase tracking-[0.25em] mb-5 opacity-60">
                       {plan.name}
                     </p>
                     <p className="font-display font-black text-5xl mb-1">
                       R${price}
-                      <span className="font-mono font-normal text-sm opacity-50">
+                      <span className="font-body font-normal text-sm opacity-50">
                         /mês
                       </span>
                     </p>
                     {annual && (
-                      <p className="font-mono text-[11px] text-signal">
+                      <p className="font-body text-[11px] text-signal">
                         cobrado anualmente
                       </p>
                     )}
@@ -1106,7 +1104,7 @@ export default function LandingPage() {
                       {plan.features.map((f) => (
                         <li
                           key={f}
-                          className="flex items-start gap-2.5 font-mono text-[13px] font-light"
+                          className="flex items-start gap-2.5 font-body text-[13px] font-light"
                         >
                           <Check
                             size={14}
@@ -1124,7 +1122,7 @@ export default function LandingPage() {
                     </ul>
                     <Link
                       href="/auth/signup"
-                      className={`block text-center font-mono text-sm font-semibold rounded-full px-6 py-3.5 transition-colors ${
+                      className={`block text-center font-body text-sm font-semibold rounded-full px-6 py-3.5 transition-colors ${
                         plan.highlight
                           ? "bg-signal text-bone hover:bg-bone hover:text-ink"
                           : "border border-ink/25 text-ink hover:bg-ink hover:text-bone hover:border-ink"
@@ -1144,13 +1142,13 @@ export default function LandingPage() {
       <section id="teste-gratis" className="border-t border-ink/15">
         <div className="max-w-4xl mx-auto px-6 py-24 lg:py-32">
           <FadeIn>
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
+            <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
               Teste grátis — sem cadastro
             </p>
             <h2 className="font-display font-black text-3xl sm:text-5xl tracking-tight mb-6 text-balance">
               Veja agora como o ChatGPT descreve sua marca
             </h2>
-            <p className="font-mono text-sm font-light leading-[1.8] text-ink/70 mb-10 max-w-lg">
+            <p className="font-body text-sm font-light leading-[1.8] text-ink/70 mb-10 max-w-lg">
               Digite sua marca e o que seu cliente perguntaria. Nós perguntamos
               ao ChatGPT de verdade e mostramos a resposta.
             </p>
@@ -1165,7 +1163,7 @@ export default function LandingPage() {
       <section className="bg-ink text-bone border-t-2 border-ink">
         <div className="max-w-4xl mx-auto px-6 py-24 lg:py-32 text-center">
           <FadeIn>
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
+            <p className="font-body text-[11px] uppercase tracking-[0.25em] text-signal mb-6">
               Primeiro resultado em até 24 horas
             </p>
             <h2 className="font-display font-black text-4xl sm:text-6xl tracking-tight mb-8 text-balance">
@@ -1173,7 +1171,7 @@ export default function LandingPage() {
             </h2>
             <Link
               href="/auth/signup"
-              className="group inline-flex items-center gap-3 bg-signal text-bone font-mono text-sm font-semibold rounded-full px-9 py-4 shadow-[0_10px_28px_-8px_rgba(63,107,78,0.6)] hover:bg-bone hover:text-ink transition-colors"
+              className="group inline-flex items-center gap-3 bg-signal text-bone font-body text-sm font-semibold rounded-full px-9 py-4 shadow-[0_10px_28px_-8px_rgba(63,107,78,0.6)] hover:bg-bone hover:text-ink transition-colors"
             >
               Ver minha presença agora
               <ArrowRight
@@ -1181,7 +1179,7 @@ export default function LandingPage() {
                 className="transition-transform group-hover:translate-x-1"
               />
             </Link>
-            <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/40 mt-6">
+            <p className="font-body text-[11px] uppercase tracking-[0.15em] text-bone/40 mt-6">
               7 dias grátis · Sem cartão · Cancele quando quiser
             </p>
           </FadeIn>
@@ -1195,7 +1193,7 @@ export default function LandingPage() {
             <p className="font-display font-bold text-xl mb-1.5">
               v<span className="text-signal">e</span>lo
             </p>
-            <p className="font-mono text-[11px] text-bone/40 max-w-xs leading-relaxed">
+            <p className="font-body text-[11px] text-bone/40 max-w-xs leading-relaxed">
               Monitore sua presença nas IAs em tempo real. GEO para marcas
               brasileiras.
             </p>
@@ -1205,14 +1203,14 @@ export default function LandingPage() {
               <a
                 key={l.href}
                 href={l.href}
-                className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/50 hover:text-bone transition-colors"
+                className="font-body text-[11px] uppercase tracking-[0.15em] text-bone/50 hover:text-bone transition-colors"
               >
                 {l.label}
               </a>
             ))}
             <Link
               href="/auth/login"
-              className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/50 hover:text-bone transition-colors"
+              className="font-body text-[11px] uppercase tracking-[0.15em] text-bone/50 hover:text-bone transition-colors"
             >
               Entrar
             </Link>
@@ -1220,25 +1218,25 @@ export default function LandingPage() {
         </div>
         <div className="border-t border-bone/10">
           <div className="max-w-6xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
-            <p className="font-mono text-[11px] text-bone/30">
+            <p className="font-body text-[11px] text-bone/30">
               © 2026 Velo · Feito no Brasil
             </p>
             <nav className="flex flex-wrap gap-x-6 gap-y-2">
               <Link
                 href="/legal/termos"
-                className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
+                className="font-body text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
               >
                 Termos de Uso
               </Link>
               <Link
                 href="/legal/privacidade"
-                className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
+                className="font-body text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
               >
                 Privacidade
               </Link>
               <Link
                 href="/legal/lgpd"
-                className="font-mono text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
+                className="font-body text-[11px] uppercase tracking-[0.15em] text-bone/30 hover:text-bone transition-colors"
               >
                 LGPD
               </Link>

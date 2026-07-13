@@ -41,7 +41,7 @@ export default function SignupPage() {
           <h2 className="font-display font-black text-2xl text-slate-900 mb-3">
             Verifique seu e-mail
           </h2>
-          <p className="font-mono text-sm text-slate-500 leading-relaxed">
+          <p className="font-body text-sm text-slate-500 leading-relaxed">
             Enviamos um link de confirmação para{" "}
             <strong className="text-slate-700">{email}</strong>.
             <br />Clique no link para ativar sua conta.
@@ -60,31 +60,31 @@ export default function SignupPage() {
             <span className="font-display font-black text-3xl text-slate-900 leading-none">Velo</span>
             <span className="w-2 h-2 rounded-full bg-moss-600 mb-0.5 ml-0.5" />
           </div>
-          <p className="font-mono text-xs text-slate-400 mt-2">7 dias grátis. Sem cartão de crédito.</p>
+          <p className="font-body text-xs text-slate-400 mt-2">7 dias grátis. Sem cartão de crédito.</p>
         </div>
 
         {/* Card */}
         <div className="bg-white border border-slate-200/80 rounded-3xl p-8 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_24px_56px_-24px_rgba(15,25,35,0.18)]">
           <h1 className="font-display font-black text-2xl text-slate-900 mb-1">Criar conta</h1>
-          <p className="font-mono text-xs text-slate-400 mb-7">
+          <p className="font-body text-xs text-slate-400 mb-7">
             Comece a monitorar sua presença nas IAs.
           </p>
 
           <form onSubmit={handleSignup} className="space-y-4">
             <div>
-              <label className="block font-mono text-xs font-medium text-slate-600 mb-1.5">
+              <label className="block font-body text-xs font-medium text-slate-600 mb-1.5">
                 Nome da empresa
               </label>
               <input
                 value={orgName}
                 onChange={(e) => setOrgName(e.target.value)}
                 placeholder="Clínica São Lucas"
-                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
+                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
                 required
               />
             </div>
             <div>
-              <label className="block font-mono text-xs font-medium text-slate-600 mb-1.5">
+              <label className="block font-body text-xs font-medium text-slate-600 mb-1.5">
                 E-mail
               </label>
               <input
@@ -92,12 +92,12 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="voce@empresa.com"
-                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
+                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
                 required
               />
             </div>
             <div>
-              <label className="block font-mono text-xs font-medium text-slate-600 mb-1.5">
+              <label className="block font-body text-xs font-medium text-slate-600 mb-1.5">
                 Senha
               </label>
               <input
@@ -105,14 +105,14 @@ export default function SignupPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="mínimo 8 caracteres"
-                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
+                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white transition-shadow"
                 required
                 minLength={8}
               />
             </div>
 
             {error && (
-              <p className="font-mono text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2 rounded-lg">
+              <p className="font-body text-xs text-red-600 bg-red-50 border border-red-100 px-3 py-2 rounded-lg">
                 {error}
               </p>
             )}
@@ -120,20 +120,20 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-moss-600 text-white py-3 rounded-full font-mono text-sm font-semibold shadow-[0_8px_20px_-6px_rgba(63,107,78,0.4)] hover:bg-moss-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+              className="w-full bg-moss-600 text-white py-3 rounded-full font-body text-sm font-semibold shadow-[0_8px_20px_-6px_rgba(63,107,78,0.4)] hover:bg-moss-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
             >
               {loading ? "Criando conta..." : "Criar conta grátis"}
             </button>
           </form>
 
-          <p className="font-mono text-[10px] text-slate-400 text-center mt-5">
+          <p className="font-body text-[10px] text-slate-400 text-center mt-5">
             Ao criar uma conta você concorda com nossos{" "}
             <Link href="/legal/termos" className="underline">Termos</Link> e{" "}
             <Link href="/legal/privacidade" className="underline">Política de Privacidade</Link>.
           </p>
         </div>
 
-        <p className="mt-6 font-mono text-xs text-center text-slate-400">
+        <p className="mt-6 font-body text-xs text-center text-slate-400">
           Já tem conta?{" "}
           <Link href="/auth/login" className="text-moss-600 hover:underline font-medium">
             Entrar

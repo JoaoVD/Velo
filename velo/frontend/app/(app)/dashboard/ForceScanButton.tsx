@@ -30,7 +30,7 @@ export default function ForceScanButton({ brandId }: { brandId: string }) {
     <button
       onClick={handleScan}
       disabled={loading}
-      className="flex items-center gap-1.5 font-mono text-xs text-slate-600 border border-slate-200 bg-white px-4 py-2 rounded-full hover:bg-slate-50 transition-colors disabled:opacity-50"
+      className="flex items-center gap-1.5 font-body text-xs text-slate-600 border border-slate-200 bg-white px-4 py-2 rounded-full hover:bg-slate-50 transition-colors disabled:opacity-50"
     >
       <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
       {loading ? "Agendando..." : "Forçar scan"}

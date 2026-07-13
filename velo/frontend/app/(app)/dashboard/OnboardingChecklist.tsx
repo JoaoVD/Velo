@@ -72,7 +72,7 @@ export default function OnboardingChecklist({ keywordCount, competitorCount, has
       <h2 className="font-display font-black text-lg text-slate-900 mb-1">
         Bem-vindo à Velo — comece por aqui
       </h2>
-      <p className="font-mono text-xs text-slate-500 mb-5">
+      <p className="font-body text-xs text-slate-500 mb-5">
         Seu monitoramento já está configurado. Enquanto o primeiro scan roda, entenda o que você vai ver neste painel.
       </p>
 
@@ -93,18 +93,18 @@ export default function OnboardingChecklist({ keywordCount, competitorCount, has
                 {s.done ? <Check size={11} /> : s.pending ? <Clock size={11} /> : <Check size={11} />}
               </span>
               {s.href && !s.done ? (
-                <Link href={s.href} className="font-mono text-xs text-moss-700 hover:underline">
+                <Link href={s.href} className="font-body text-xs text-moss-700 hover:underline">
                   {s.label} →
                 </Link>
               ) : (
-                <span className={`font-mono text-xs ${s.done ? "text-slate-600" : "text-slate-500"}`}>
+                <span className={`font-body text-xs ${s.done ? "text-slate-600" : "text-slate-500"}`}>
                   {s.label}
                 </span>
               )}
             </li>
           ))}
           <li className="pt-1">
-            <span className="font-mono text-[11px] text-slate-400">
+            <span className="font-body text-[11px] text-slate-400">
               Você receberá um relatório semanal por e-mail com a evolução do score.
             </span>
           </li>
@@ -118,8 +118,8 @@ export default function OnboardingChecklist({ keywordCount, competitorCount, has
                 <Icon size={13} />
               </span>
               <div>
-                <p className="font-mono text-xs font-semibold text-slate-700">{title}</p>
-                <p className="font-mono text-[11px] leading-[1.6] text-slate-500">{text}</p>
+                <p className="font-body text-xs font-semibold text-slate-700">{title}</p>
+                <p className="font-body text-[11px] leading-[1.6] text-slate-500">{text}</p>
               </div>
             </div>
           ))}

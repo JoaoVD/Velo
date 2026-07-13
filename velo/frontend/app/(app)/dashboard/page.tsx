@@ -86,12 +86,12 @@ export default async function DashboardPage() {
       <div className="mb-8 flex flex-wrap items-start gap-4 justify-between">
         <div>
           <h1 className="font-display font-black text-3xl text-slate-900">{brand.name}</h1>
-          <p className="font-mono text-sm text-slate-500 mt-1">
+          <p className="font-body text-sm text-slate-500 mt-1">
             Presença nas IAs generativas
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <span className="font-mono text-[10px] uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-semibold">
+          <span className="font-body text-[10px] uppercase tracking-widest bg-slate-100 text-slate-500 px-3 py-1.5 rounded-full font-semibold">
             Starter
           </span>
           <ForceScanButton brandId={brand.id} />
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
             <h2 className="font-display font-black text-xl text-slate-900 mb-2">
               Primeiro scan em andamento
             </h2>
-            <p className="font-mono text-sm text-slate-400 max-w-sm mx-auto">
+            <p className="font-body text-sm text-slate-400 max-w-sm mx-auto">
               Seu GEO Score estará pronto em até 24h após o cadastro.
             </p>
             <div className="mt-6 mx-auto max-w-xs h-1.5 bg-slate-100 rounded-full overflow-hidden">
@@ -155,7 +155,7 @@ export default async function DashboardPage() {
 
           {/* History chart */}
           <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
-            <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+            <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
               Histórico de GEO Score
             </h2>
             <ScoreHistoryChart scores={scores} />
@@ -164,7 +164,7 @@ export default async function DashboardPage() {
           {/* Share of voice */}
           {shareOfVoice.keywords.length > 0 && (
             <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
-              <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+              <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
                 Share of Voice · Você vs. Concorrentes
               </h2>
               <ShareOfVoiceCard entries={shareOfVoice.keywords} brandName={brand.name} />
@@ -174,7 +174,7 @@ export default async function DashboardPage() {
           {/* Keywords table */}
           {keywords.length > 0 && (
             <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)] p-6">
-              <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
+              <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-5">
                 Score por Keyword
               </h2>
               <KeywordsTable keywords={keywords} scores={scores} engineFilter="all" />

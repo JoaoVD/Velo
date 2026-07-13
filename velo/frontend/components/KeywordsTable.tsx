@@ -32,16 +32,16 @@ export function KeywordsTable({ keywords, scores, engineFilter }: Props) {
     <table className="w-full text-sm border-collapse">
       <thead>
         <tr className="border-b border-slate-100 text-left">
-          <th className="pb-3 font-mono text-[10px] uppercase tracking-widest text-slate-400 font-medium">
+          <th className="pb-3 font-body text-[10px] uppercase tracking-widest text-slate-400 font-medium">
             Keyword
           </th>
           {(engineFilter === "all" || engineFilter === "chatgpt") && (
-            <th className="pb-3 font-mono text-[10px] uppercase tracking-widest text-slate-400 font-medium">
+            <th className="pb-3 font-body text-[10px] uppercase tracking-widest text-slate-400 font-medium">
               ChatGPT
             </th>
           )}
           {(engineFilter === "all" || engineFilter === "gemini") && (
-            <th className="pb-3 font-mono text-[10px] uppercase tracking-widest text-slate-400 font-medium">
+            <th className="pb-3 font-body text-[10px] uppercase tracking-widest text-slate-400 font-medium">
               Gemini
             </th>
           )}
@@ -53,10 +53,10 @@ export function KeywordsTable({ keywords, scores, engineFilter }: Props) {
             key={kw.id}
             className="border-b border-slate-50 hover:bg-slate-50 transition-colors"
           >
-            <td className="py-3 font-mono text-sm text-slate-700">{kw.term}</td>
+            <td className="py-3 font-body text-sm text-slate-700">{kw.term}</td>
             {(engineFilter === "all" || engineFilter === "chatgpt") && (
               <td
-                className={`py-3 font-mono text-sm ${scoreColor(
+                className={`py-3 font-body text-sm ${scoreColor(
                   (scoreMap[kw.id]?.chatgpt as number) ?? 0
                 )}`}
               >
@@ -67,7 +67,7 @@ export function KeywordsTable({ keywords, scores, engineFilter }: Props) {
             )}
             {(engineFilter === "all" || engineFilter === "gemini") && (
               <td
-                className={`py-3 font-mono text-sm ${scoreColor(
+                className={`py-3 font-body text-sm ${scoreColor(
                   (scoreMap[kw.id]?.gemini as number) ?? 0
                 )}`}
               >

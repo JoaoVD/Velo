@@ -10,7 +10,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
           </Link>
           <Link
             href="/"
-            className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink/60 hover:text-ink transition-colors"
+            className="font-body text-[11px] uppercase tracking-[0.15em] text-ink/60 hover:text-ink transition-colors"
           >
             ← Voltar
           </Link>
@@ -21,23 +21,23 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
 
       <footer className="border-t border-ink/10 mt-10">
         <div className="max-w-3xl mx-auto px-6 py-8 flex flex-wrap items-center justify-between gap-4">
-          <p className="font-mono text-[11px] text-ink/50">© 2026 Velo · Feito no Brasil</p>
+          <p className="font-body text-[11px] text-ink/50">© 2026 Velo · Feito no Brasil</p>
           <nav className="flex flex-wrap gap-x-6 gap-y-2">
             <Link
               href="/legal/termos"
-              className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink/50 hover:text-ink transition-colors"
+              className="font-body text-[11px] uppercase tracking-[0.15em] text-ink/50 hover:text-ink transition-colors"
             >
               Termos de Uso
             </Link>
             <Link
               href="/legal/privacidade"
-              className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink/50 hover:text-ink transition-colors"
+              className="font-body text-[11px] uppercase tracking-[0.15em] text-ink/50 hover:text-ink transition-colors"
             >
               Privacidade
             </Link>
             <Link
               href="/legal/lgpd"
-              className="font-mono text-[11px] uppercase tracking-[0.15em] text-ink/50 hover:text-ink transition-colors"
+              className="font-body text-[11px] uppercase tracking-[0.15em] text-ink/50 hover:text-ink transition-colors"
             >
               LGPD
             </Link>

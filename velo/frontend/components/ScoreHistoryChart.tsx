@@ -40,19 +40,19 @@ export function ScoreHistoryChart({ scores }: Props) {
         <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
         <XAxis
           dataKey="date"
-          tick={{ fontSize: 10, fontFamily: "var(--font-mono)", fill: "#94a3b8" }}
+          tick={{ fontSize: 10, fontFamily: "var(--font-body)", fill: "#94a3b8" }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
           domain={[0, 100]}
-          tick={{ fontSize: 10, fontFamily: "var(--font-mono)", fill: "#94a3b8" }}
+          tick={{ fontSize: 10, fontFamily: "var(--font-body)", fill: "#94a3b8" }}
           axisLine={false}
           tickLine={false}
         />
         <Tooltip
           contentStyle={{
-            fontFamily: "var(--font-mono)",
+            fontFamily: "var(--font-body)",
             fontSize: 11,
             border: "1px solid #e2e8f0",
             borderRadius: 8,
@@ -60,7 +60,7 @@ export function ScoreHistoryChart({ scores }: Props) {
           }}
         />
         <Legend
-          wrapperStyle={{ fontFamily: "var(--font-mono)", fontSize: 11 }}
+          wrapperStyle={{ fontFamily: "var(--font-body)", fontSize: 11 }}
         />
         <Line
           type="monotone"

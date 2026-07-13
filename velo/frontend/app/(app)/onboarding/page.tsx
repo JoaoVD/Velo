@@ -116,7 +116,7 @@ export default function OnboardingPage() {
   if (checking) {
     return (
       <div className="min-h-[70vh] flex items-center justify-center">
-        <div className="font-mono text-sm text-slate-400 animate-pulse">Carregando...</div>
+        <div className="font-body text-sm text-slate-400 animate-pulse">Carregando...</div>
       </div>
     );
   }
@@ -132,7 +132,7 @@ export default function OnboardingPage() {
           <h1 className="font-display font-black text-3xl text-slate-900 mb-2">
             Configure seu monitoramento
           </h1>
-          <p className="font-mono text-sm text-slate-400">
+          <p className="font-body text-sm text-slate-400">
             Leva menos de 4 minutos. Primeiro resultado em até 24h.
           </p>
           {/* Progress dots */}
@@ -148,7 +148,7 @@ export default function OnboardingPage() {
                     done ? "bg-moss-600" : "bg-slate-200"
                   }`}
                 />
-                <span className="font-mono text-[10px] text-slate-400">{label}</span>
+                <span className="font-body text-[10px] text-slate-400">{label}</span>
               </div>
             ))}
           </div>
@@ -157,7 +157,7 @@ export default function OnboardingPage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Passo 1 — Marca */}
           <section className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)]">
-            <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
+            <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-4">
               01 — Sua marca
             </h2>
             <div className="space-y-3">
@@ -166,19 +166,19 @@ export default function OnboardingPage() {
                 onChange={(e) => setBrandName(e.target.value)}
                 placeholder="Nome da empresa *"
                 required
-                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
+                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
               />
               <input
                 value={brandWebsite}
                 onChange={(e) => setBrandWebsite(e.target.value)}
                 placeholder="Site (opcional, ex: clinicasaolucas.com.br)"
-                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
+                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
               />
               <select
                 value={brandSector}
                 onChange={(e) => setBrandSector(e.target.value)}
                 required
-                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-mono text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white appearance-none"
+                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 font-body text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white appearance-none"
               >
                 <option value="">Setor *</option>
                 {SECTORS.map((s) => (
@@ -193,14 +193,14 @@ export default function OnboardingPage() {
           {/* Passo 2 — Keywords */}
           <section className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)]">
             <div className="flex items-center justify-between mb-1">
-              <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
+              <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
                 02 — Keywords para monitorar
               </h2>
-              <span className="font-mono text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full">
+              <span className="font-body text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full">
                 {keywords.length} / 10
               </span>
             </div>
-            <p className="font-mono text-xs text-slate-400 mb-4">
+            <p className="font-body text-xs text-slate-400 mb-4">
               Termos que seus clientes usariam para te encontrar nas IAs.
             </p>
             {keywords.length > 0 && (
@@ -208,7 +208,7 @@ export default function OnboardingPage() {
                 {keywords.map((kw) => (
                   <span
                     key={kw}
-                    className="flex items-center gap-1 bg-moss-50 border border-moss-100 text-moss-700 font-mono text-xs px-2.5 py-1 rounded-full"
+                    className="flex items-center gap-1 bg-moss-50 border border-moss-100 text-moss-700 font-body text-xs px-2.5 py-1 rounded-full"
                   >
                     {kw}
                     <button
@@ -234,12 +234,12 @@ export default function OnboardingPage() {
                     }
                   }}
                   placeholder="ex: advogado trabalhista SP"
-                  className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
+                  className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
                 />
                 <button
                   type="button"
                   onClick={addKeyword}
-                  className="flex items-center gap-1 bg-moss-600 text-white px-4 py-2 rounded-full font-mono text-xs font-semibold hover:bg-moss-700 transition-colors"
+                  className="flex items-center gap-1 bg-moss-600 text-white px-4 py-2 rounded-full font-body text-xs font-semibold hover:bg-moss-700 transition-colors"
                 >
                   <Plus size={13} /> Adicionar
                 </button>
@@ -250,15 +250,15 @@ export default function OnboardingPage() {
           {/* Passo 3 — Concorrentes */}
           <section className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-[0_1px_2px_rgba(15,25,35,0.04),0_16px_40px_-20px_rgba(15,25,35,0.12)]">
             <div className="flex items-center justify-between mb-1">
-              <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
+              <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold">
                 03 — Concorrentes{" "}
                 <span className="text-slate-300 normal-case font-normal">(opcional)</span>
               </h2>
-              <span className="font-mono text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full">
+              <span className="font-body text-[10px] bg-slate-100 text-slate-500 px-2 py-1 rounded-full">
                 {competitors.length} / 3
               </span>
             </div>
-            <p className="font-mono text-xs text-slate-400 mb-4">
+            <p className="font-body text-xs text-slate-400 mb-4">
               Saberemos quando eles aparecem no lugar de você.
             </p>
             {competitors.length > 0 && (
@@ -266,7 +266,7 @@ export default function OnboardingPage() {
                 {competitors.map((c) => (
                   <span
                     key={c}
-                    className="flex items-center gap-1 bg-slate-50 border border-slate-200 text-slate-600 font-mono text-xs px-2.5 py-1 rounded-full"
+                    className="flex items-center gap-1 bg-slate-50 border border-slate-200 text-slate-600 font-body text-xs px-2.5 py-1 rounded-full"
                   >
                     {c}
                     <button
@@ -292,12 +292,12 @@ export default function OnboardingPage() {
                     }
                   }}
                   placeholder="ex: Concorrente S/A"
-                  className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
+                  className="flex-1 border border-slate-200 rounded-xl px-3.5 py-2 font-body text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-moss-600 focus:border-transparent bg-white"
                 />
                 <button
                   type="button"
                   onClick={addCompetitor}
-                  className="flex items-center gap-1 bg-slate-700 text-white px-4 py-2 rounded-full font-mono text-xs font-semibold hover:bg-slate-800 transition-colors"
+                  className="flex items-center gap-1 bg-slate-700 text-white px-4 py-2 rounded-full font-body text-xs font-semibold hover:bg-slate-800 transition-colors"
                 >
                   <Plus size={13} /> Adicionar
                 </button>
@@ -306,7 +306,7 @@ export default function OnboardingPage() {
           </section>
 
           {error && (
-            <p className="font-mono text-xs text-red-600 bg-red-50 border border-red-100 px-4 py-2.5 rounded-xl">
+            <p className="font-body text-xs text-red-600 bg-red-50 border border-red-100 px-4 py-2.5 rounded-xl">
               {error}
             </p>
           )}
@@ -314,7 +314,7 @@ export default function OnboardingPage() {
           <button
             type="submit"
             disabled={saving}
-            className="w-full flex items-center justify-center gap-2 bg-moss-600 text-white py-3.5 rounded-full font-mono text-sm font-semibold shadow-[0_8px_20px_-6px_rgba(63,107,78,0.4)] hover:bg-moss-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full flex items-center justify-center gap-2 bg-moss-600 text-white py-3.5 rounded-full font-body text-sm font-semibold shadow-[0_8px_20px_-6px_rgba(63,107,78,0.4)] hover:bg-moss-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {saving ? (
               "Salvando..."

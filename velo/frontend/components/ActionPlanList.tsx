@@ -50,7 +50,7 @@ export function ActionPlanList({ plans, keywords }: Props) {
         const cfg = PRIORITY_CONFIG[priority];
         return (
           <section key={priority}>
-            <h2 className="font-mono text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-3">
+            <h2 className="font-body text-[10px] uppercase tracking-widest text-slate-400 font-semibold mb-3">
               {cfg.label} ({group.length})
             </h2>
             <div className="space-y-3">
@@ -61,19 +61,19 @@ export function ActionPlanList({ plans, keywords }: Props) {
                 >
                   <div className="flex flex-wrap items-center gap-2 mb-3">
                     <span
-                      className={`font-mono text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full border ${cfg.bg} ${cfg.text} ${cfg.border}`}
+                      className={`font-body text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full border ${cfg.bg} ${cfg.text} ${cfg.border}`}
                     >
                       {cfg.label}
                     </span>
-                    <span className="font-mono text-[10px] text-slate-400 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-full">
+                    <span className="font-body text-[10px] text-slate-400 bg-slate-50 border border-slate-100 px-2.5 py-1 rounded-full">
                       {ENGINE_LABELS[plan.engine] ?? plan.engine}
                     </span>
                   </div>
-                  <p className="font-mono text-sm text-slate-800 leading-relaxed mb-3">
+                  <p className="font-body text-sm text-slate-800 leading-relaxed mb-3">
                     {plan.recommendation}
                   </p>
                   {kwMap[plan.keyword_id] && (
-                    <p className="font-mono text-[10px] text-slate-400">
+                    <p className="font-body text-[10px] text-slate-400">
                       Keyword:{" "}
                       <span className="text-slate-600">{kwMap[plan.keyword_id]}</span>
                     </p>

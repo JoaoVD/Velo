@@ -27,7 +27,7 @@ export default async function ActionPlanPage() {
     <div>
       <div className="mb-8">
         <h1 className="font-display font-black text-3xl text-slate-900">Plano de Ação</h1>
-        <p className="font-mono text-sm text-slate-500 mt-1.5">
+        <p className="font-body text-sm text-slate-500 mt-1.5">
           Recomendações por keyword, ordenadas por prioridade
         </p>
       </div>
@@ -36,7 +36,7 @@ export default async function ActionPlanPage() {
           <p className="font-display font-black text-lg text-slate-700 mb-2">
             Nenhum plano de ação ainda
           </p>
-          <p className="font-mono text-sm text-slate-400 max-w-sm mx-auto">
+          <p className="font-body text-sm text-slate-400 max-w-sm mx-auto">
             Gerado automaticamente após análise dos primeiros scans.
           </p>
         </div>
