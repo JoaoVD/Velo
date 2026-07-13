@@ -1,10 +1,17 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function apiFetch<T>(
   path: string,
   token: string,
   options: RequestInit = {}
 ): Promise<T> {
+  if (!API_URL) {
+    // Guard: sem isso, a URL viraria "undefined/..." e o erro apareceria como um 404 confuso.
+    throw new Error(
+      "Configuração ausente: NEXT_PUBLIC_API_URL não está definida no ambiente de build. " +
+        "Defina-a no .env.local (dev) ou nas Environment Variables da Vercel (produção) e refaça o build."
+    );
+  }
   let res: Response;
   try {
     res = await fetch(`${API_URL}${path}`, {
