@@ -28,7 +28,7 @@ export default async function ActionPlanPage() {
       <div className="mb-8">
         <h1 className="font-display font-black text-3xl text-slate-900">Plano de Ação</h1>
         <p className="font-body text-sm text-slate-500 mt-1.5">
-          Recomendações por keyword, ordenadas por prioridade
+          Recomendações por keyword — marque cada ação conforme for executando
         </p>
       </div>
       {plans.length === 0 ? (
