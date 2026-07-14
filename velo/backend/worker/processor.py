@@ -74,7 +74,7 @@ async def process_job(job_id: str) -> None:
                 "engine": engine,
                 "date": str(datetime.now(timezone.utc).date()),
                 **score,
-            }).execute()
+            }, on_conflict="keyword_id,engine,date").execute()
 
             scores_by_engine[engine].append(score["geo_score"])
             keyword_scores.append({"term": keyword["term"], "geo_score": score["geo_score"]})
